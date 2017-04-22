@@ -96,13 +96,6 @@ public class MetadataCollector {
 
     private Set<ACHFieldMetadata> collectFieldsMetadata(Class<? extends ACHRecord> type) {
         return new TreeSet<>(collectExtFieldsMetadata(type));
-        /*return Arrays.stream(type.getMethods())
-                .filter(m -> m.isAnnotationPresent(ACHField.class)
-                        && m.getName().startsWith("get")
-                        && ACHFieldMetadata.VALID_FIELD_TYPES_SET.contains(m.getReturnType())
-                )
-                .map(this::fieldMetadataFromGetter)
-                .collect(Collectors.toSet());*/
     }
 
     public List<ACHFieldMetadata> collectExtFieldsMetadata(Class<? extends ACHRecord> type) {

@@ -37,6 +37,7 @@ public class ACHRecordTypeMetadata {
         this.type = type;
         this.fieldsMetadata = new TreeSet<>(fieldsMetadata.stream()
                 .sorted().collect(Collectors.toList()));
+        this.fieldsMetadata.forEach(fm -> fm.setRecordClassName(getRecordClassName()));
     }
 
     public String getRecordTypeCode() {

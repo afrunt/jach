@@ -52,6 +52,7 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
     private Set<String> values = new TreeSet<>();
     private String dateFormat;
     private int digitsAfterComma = 2;
+    private String recordClassName;
 
     public ACHFieldMetadata() {
     }
@@ -356,10 +357,19 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
         return this;
     }
 
+    public String getRecordClassName() {
+        return recordClassName;
+    }
+
+    public ACHFieldMetadata setRecordClassName(String recordClassName) {
+        this.recordClassName = recordClassName;
+        return this;
+    }
+
     @Override
     public String toString() {
         String typeName = fieldType.getName();
-        return this.name + "[" + typeName.substring(typeName.lastIndexOf('.') + 1) + "]";
+        return recordClassName + "->" + this.name + "[" + typeName.substring(typeName.lastIndexOf('.') + 1) + "]";
     }
 
     @Override
