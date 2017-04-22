@@ -18,7 +18,6 @@
  */
 package com.afrunt.jach.metadata;
 
-import com.afrunt.jach.ACHValueConstants;
 import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.annotation.InclusionRequirement;
 
@@ -26,7 +25,6 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.*;
 import static java.util.Arrays.asList;
@@ -167,12 +165,7 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
 
     public boolean valueSatisfiesToConstantValues(String value) {
         if (hasConstantValues()) {
-            boolean equalsToConstant = getConstantValues().contains(value);
-            boolean validSpecialValue = getSpecialConstantValues().stream()
-                    .map(v -> ACHValueConstants.validSpecialValue(value, v))
-                    .reduce(false, (v1, v2) -> v1 || v2);
-            return equalsToConstant || validSpecialValue
-                    || (isOptional() && "".equals(value.trim()));
+            return getConstantValues().contains(value) || (isOptional() && "".equals(value.trim()));
         } else {
             return true;
         }
@@ -182,24 +175,9 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
         return getValues().size() > 0;
     }
 
-    public boolean hasSpecialConstantValues() {
-        return !getSpecialConstantValues().isEmpty();
-    }
 
     public Set<String> getConstantValues() {
-        List<String> allValues = getValues().stream()
-                .filter(v -> !ACHValueConstants.isSpecialValueConstant(v))
-                .collect(Collectors.toList());
-
-        return Collections.unmodifiableSet(new HashSet<>(allValues));
-    }
-
-    public Set<String> getSpecialConstantValues() {
-        List<String> allValues = getValues().stream()
-                .filter(ACHValueConstants::isSpecialValueConstant)
-                .collect(Collectors.toList());
-
-        return Collections.unmodifiableSet(new HashSet<>(allValues));
+        return Collections.unmodifiableSet(getValues());
     }
 
     public boolean isReadOnly() {
@@ -301,18 +279,6 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
 
         result.addAll(getConstantValues());
 
-        result.addAll(getSpecialConstantValues().stream().map(spv -> {
-            switch (spv) {
-                case ACHValueConstants.DOLLAR_AMOUNT:
-                    return "Dollar Amount $$$$$CC";
-                case ACHValueConstants.FILLED_WITH_SPACES:
-                    return "String filled with spaces";
-                case ACHValueConstants.FILLED_WITH_ZEROS:
-                    return "String filled with zeros";
-                default:
-                    return "DEADBEAF";
-            }
-        }).collect(Collectors.toList()));
 
         if (result.isEmpty()) {
             if (isString()) {

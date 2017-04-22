@@ -29,7 +29,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.InputStream;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -39,28 +38,15 @@ import static com.afrunt.jach.domain.RecordTypes.*;
  * @author Andrii Frunt
  */
 public class ACHUnmarshaller extends ACHProcessor {
-    private ResourceBundle messages = ResourceBundle.getBundle("ach_messages");
-
-    private MetadataCollector metadataCollector = new MetadataCollector();
-
-    public ACHUnmarshaller() {
-        super(new MetadataCollector());
-    }
-
     public ACHUnmarshaller(MetadataCollector metadataCollector) {
         super(metadataCollector);
-        this.metadataCollector = metadataCollector;
     }
 
     public ACHDocument unmarshal(InputStream is) {
         return new StatefulUnmarshaller().unmarshalDocument(is);
     }
 
-    public ACHRecord unmarshalRecord(String line) {
-        return unmarshalRecord(line, typeOfRecord(line));
-    }
-
-    public ACHRecord unmarshalRecord(String line, ACHRecordTypeMetadata recordType) {
+    private ACHRecord unmarshalRecord(String line, ACHRecordTypeMetadata recordType) {
         if (recordType != null) {
 
             List<String> strings = splitString(line, recordType);
@@ -108,7 +94,7 @@ public class ACHUnmarshaller extends ACHProcessor {
         private ACHBatch currentBatch;
         private ACHBatchDetail currentDetail;
 
-        public ACHDocument unmarshalDocument(InputStream is) {
+        ACHDocument unmarshalDocument(InputStream is) {
             Scanner sc = new Scanner(is);
 
             while (sc.hasNextLine()) {

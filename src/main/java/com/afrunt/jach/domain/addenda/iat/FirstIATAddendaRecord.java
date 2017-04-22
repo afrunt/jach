@@ -22,7 +22,6 @@ import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Values;
 
-import static com.afrunt.jach.ACHValueConstants.*;
 import static com.afrunt.jach.annotation.InclusionRequirement.*;
 
 /**
@@ -59,8 +58,7 @@ public class FirstIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @ACHField(start = 6, length = 18, name = FOREIGN_PAYMENT_AMOUNT, inclusion = REQUIRED,
-            values = {FILLED_WITH_ZEROS, FILLED_WITH_SPACES, DOLLAR_AMOUNT})
+    @ACHField(start = 6, length = 18, name = FOREIGN_PAYMENT_AMOUNT, inclusion = REQUIRED)
     public String getForeignPaymentAmount() {
         return foreignPaymentAmount;
     }
@@ -70,8 +68,7 @@ public class FirstIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @ACHField(start = 24, length = 22, name = FOREIGN_TRACE_NUMBER, inclusion = OPTIONAL,
-            values = {FILLED_WITH_ZEROS, FILLED_WITH_SPACES})
+    @ACHField(start = 24, length = 22, name = FOREIGN_TRACE_NUMBER, inclusion = OPTIONAL)
     public String getForeignTraceNumber() {
         return foreignTraceNumber;
     }

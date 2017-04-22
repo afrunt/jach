@@ -19,6 +19,7 @@
 package com.afrunt.jach;
 
 import com.afrunt.jach.document.ACHDocument;
+import com.afrunt.jach.metadata.ACHMetadata;
 import com.afrunt.jach.metadata.MetadataCollector;
 
 import java.io.ByteArrayInputStream;
@@ -60,6 +61,10 @@ public class ACH {
             throw new ACHException("Error writing ACH document to output stream", e);
         }
 
+    }
+
+    public ACHMetadata getMetadata() {
+        return metadataCollector.collectMetadata();
     }
 
 }

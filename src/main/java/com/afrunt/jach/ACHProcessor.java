@@ -19,6 +19,7 @@
 package com.afrunt.jach;
 
 import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.domain.ACHRecord;
 import com.afrunt.jach.domain.RecordTypes;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
 import com.afrunt.jach.metadata.ACHMetadata;
@@ -37,18 +38,18 @@ import java.util.stream.IntStream;
  * @author Andrii Frunt
  */
 public class ACHProcessor {
-    public static final String LINE_SEPARATOR = Optional.ofNullable(System.getProperty("line.separator")).orElse("\n");
+    static final String LINE_SEPARATOR = Optional.ofNullable(System.getProperty("line.separator")).orElse("\n");
 
     private ResourceBundle messages = ResourceBundle.getBundle("ach_messages");
     private MetadataCollector metadataCollector;
     private ACHMetadata metadata;
 
-    public ACHProcessor(MetadataCollector metadataCollector) {
+    ACHProcessor(MetadataCollector metadataCollector) {
         this.metadataCollector = metadataCollector;
         this.metadata = metadataCollector.collectMetadata();
     }
 
-    public ACHRecordTypeMetadata typeOfRecord(String str) {
+    ACHRecordTypeMetadata typeOfRecord(String str) {
         str = validateLine(str, 0);
         String recordTypeCode = extractRecordTypeCode(str);
         Set<ACHRecordTypeMetadata> types = metadata.typesForRecordTypeCode(recordTypeCode);
@@ -60,11 +61,11 @@ public class ACHProcessor {
         }
     }
 
-    public Set<ACHRecordTypeMetadata> typesForRecordTypeCode(String recordTypeCode) {
+    Set<ACHRecordTypeMetadata> typesForRecordTypeCode(String recordTypeCode) {
         return getMetadata().typesForRecordTypeCode(recordTypeCode);
     }
 
-    public Object fieldValueFromString(String value, ACHFieldMetadata fm) {
+    Object fieldValueFromString(String value, ACHFieldMetadata fm) {
         if ("".equals(value.trim())) {
             return null;
         }
@@ -86,27 +87,27 @@ public class ACHProcessor {
         }
     }
 
-    public String validateLine(String line, int lineNumber) {
+    private String validateLine(String line, int lineNumber) {
         if (line == null) {
             throw new ACHException("ACH record cannot be null");
         }
 
         int lineLength = line.length();
 
-        if (lineLength != ACHConstants.ACH_RECORD_LENGTH) {
-            throw new ACHException(String.format(messages.getString(ACHMessages.ERROR_LINE_LENGTH), lineLength, lineNumber, line));
+        if (lineLength != ACHRecord.ACH_RECORD_LENGTH) {
+            throw new ACHException(String.format("Wrong length (%s) (line: %s) of the record: %s", lineLength, lineNumber, line));
         }
 
         String recordTypeCode = extractRecordTypeCode(line);
 
         if (!RecordTypes.validRecordTypeCode(recordTypeCode)) {
-            throw new ACHException(String.format(ACHMessages.ERROR_UNKNOWN_RECORD_TYPE, recordTypeCode, lineNumber, line));
+            throw new ACHException(String.format("Unknown record type code (%s) (line: %s) of the record: %s", recordTypeCode, lineNumber, line));
         }
 
         return line;
     }
 
-    public String extractRecordTypeCode(String line) {
+    String extractRecordTypeCode(String line) {
         return line.substring(0, 1);
     }
 
@@ -114,13 +115,17 @@ public class ACHProcessor {
         return metadata;
     }
 
-    public List<String> splitString(String str, ACHRecordTypeMetadata metadata) {
+    List<String> splitString(String str, ACHRecordTypeMetadata metadata) {
         return metadata.getFieldsMetadata().stream()
                 .map(fm -> str.substring(fm.getStart(), fm.getEnd()))
                 .collect(Collectors.toList());
     }
 
-    protected String formatFieldValue(ACHFieldMetadata fm, Object value) {
+    void error(String message) {
+        throw new ACHException(message);
+    }
+
+    String formatFieldValue(ACHFieldMetadata fm, Object value) {
         if (value == null) {
             return StringUtils.rightPad("", fm.getLength());
         }

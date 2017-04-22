@@ -28,7 +28,10 @@ import com.afrunt.jach.metadata.ACHRecordTypeMetadata;
 import com.afrunt.jach.metadata.MetadataCollector;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,15 +42,11 @@ import java.util.stream.Collectors;
 public class ACHMarshaller extends ACHProcessor {
     private Charset charset = Charset.forName("UTF-8");
 
-    public ACHMarshaller() {
-        super(new MetadataCollector());
-    }
-
-    public ACHMarshaller(MetadataCollector metadataCollector) {
+    ACHMarshaller(MetadataCollector metadataCollector) {
         super(metadataCollector);
     }
 
-    public void marshal(ACHDocument document, OutputStream outputStream) {
+    private void marshal(ACHDocument document, OutputStream outputStream) {
         try {
             validateDocument(document);
             OutputStreamWriter writer = new OutputStreamWriter(outputStream);
@@ -60,18 +59,16 @@ public class ACHMarshaller extends ACHProcessor {
             writer.write(marshalRecord(document.getFileControl()));
 
             writer.flush();
-            writer.close();
         } catch (IOException e) {
             throw new ACHException(e);
         }
     }
 
-    public String marshal(ACHDocument document) {
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    String marshal(ACHDocument document) {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             marshal(document, baos);
             return baos.toString(charset.name());
-        } catch (UnsupportedEncodingException e) {
+        } catch (IOException e) {
             throw new ACHException("Error marshalling ACH document", e);
         }
     }
@@ -108,7 +105,7 @@ public class ACHMarshaller extends ACHProcessor {
     }
 
     private String marshalRecord(ACHRecord record) {
-        String recordString = StringUtils.leftPad("", ACHConstants.ACH_RECORD_LENGTH);
+        String recordString = StringUtils.leftPad("", ACHRecord.ACH_RECORD_LENGTH);
         ACHRecordTypeMetadata typeMetadata = getMetadata().typeOfRecord(record);
 
         List<ACHFieldMetadata> fieldsMetadata = typeMetadata.getFieldsMetadata().stream()
@@ -131,6 +128,7 @@ public class ACHMarshaller extends ACHProcessor {
     private void validateDocument(ACHDocument document) {
         if (document == null) {
             error("Document cannot be null");
+            return;
         }
 
         if (document.getFileHeader() == null) {
@@ -162,9 +160,4 @@ public class ACHMarshaller extends ACHProcessor {
             }
         }
     }
-
-    private void error(String message) {
-        throw new ACHException(message);
-    }
-
 }

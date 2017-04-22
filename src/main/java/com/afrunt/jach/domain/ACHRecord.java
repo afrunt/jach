@@ -33,6 +33,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 public abstract class ACHRecord {
     public static final String RECORD_TYPE_CODE = "ACH Record Type Code";
     public static final String RESERVED = "RESERVED";
+    public static final int ACH_RECORD_LENGTH = 94;
     private String record;
 
     @ACHField(length = 1, inclusion = MANDATORY, name = RECORD_TYPE_CODE, typeTag = true)
