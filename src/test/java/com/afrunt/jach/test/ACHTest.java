@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -19,10 +19,7 @@
 package com.afrunt.jach.test;
 
 import com.afrunt.jach.ACH;
-import com.afrunt.jach.ACHMarshaller;
-import com.afrunt.jach.ACHUnmarshaller;
 import com.afrunt.jach.document.ACHDocument;
-import com.afrunt.jach.metadata.MetadataCollector;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,7 +31,7 @@ import java.util.Scanner;
  * @author Andrii Frunt
  */
 public class ACHTest {
-    private static final String[] ACH_FILES = {"ach.txt", "ach-iat.txt", "ach-return.txt", "ach-tr.txt","ach-payrol.txt"};
+    private static final String[] ACH_FILES = {"ach.txt", "ach-iat.txt", "ach-return.txt", "ach-tr.txt", "ach-payrol.txt"};
 
     @Test
     public void testMarshalling() {
