@@ -45,7 +45,7 @@ public abstract class ACHRecord {
     }
 
     public String reserved(int length) {
-        return StringUtils.left("", length);
+        return StringUtils.leftPad("", length);
     }
 
     public boolean is(RecordTypes type) {
