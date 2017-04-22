@@ -16,18 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.afrunt.jach;
+package com.afrunt.jach.logic;
 
 import com.afrunt.jach.document.ACHBatch;
 import com.afrunt.jach.document.ACHBatchDetail;
 import com.afrunt.jach.document.ACHDocument;
 import com.afrunt.jach.domain.*;
+import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
 import com.afrunt.jach.metadata.ACHRecordTypeMetadata;
 import com.afrunt.jach.metadata.MetadataCollector;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -47,43 +50,39 @@ public class ACHUnmarshaller extends ACHProcessor {
     }
 
     private ACHRecord unmarshalRecord(String line, ACHRecordTypeMetadata recordType) {
-        if (recordType != null) {
+        List<String> strings = splitString(line, recordType);
 
-            List<String> strings = splitString(line, recordType);
+        int i = 0;
+        ACHRecord record = recordType.createInstance();
+        record.setRecord(line);
 
-            int i = 0;
-            ACHRecord record = recordType.createInstance();
-            record.setRecord(line);
+        for (ACHFieldMetadata fm : recordType.getFieldsMetadata()) {
+            String valueString = strings.get(i);
+            Object value = fieldValueFromString(valueString, fm);
 
-            for (ACHFieldMetadata fm : recordType.getFieldsMetadata()) {
-                String valueString = strings.get(i);
-                Object value = fieldValueFromString(valueString, fm);
+            if (!fm.isReadOnly()) {
 
-                if (!fm.isReadOnly()) {
-
-                    if (fm.hasConstantValues() && fm.valueSatisfiesToConstantValues(valueString)) {
-                        record.setFieldValue(fm, value);
-
-                    } else if (fm.hasConstantValues() && fm.valueSatisfiesToConstantValues(valueString)) {
-                        throw new ACHException(String.format("%s is wrong value for field %s. Valid values are %s",
-                                valueString, fm, StringUtils.join(fm.getPossibleValues(), ","))
-                        );
-                    }
-
-                    record.setFieldValue(fm, value);
+                if (fm.hasConstantValues() && !fm.valueSatisfiesToConstantValues(valueString)) {
+                    error(String.format("%s is wrong value for field %s. Valid values are %s",
+                            valueString, fm, StringUtils.join(fm.getPossibleValues(), ",")));
                 }
 
-
-                i++;
+                applyFieldValue(record, fm, value);
             }
-            return record;
-        } else {
-            return new ACHRecord() {
-                @Override
-                public String getRecordTypeCode() {
-                    return null;
-                }
-            }.setRecord(line);
+
+
+            i++;
+        }
+        return record;
+
+    }
+
+    private void applyFieldValue(ACHRecord record, ACHFieldMetadata fm, Object value) {
+        try {
+            Method setter = fm.getSetter();
+            setter.invoke(record, value);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new ACHException("Error applying value to field " + fm, e);
         }
     }
 

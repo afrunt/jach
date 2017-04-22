@@ -19,6 +19,9 @@
 package com.afrunt.jach;
 
 import com.afrunt.jach.document.ACHDocument;
+import com.afrunt.jach.exception.ACHException;
+import com.afrunt.jach.logic.ACHMarshaller;
+import com.afrunt.jach.logic.ACHUnmarshaller;
 import com.afrunt.jach.metadata.ACHMetadata;
 import com.afrunt.jach.metadata.MetadataCollector;
 
@@ -46,7 +49,11 @@ public class ACH {
     }
 
     public ACHDocument read(String string) {
-        return unmarshaller.unmarshal(new ByteArrayInputStream(string.getBytes()));
+        try (ByteArrayInputStream is = new ByteArrayInputStream(string.getBytes())) {
+            return unmarshaller.unmarshal(is);
+        } catch (IOException e) {
+            throw new ACHException("Error reading ACH document from string", e);
+        }
     }
 
     public String write(ACHDocument document) {

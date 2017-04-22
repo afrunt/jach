@@ -24,6 +24,8 @@ import com.afrunt.jach.annotation.InclusionRequirement;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.*;
@@ -34,11 +36,8 @@ import static java.util.Collections.unmodifiableList;
  * @author Andrii Frunt
  */
 public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
-    public static final Collection<Class<?>> VALID_NUMERIC_FIELD_TYPES = unmodifiableList(asList(Integer.class,
-            Long.class, Short.class, Double.class, BigInteger.class, BigDecimal.class
-    ));
-    public static final Collection<Class<?>> VALID_OTHER_FIELD_TYPES = unmodifiableList(asList(String.class, Date.class));
-    public static final Collection<Class<?>> VALID_FIELD_TYPES_SET = merge(VALID_NUMERIC_FIELD_TYPES, VALID_OTHER_FIELD_TYPES);
+    public static final Collection<Class<?>> VALID_FIELD_TYPES_SET = unmodifiableList(asList(Integer.class, Long.class,
+            Short.class, Double.class, BigInteger.class, BigDecimal.class, String.class, Date.class));
 
     private String name;
     private Class<?> fieldType;
@@ -147,8 +146,13 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
                 return false;
             }
         } else if (isDate()) {
-            //TODO: fix
-            return false;
+            SimpleDateFormat sdf = new SimpleDateFormat(getDateFormat());
+            try {
+                sdf.parse(value);
+                return true;
+            } catch (ParseException e) {
+                return false;
+            }
         } else {
             return false;
         }
@@ -296,14 +300,6 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
     }
 
 
-    private static <T> Collection<T> merge(Collection<T> source, Collection<T>... adds) {
-        ArrayList<T> mr = new ArrayList<>(source);
-        for (Collection<T> add : adds) {
-            mr.addAll(add);
-        }
-        return Collections.unmodifiableCollection(mr);
-    }
-
     public InclusionRequirement getInclusion() {
         return inclusion;
     }
@@ -346,17 +342,6 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
         return this;
     }
 
-    @Override
-    public String toString() {
-        String typeName = fieldType.getName();
-        return this.name + "[" + typeName.substring(typeName.lastIndexOf('.') + 1) + "]";
-    }
-
-    @Override
-    public int compareTo(ACHFieldMetadata o) {
-        return Integer.valueOf(getStart()).compareTo(o.getStart());
-    }
-
     public ACHFieldMetadata setDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         return this;
@@ -369,5 +354,16 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
     public ACHFieldMetadata setDigitsAfterComma(int digitsAfterComma) {
         this.digitsAfterComma = digitsAfterComma;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        String typeName = fieldType.getName();
+        return this.name + "[" + typeName.substring(typeName.lastIndexOf('.') + 1) + "]";
+    }
+
+    @Override
+    public int compareTo(ACHFieldMetadata o) {
+        return Integer.valueOf(getStart()).compareTo(o.getStart());
     }
 }

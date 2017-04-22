@@ -16,13 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.afrunt.jach;
+package com.afrunt.jach.logic;
 
 import com.afrunt.jach.document.ACHBatch;
 import com.afrunt.jach.document.ACHBatchDetail;
 import com.afrunt.jach.document.ACHDocument;
 import com.afrunt.jach.domain.ACHRecord;
 import com.afrunt.jach.domain.AddendaRecord;
+import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
 import com.afrunt.jach.metadata.ACHRecordTypeMetadata;
 import com.afrunt.jach.metadata.MetadataCollector;
@@ -32,6 +33,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +44,7 @@ import java.util.stream.Collectors;
 public class ACHMarshaller extends ACHProcessor {
     private Charset charset = Charset.forName("UTF-8");
 
-    ACHMarshaller(MetadataCollector metadataCollector) {
+    public ACHMarshaller(MetadataCollector metadataCollector) {
         super(metadataCollector);
     }
 
@@ -64,7 +66,7 @@ public class ACHMarshaller extends ACHProcessor {
         }
     }
 
-    String marshal(ACHDocument document) {
+    public String marshal(ACHDocument document) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             marshal(document, baos);
             return baos.toString(charset.name());
@@ -113,7 +115,7 @@ public class ACHMarshaller extends ACHProcessor {
                 .collect(Collectors.toList());
 
         for (ACHFieldMetadata fm : fieldsMetadata) {
-            Object value = record.getFieldValue(fm);
+            Object value = retrieveFieldValue(record, fm);
             String formattedValue = formatFieldValue(fm, value);
             String headString = recordString.substring(0, fm.getStart());
             String tailString = recordString.substring(fm.getEnd());
@@ -124,6 +126,13 @@ public class ACHMarshaller extends ACHProcessor {
         return recordString;
     }
 
+    private Object retrieveFieldValue(ACHRecord record, ACHFieldMetadata fm) {
+        try {
+            return fm.getGetter().invoke(record);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new ACHException("Error retrieving value from field " + fm, e);
+        }
+    }
 
     private void validateDocument(ACHDocument document) {
         if (document == null) {

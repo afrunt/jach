@@ -16,24 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.afrunt.jach.test;
-
-import com.afrunt.jach.domain.FileHeader;
-import com.afrunt.jach.metadata.ACHFieldMetadata;
-import com.afrunt.jach.metadata.MetadataCollector;
-import org.junit.Test;
-
-import java.util.Collections;
-import java.util.List;
+package com.afrunt.jach.exception;
 
 /**
  * @author Andrii Frunt
  */
-public class MetadataCollectorTest {
-    @Test
-    public void testMetadataCollection() {
-        MetadataCollector metadataCollector = new MetadataCollector(Collections.singletonList("com.afrunt.jach.test"));
-        List<ACHFieldMetadata> achFieldMetadatas = metadataCollector.collectExtFieldsMetadata(FileHeader.class);
-        System.out.println();
+public class ACHException extends RuntimeException {
+
+    public ACHException() {
+    }
+
+    public ACHException(String message) {
+        super(message);
+    }
+
+    public ACHException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ACHException(Throwable cause) {
+        super(cause);
     }
 }

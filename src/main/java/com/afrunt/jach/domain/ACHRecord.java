@@ -18,12 +18,8 @@
  */
 package com.afrunt.jach.domain;
 
-import com.afrunt.jach.ACHException;
 import com.afrunt.jach.annotation.ACHField;
-import com.afrunt.jach.metadata.ACHFieldMetadata;
 import org.apache.commons.lang3.StringUtils;
-
-import java.lang.reflect.InvocationTargetException;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 
@@ -50,24 +46,6 @@ public abstract class ACHRecord {
 
     public String reserved(int length) {
         return StringUtils.left("", length);
-    }
-
-    public void setFieldValue(ACHFieldMetadata fm, Object value) {
-        if (!fm.isReadOnly()) {
-            try {
-                fm.getSetter().invoke(this, value);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new ACHException("Unable set value for the field " + fm, e);
-            }
-        }
-    }
-
-    public Object getFieldValue(ACHFieldMetadata fm) {
-        try {
-            return fm.getGetter().invoke(this);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new ACHException("Error retrieving value from the field " + fm, e);
-        }
     }
 
     public boolean is(RecordTypes type) {

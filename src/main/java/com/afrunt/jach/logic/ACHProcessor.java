@@ -16,11 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.afrunt.jach;
+package com.afrunt.jach.logic;
 
 import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.domain.ACHRecord;
 import com.afrunt.jach.domain.RecordTypes;
+import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
 import com.afrunt.jach.metadata.ACHMetadata;
 import com.afrunt.jach.metadata.ACHRecordTypeMetadata;
@@ -40,19 +41,16 @@ import java.util.stream.IntStream;
 public class ACHProcessor {
     static final String LINE_SEPARATOR = Optional.ofNullable(System.getProperty("line.separator")).orElse("\n");
 
-    private ResourceBundle messages = ResourceBundle.getBundle("ach_messages");
     private MetadataCollector metadataCollector;
-    private ACHMetadata metadata;
 
     ACHProcessor(MetadataCollector metadataCollector) {
         this.metadataCollector = metadataCollector;
-        this.metadata = metadataCollector.collectMetadata();
     }
 
     ACHRecordTypeMetadata typeOfRecord(String str) {
         str = validateLine(str, 0);
         String recordTypeCode = extractRecordTypeCode(str);
-        Set<ACHRecordTypeMetadata> types = metadata.typesForRecordTypeCode(recordTypeCode);
+        Set<ACHRecordTypeMetadata> types = getMetadata().typesForRecordTypeCode(recordTypeCode);
 
         if (types.isEmpty()) {
             return null;
@@ -112,7 +110,7 @@ public class ACHProcessor {
     }
 
     public ACHMetadata getMetadata() {
-        return metadata;
+        return metadataCollector.collectMetadata();
     }
 
     List<String> splitString(String str, ACHRecordTypeMetadata metadata) {

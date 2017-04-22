@@ -18,7 +18,7 @@
  */
 package com.afrunt.jach.metadata;
 
-import com.afrunt.jach.ACHException;
+import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.annotation.*;
 import com.afrunt.jach.domain.ACHRecord;
 import org.apache.commons.lang3.StringUtils;
