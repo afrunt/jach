@@ -26,6 +26,10 @@ import static com.afrunt.jach.annotation.InclusionRequirement.BLANK;
 import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 
 /**
+ * The Fourth Addenda Record contains information related to the financial institution originating the entry. For
+ * inbound IAT entries, the Fourth Addenda Record must contain information to identify the foreign financial institution
+ * that is providing the funding and payment instruction for the IAT entry.
+ *
  * @author Andrii Frunt
  */
 @ACHRecordType
@@ -57,7 +61,7 @@ public class FourthIATAddendaRecord extends IATAddendaRecord {
     }
 
     @ACHField(start = 38, length = 2, name = ORIGINATING_DFI_IDENTIFICATION_NUMBER_QUALIFIER, inclusion = MANDATORY,
-            values = "01")
+            values = {"01", "02", "03"})
     public String getOriginatingDFIIdentificationNumberQualifier() {
         return originatingDFIIdentificationNumberQualifier;
     }

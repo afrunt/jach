@@ -43,6 +43,12 @@ public class ThirdIATAddendaRecord extends IATAddendaRecord {
         return THIRD_IAT_ADDENDA_TYPE_CODE;
     }
 
+    /**
+     * City and State should be separated with an asterisk (*) as a delimiter and the field should end with a backslash
+     * (\). For example: San Francisco*CA\.
+     *
+     * @return
+     */
     @ACHField(start = 3, length = 35, name = ORIGINATOR_S_CITY_STATE_PROVINCE, inclusion = MANDATORY)
     public String getOriginatorCityAndStateProvince() {
         return originatorCityAndStateProvince;
@@ -53,6 +59,12 @@ public class ThirdIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
+    /**
+     * Data elements must be separated by an asterisk (*) and must end with a backslash (\)
+     * For example: US*10036\
+     *
+     * @return
+     */
     @ACHField(start = 38, length = 35, name = ORIGINATOR_S_COUNTRY_POSTAL_CODE, inclusion = MANDATORY)
     public String getOriginatorCountryAndPostalCode() {
         return originatorCountryAndPostalCode;

@@ -58,7 +58,7 @@ public class FifthIATAddendaRecord extends IATAddendaRecord {
     }
 
     @ACHField(start = 38, length = 2, name = RECEIVING_DFI_IDENTIFICATION_NUMBER_QUALIFIER, inclusion = MANDATORY,
-            values = {"01", "02"})
+            values = {"01", "02", "03"})
     public String getReceivingDFIIDNumberQualifier() {
         return receivingDFIIDNumberQualifier;
     }

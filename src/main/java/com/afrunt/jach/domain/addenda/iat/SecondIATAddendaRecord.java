@@ -43,6 +43,11 @@ public class SecondIATAddendaRecord extends IATAddendaRecord {
         return SECOND_IAT_ADDENDA_TYPE_CODE;
     }
 
+    /**
+     * This field contains your company name
+     *
+     * @return
+     */
     @ACHField(start = 3, length = 35, name = ORIGINATOR_S_NAME, inclusion = MANDATORY)
     public String getOriginatorName() {
         return originatorName;
@@ -53,6 +58,11 @@ public class SecondIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
+    /**
+     * This field contains your company's address
+     *
+     * @return
+     */
     @ACHField(start = 38, length = 35, name = ORIGINATOR_S_PHYSICAL_ADDRESS, inclusion = MANDATORY)
     public String getOriginatorStreetAddress() {
         return originatorStreetAddress;

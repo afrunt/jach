@@ -111,7 +111,7 @@ public class IATBatchHeader extends BatchHeader {
     }
 
     @Override
-    @Values(SEC_IAT)
+    @Values("IAT")
     public String getStandardEntryClassCode() {
         return super.getStandardEntryClassCode();
     }

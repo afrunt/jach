@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.metadata;
 
-import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.domain.ACHRecord;
+import com.afrunt.jach.exception.ACHException;
 
 import java.util.Set;
 import java.util.stream.Collectors;

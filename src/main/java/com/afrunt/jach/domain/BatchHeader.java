@@ -28,11 +28,12 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
 import static com.afrunt.jach.domain.RecordTypes.Constants.BATCH_HEADER_RECORD_TYPE_CODE;
 
 /**
+ * A batch is a collection of like entries within a file. You must use a separate batch if any of the batch-level
+ * information, such as effective date or company name or company description changes.
+ *
  * @author Andrii Frunt
  */
 public abstract class BatchHeader extends ACHRecord {
-    public static final String COMPANY_BATCH_HEADER_RECORD_TYPE = "5";
-    public static final String RECORD_TYPE_CODE = "ACHRecord Type Code";
     public static final String SERVICE_CLASS_CODE = "Service Class Code";
     public static final String STANDARD_ENTRY_CLASS_CODE = "Standard Entry Class Code";
     public static final String COMPANY_ENTRY_DESCRIPTION = "Company Entry Description";
@@ -41,9 +42,6 @@ public abstract class BatchHeader extends ACHRecord {
     public static final String ORIGINATOR_STATUS_CODE = "Originator Status Code";
     public static final String ORIGINATOR_DFI_IDENTIFIER = "Originator DFI Identifier";
     public static final String BATCH_NUMBER = "Batch Number";
-    public static final String SEC_IAT = "IAT";
-    public static final String SEC_CCD = "CCD";
-    public static final String SEC_PPD = "PPD";
 
     private String serviceClassCode;
     private String standardEntryClassCode;

@@ -29,6 +29,9 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
 import static com.afrunt.jach.domain.RecordTypes.Constants.FILE_HEADER_RECORD_TYPE_CODE;
 
 /**
+ * The File Header Record designates physical file characteristics. It also identifies the Bank as the immediate
+ * destination and your company as the immediate origin of the file.
+ *
  * @author Andrii Frunt
  */
 @ACHRecordType
@@ -99,6 +102,15 @@ public class FileHeader extends ACHRecord {
         return this;
     }
 
+    /**
+     * The date you create or transmit the input file:
+     * <p>
+     * “YY” = Last two digits of the Year
+     * “MM” = Month in two digits
+     * “DD” = Day in two digits
+     *
+     * @return
+     */
     @ACHField(start = 23, length = 6, name = FILE_CREATION_DATE, inclusion = MANDATORY)
     @DateFormat("yyMMdd")
     public Date getFileCreationDate() {
@@ -110,6 +122,15 @@ public class FileHeader extends ACHRecord {
         return this;
     }
 
+    /**
+     * Time of day you create or transmit the input file. This field is used to distinguish among input files if you
+     * submit more than one per day:
+     * <p>
+     * “HH = Hour based on a 24 hr clock
+     * “MM” = Minutes in two digits
+     *
+     * @return
+     */
     @ACHField(start = 29, length = 4, name = FILE_CREATION_TIME)
     public String getFileCreationTime() {
         return fileCreationTime;
@@ -120,6 +141,12 @@ public class FileHeader extends ACHRecord {
         return this;
     }
 
+    /**
+     * Code to distinguish among multiple input files sent per day. Label the first (or only) file “A” (or “0”) and
+     * continue in sequence.
+     *
+     * @return
+     */
     @ACHField(start = 33, length = 1, name = FILE_ID_MODIFIER, inclusion = MANDATORY)
     public String getFileIdModifier() {
         return fileIdModifier;
@@ -170,6 +197,11 @@ public class FileHeader extends ACHRecord {
         return this;
     }
 
+    /**
+     * Your company's name, up to 23 characters including spaces.
+     *
+     * @return
+     */
     @ACHField(start = 63, length = 23, name = IMMEDIATE_ORIGIN_NAME, inclusion = OPTIONAL)
     public String getImmediateOriginName() {
         return immediateOriginName;
@@ -180,6 +212,11 @@ public class FileHeader extends ACHRecord {
         return this;
     }
 
+    /**
+     * You may use this field to describe the input file for internal accounting purposes or fill with spaces.
+     *
+     * @return
+     */
     @ACHField(start = 86, length = 8, name = REFERENCE_CODE, inclusion = OPTIONAL)
     public String getReferenceCode() {
         return referenceCode;

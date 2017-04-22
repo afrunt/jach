@@ -25,6 +25,9 @@ import com.afrunt.jach.annotation.Values;
 import static com.afrunt.jach.annotation.InclusionRequirement.*;
 
 /**
+ * The First Addenda Record identifies the Receiver of the transaction and the dollar amount of the
+ * payment.
+ *
  * @author Andrii Frunt
  */
 @ACHRecordType
@@ -40,14 +43,41 @@ public class FirstIATAddendaRecord extends IATAddendaRecord {
     private String foreignTraceNumber;
     private String receivingCompanyNameOrIndividualName;
 
+    /**
+     * First Addenda Record for IAT
+     *
+     * @return "10"
+     */
     @Override
     @Values(FIRST_IAT_ADDENDA_TYPE_CODE)
     public String getAddendaTypeCode() {
         return FIRST_IAT_ADDENDA_TYPE_CODE;
     }
 
+    /**
+     * Describes the type of payment:
+     * <p>
+     * ANN = Annuity
+     * BUS = Business/Commercial DEP = Deposit
+     * LOA = Loan
+     * MIS = Miscellaneous
+     * MOR = Mortgage
+     * PEN = Pension
+     * RLS = Rent/Lease
+     * REM = Remittance2
+     * SAL = Salary/Payroll
+     * TAX = Tax
+     * TEL = Telephone-Initiated Transaction
+     * WEB = Internet-Initiated Transaction
+     * ARC = Accounts Receivable Entry
+     * BOC = Back Office Conversion Entry
+     * POP = Point of Purchase Entry
+     * RCK = Re-presented Check Entry
+     *
+     * @return type of payment
+     */
     @ACHField(start = 3, length = 3, name = TRANSACTION_TYPE_CODE, inclusion = REQUIRED, values = {
-            "ANN", "BUS", "DEP", "LOA", "MIS", "MOR", "PEN", "RLS", "SAL", "TAX"
+            "ANN", "BUS", "DEP", "LOA", "MIS", "MOR", "PEN", "RLS", "SAL", "TAX", "TEL", "WEB", "ARC", "BOC", "POP", "RCK"
     })
     public String getTransactionTypeCode() {
         return transactionTypeCode;
@@ -58,6 +88,11 @@ public class FirstIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
+    /**
+     * For inbound IAT payments this field should contain the USD amount or may be blank.
+     *
+     * @return
+     */
     @ACHField(start = 6, length = 18, name = FOREIGN_PAYMENT_AMOUNT, inclusion = REQUIRED)
     public String getForeignPaymentAmount() {
         return foreignPaymentAmount;
