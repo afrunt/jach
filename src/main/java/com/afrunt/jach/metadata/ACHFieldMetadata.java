@@ -18,7 +18,7 @@
  */
 package com.afrunt.jach.metadata;
 
-import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.Field;
 import com.afrunt.jach.annotation.InclusionRequirement;
 
 import java.lang.reflect.Method;
@@ -41,7 +41,7 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
 
     private String name;
     private Class<?> fieldType;
-    private ACHField annotation;
+    private Field annotation;
     private Method getter;
     private Method setter;
     private String achFieldName;
@@ -57,7 +57,7 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
     public ACHFieldMetadata() {
     }
 
-    public ACHFieldMetadata(String name, Class<?> fieldType, ACHField annotation, Method getter, Method setter) {
+    public ACHFieldMetadata(String name, Class<?> fieldType, Field annotation, Method getter, Method setter) {
         this.name = name;
         this.fieldType = fieldType;
         this.annotation = annotation;
@@ -234,11 +234,11 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
         return dateFormat;
     }
 
-    public ACHField getAnnotation() {
+    public Field getAnnotation() {
         return annotation;
     }
 
-    public ACHFieldMetadata setAnnotation(ACHField annotation) {
+    public ACHFieldMetadata setAnnotation(Field annotation) {
         this.annotation = annotation;
         return this;
     }

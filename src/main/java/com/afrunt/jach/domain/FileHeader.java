@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain;
 
-import com.afrunt.jach.annotation.ACHField;
-import com.afrunt.jach.annotation.ACHRecordType;
+import com.afrunt.jach.annotation.Field;
+import com.afrunt.jach.annotation.RecordType;
 import com.afrunt.jach.annotation.DateFormat;
 import com.afrunt.jach.annotation.Values;
 
@@ -34,7 +34,7 @@ import static com.afrunt.jach.domain.RecordTypes.Constants.FILE_HEADER_RECORD_TY
  *
  * @author Andrii Frunt
  */
-@ACHRecordType
+@RecordType
 public class FileHeader extends ACHRecord {
     public static final String PRIORITY_CODE = "Priority Code";
     public static final String IMMEDIATE_DESTINATION = "Immediate Destination";
@@ -72,7 +72,7 @@ public class FileHeader extends ACHRecord {
      *
      * @return 01
      */
-    @ACHField(start = 1, length = 2, name = PRIORITY_CODE, inclusion = REQUIRED, values = "01")
+    @Field(start = 1, length = 2, name = PRIORITY_CODE, inclusion = REQUIRED, values = "01")
     public String getPriorityCode() {
         return priorityCode;
     }
@@ -82,7 +82,7 @@ public class FileHeader extends ACHRecord {
         return this;
     }
 
-    @ACHField(start = 3, length = 10, name = IMMEDIATE_DESTINATION, inclusion = MANDATORY)
+    @Field(start = 3, length = 10, name = IMMEDIATE_DESTINATION, inclusion = MANDATORY)
     public String getImmediateDestination() {
         return immediateDestination;
     }
@@ -92,7 +92,7 @@ public class FileHeader extends ACHRecord {
         return this;
     }
 
-    @ACHField(start = 13, length = 10, name = IMMEDIATE_ORIGIN, inclusion = MANDATORY)
+    @Field(start = 13, length = 10, name = IMMEDIATE_ORIGIN, inclusion = MANDATORY)
     public String getImmediateOrigin() {
         return immediateOrigin;
     }
@@ -111,7 +111,7 @@ public class FileHeader extends ACHRecord {
      *
      * @return
      */
-    @ACHField(start = 23, length = 6, name = FILE_CREATION_DATE, inclusion = MANDATORY)
+    @Field(start = 23, length = 6, name = FILE_CREATION_DATE, inclusion = MANDATORY)
     @DateFormat("yyMMdd")
     public Date getFileCreationDate() {
         return fileCreationDate;
@@ -131,7 +131,7 @@ public class FileHeader extends ACHRecord {
      *
      * @return
      */
-    @ACHField(start = 29, length = 4, name = FILE_CREATION_TIME)
+    @Field(start = 29, length = 4, name = FILE_CREATION_TIME)
     public String getFileCreationTime() {
         return fileCreationTime;
     }
@@ -147,7 +147,7 @@ public class FileHeader extends ACHRecord {
      *
      * @return
      */
-    @ACHField(start = 33, length = 1, name = FILE_ID_MODIFIER, inclusion = MANDATORY)
+    @Field(start = 33, length = 1, name = FILE_ID_MODIFIER, inclusion = MANDATORY)
     public String getFileIdModifier() {
         return fileIdModifier;
     }
@@ -162,12 +162,12 @@ public class FileHeader extends ACHRecord {
      *
      * @return the number of characters contained in each record
      */
-    @ACHField(start = 34, length = 3, name = RECORD_SIZE, inclusion = MANDATORY, values = "094")
+    @Field(start = 34, length = 3, name = RECORD_SIZE, inclusion = MANDATORY, values = "094")
     public String getRecordSize() {
         return "094";
     }
 
-    @ACHField(start = 37, length = 2, name = BLOCKING_FACTOR, inclusion = MANDATORY, values = "10")
+    @Field(start = 37, length = 2, name = BLOCKING_FACTOR, inclusion = MANDATORY, values = "10")
     public String getBlockingFactor() {
         return blockingFactor;
     }
@@ -177,7 +177,7 @@ public class FileHeader extends ACHRecord {
         return this;
     }
 
-    @ACHField(start = 39, length = 1, values = "1", inclusion = MANDATORY, name = FORMAT_CODE)
+    @Field(start = 39, length = 1, values = "1", inclusion = MANDATORY, name = FORMAT_CODE)
     public String getFormatCode() {
         return formatCode;
     }
@@ -187,7 +187,7 @@ public class FileHeader extends ACHRecord {
         return this;
     }
 
-    @ACHField(start = 40, length = 23, name = IMMEDIATE_DESTINATION_NAME, inclusion = OPTIONAL)
+    @Field(start = 40, length = 23, name = IMMEDIATE_DESTINATION_NAME, inclusion = OPTIONAL)
     public String getImmediateDestinationName() {
         return immediateDestinationName;
     }
@@ -202,7 +202,7 @@ public class FileHeader extends ACHRecord {
      *
      * @return
      */
-    @ACHField(start = 63, length = 23, name = IMMEDIATE_ORIGIN_NAME, inclusion = OPTIONAL)
+    @Field(start = 63, length = 23, name = IMMEDIATE_ORIGIN_NAME, inclusion = OPTIONAL)
     public String getImmediateOriginName() {
         return immediateOriginName;
     }
@@ -217,7 +217,7 @@ public class FileHeader extends ACHRecord {
      *
      * @return
      */
-    @ACHField(start = 86, length = 8, name = REFERENCE_CODE, inclusion = OPTIONAL)
+    @Field(start = 86, length = 8, name = REFERENCE_CODE, inclusion = OPTIONAL)
     public String getReferenceCode() {
         return referenceCode;
     }

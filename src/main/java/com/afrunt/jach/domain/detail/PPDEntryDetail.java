@@ -18,20 +18,20 @@
  */
 package com.afrunt.jach.domain.detail;
 
-import com.afrunt.jach.annotation.ACHField;
-import com.afrunt.jach.annotation.ACHRecordType;
+import com.afrunt.jach.annotation.Field;
+import com.afrunt.jach.annotation.RecordType;
 import com.afrunt.jach.domain.NonIATEntryDetail;
 
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@RecordType
 public class PPDEntryDetail extends NonIATEntryDetail {
     private String identificationNumber;
     private String individualName;
     private String discretionaryData;
 
-    @ACHField(start = 39, length = 15, name = NonIATEntryDetail.IDENTIFICATION_NUMBER)
+    @Field(start = 39, length = 15, name = NonIATEntryDetail.IDENTIFICATION_NUMBER)
     public String getIdentificationNumber() {
         return identificationNumber;
     }
@@ -41,7 +41,7 @@ public class PPDEntryDetail extends NonIATEntryDetail {
         return this;
     }
 
-    @ACHField(start = 54, length = 22, name = "Individual Name")
+    @Field(start = 54, length = 22, name = "Individual Name")
     public String getIndividualName() {
         return individualName;
     }
@@ -51,7 +51,7 @@ public class PPDEntryDetail extends NonIATEntryDetail {
         return this;
     }
 
-    @ACHField(start = 76, length = 2, name = "Discretionary Data")
+    @Field(start = 76, length = 2, name = "Discretionary Data")
     public String getDiscretionaryData() {
         return discretionaryData;
     }

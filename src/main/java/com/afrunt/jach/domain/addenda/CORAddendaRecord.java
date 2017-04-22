@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.addenda;
 
-import com.afrunt.jach.annotation.ACHField;
-import com.afrunt.jach.annotation.ACHRecordType;
+import com.afrunt.jach.annotation.Field;
+import com.afrunt.jach.annotation.RecordType;
 import com.afrunt.jach.annotation.Values;
 import com.afrunt.jach.domain.AddendaRecord;
 
@@ -30,7 +30,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@RecordType
 public class CORAddendaRecord extends AddendaRecord {
     public static final String COR_ADDENDA_TYPE_CODE = "98";
     public static final String CORRECTED_DATA = "Corrected Data";
@@ -50,7 +50,7 @@ public class CORAddendaRecord extends AddendaRecord {
         return COR_ADDENDA_TYPE_CODE;
     }
 
-    @ACHField(start = 3, length = 2, inclusion = MANDATORY, name = CHANGE_CODE)
+    @Field(start = 3, length = 2, inclusion = MANDATORY, name = CHANGE_CODE)
     public String getChangeCode() {
         return changeCode;
     }
@@ -60,7 +60,7 @@ public class CORAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 6, length = 14, inclusion = MANDATORY, name = ORIGINAL_ENTRY_TRACE_NUMBER)
+    @Field(start = 6, length = 14, inclusion = MANDATORY, name = ORIGINAL_ENTRY_TRACE_NUMBER)
     public BigInteger getOriginalEntryTraceNumber() {
         return originalEntryTraceNumber;
     }
@@ -70,12 +70,12 @@ public class CORAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 21, length = 5, inclusion = BLANK, name = RESERVED)
+    @Field(start = 21, length = 5, inclusion = BLANK, name = RESERVED)
     public String getReserved() {
         return reserved(5);
     }
 
-    @ACHField(start = 27, length = 7, inclusion = REQUIRED, name = ORIGINAL_RDFI_IDENTIFICATION)
+    @Field(start = 27, length = 7, inclusion = REQUIRED, name = ORIGINAL_RDFI_IDENTIFICATION)
     public Long getOriginalRDFIID() {
         return originalRDFIID;
     }
@@ -85,7 +85,7 @@ public class CORAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 35, length = 28, inclusion = MANDATORY, name = CORRECTED_DATA)
+    @Field(start = 35, length = 28, inclusion = MANDATORY, name = CORRECTED_DATA)
     public String getCorrectedData() {
         return correctedData;
     }
@@ -95,12 +95,12 @@ public class CORAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 64, length = 14, inclusion = BLANK, name = RESERVED)
+    @Field(start = 64, length = 14, inclusion = BLANK, name = RESERVED)
     public String getReserved2() {
         return reserved(14);
     }
 
-    @ACHField(start = 79, length = 14, inclusion = MANDATORY, name = TRACE_NUMBER)
+    @Field(start = 79, length = 14, inclusion = MANDATORY, name = TRACE_NUMBER)
     public BigInteger getTraceNumber() {
         return traceNumber;
     }

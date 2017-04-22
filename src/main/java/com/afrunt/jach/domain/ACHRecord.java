@@ -18,7 +18,7 @@
  */
 package com.afrunt.jach.domain;
 
-import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.Field;
 import org.apache.commons.lang3.StringUtils;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
@@ -32,7 +32,7 @@ public abstract class ACHRecord {
     public static final int ACH_RECORD_LENGTH = 94;
     private String record;
 
-    @ACHField(length = 1, inclusion = MANDATORY, name = RECORD_TYPE_CODE, typeTag = true)
+    @Field(length = 1, inclusion = MANDATORY, name = RECORD_TYPE_CODE, typeTag = true)
     public abstract String getRecordTypeCode();
 
     public String getRecord() {

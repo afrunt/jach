@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.detail;
 
-import com.afrunt.jach.annotation.ACHField;
-import com.afrunt.jach.annotation.ACHRecordType;
+import com.afrunt.jach.annotation.Field;
+import com.afrunt.jach.annotation.RecordType;
 import com.afrunt.jach.annotation.Values;
 import com.afrunt.jach.domain.NonIATEntryDetail;
 
@@ -28,7 +28,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@RecordType
 public class CTXEntryDetail extends NonIATEntryDetail {
     private String identificationNumber;
     private Short numberOfAddendaRecords;
@@ -41,7 +41,7 @@ public class CTXEntryDetail extends NonIATEntryDetail {
         return 1;
     }
 
-    @ACHField(start = 39, length = 15, name = NonIATEntryDetail.IDENTIFICATION_NUMBER)
+    @Field(start = 39, length = 15, name = NonIATEntryDetail.IDENTIFICATION_NUMBER)
     public String getIdentificationNumber() {
         return identificationNumber;
     }
@@ -51,7 +51,7 @@ public class CTXEntryDetail extends NonIATEntryDetail {
         return this;
     }
 
-    @ACHField(start = 54, length = 4, inclusion = MANDATORY, name = "Number Of Addenda Records")
+    @Field(start = 54, length = 4, inclusion = MANDATORY, name = "Number Of Addenda Records")
     public Short getNumberOfAddendaRecords() {
         return numberOfAddendaRecords;
     }
@@ -61,7 +61,7 @@ public class CTXEntryDetail extends NonIATEntryDetail {
         return this;
     }
 
-    @ACHField(start = 58, length = 16, inclusion = REQUIRED, name = NonIATEntryDetail.RECEIVING_COMPANY_NAME)
+    @Field(start = 58, length = 16, inclusion = REQUIRED, name = NonIATEntryDetail.RECEIVING_COMPANY_NAME)
     public String getReceivingCompanyName() {
         return receivingCompanyName;
     }
@@ -71,12 +71,12 @@ public class CTXEntryDetail extends NonIATEntryDetail {
         return this;
     }
 
-    @ACHField(start = 74, length = 2, inclusion = BLANK, name = RESERVED)
+    @Field(start = 74, length = 2, inclusion = BLANK, name = RESERVED)
     public String getReserved() {
         return reserved(2);
     }
 
-    @ACHField(start = 76, length = 2, name = "Discretionary Data")
+    @Field(start = 76, length = 2, name = "Discretionary Data")
     public String getDiscretionaryData() {
         return discretionaryData;
     }

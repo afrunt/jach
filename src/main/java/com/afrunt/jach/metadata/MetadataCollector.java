@@ -84,7 +84,7 @@ public class MetadataCollector {
         return Arrays.stream(cl.getDeclaredMethods())
                 .filter(m -> m.getName().startsWith("get")
                         && !Void.class.equals(m.getReturnType())
-                        && m.isAnnotationPresent(ACHField.class)
+                        && m.isAnnotationPresent(Field.class)
                         && ACHFieldMetadata.VALID_FIELD_TYPES_SET.contains(m.getReturnType())
                 )
                 .collect(Collectors.toSet());
@@ -173,7 +173,7 @@ public class MetadataCollector {
 
     private ACHFieldMetadata fieldDefinition(Method getter, ACHFieldMetadata fieldMetadata) {
 
-        return Optional.ofNullable(getter.getAnnotation(ACHField.class))
+        return Optional.ofNullable(getter.getAnnotation(Field.class))
                 .map(annotation ->
                         fieldMetadata.setStart(annotation.start())
                                 .setLength(annotation.length())
@@ -223,7 +223,7 @@ public class MetadataCollector {
                 .map(pkg -> new Reflections(pkg))
                 .map(rfl -> rfl.getSubTypesOf(ACHRecord.class))
                 .flatMap(Set::stream)
-                .filter(c -> c.isAnnotationPresent(ACHRecordType.class)
+                .filter(c -> c.isAnnotationPresent(RecordType.class)
                         && !Modifier.isAbstract(c.getModifiers())
                         && !c.isInterface()
                 )
@@ -254,7 +254,7 @@ public class MetadataCollector {
         }
 
         if (fm.isDate()) {
-            if (fm.getDateFormat().equals(ACHField.EMPTY_DATE_PATTERN)) {
+            if (fm.getDateFormat().equals(Field.EMPTY_DATE_PATTERN)) {
                 throw new ACHException("Date format is required for date fields");
             }
 

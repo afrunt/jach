@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain;
 
-import com.afrunt.jach.annotation.ACHField;
-import com.afrunt.jach.annotation.ACHRecordType;
+import com.afrunt.jach.annotation.Field;
+import com.afrunt.jach.annotation.RecordType;
 import com.afrunt.jach.annotation.Values;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.*;
@@ -27,7 +27,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@RecordType
 public class IATBatchHeader extends BatchHeader {
     public static final String IAT_INDICATOR = "SEC_IAT Indicator";
     public static final String FOREIGN_EXCHANGE_INDICATOR = "Foreign Exchange Indicator";
@@ -47,7 +47,7 @@ public class IATBatchHeader extends BatchHeader {
     private String ISOOriginatingCurrencyCode;
     private String ISODestinationCurrencyCode;
 
-    @ACHField(start = 4, length = 16, name = IAT_INDICATOR, inclusion = OPTIONAL)
+    @Field(start = 4, length = 16, name = IAT_INDICATOR, inclusion = OPTIONAL)
     public String getIATIndicator() {
         return IATIndicator;
     }
@@ -57,7 +57,7 @@ public class IATBatchHeader extends BatchHeader {
         return this;
     }
 
-    @ACHField(start = 20, length = 2, name = FOREIGN_EXCHANGE_INDICATOR, inclusion = MANDATORY,
+    @Field(start = 20, length = 2, name = FOREIGN_EXCHANGE_INDICATOR, inclusion = MANDATORY,
             values = {"FV", "FF"})
     public String getForeignExchangeIndicator() {
         return foreignExchangeIndicator;
@@ -68,7 +68,7 @@ public class IATBatchHeader extends BatchHeader {
         return this;
     }
 
-    @ACHField(start = 22, length = 1, name = FOREIGN_EXCHANGE_REFERENCE_INDICATOR, inclusion = REQUIRED,
+    @Field(start = 22, length = 1, name = FOREIGN_EXCHANGE_REFERENCE_INDICATOR, inclusion = REQUIRED,
             values = {"1", "2", "3"})
     public String getForeignExchangeReferenceIndicator() {
         return foreignExchangeReferenceIndicator;
@@ -80,7 +80,7 @@ public class IATBatchHeader extends BatchHeader {
     }
 
     //TODO: this field should be REQUIRED
-    @ACHField(start = 23, length = 15, name = FOREIGN_EXCHANGE_REFERENCE, inclusion = OPTIONAL)
+    @Field(start = 23, length = 15, name = FOREIGN_EXCHANGE_REFERENCE, inclusion = OPTIONAL)
     public String getForeignExchangeReference() {
         return foreignExchangeReference;
     }
@@ -90,7 +90,7 @@ public class IATBatchHeader extends BatchHeader {
         return this;
     }
 
-    @ACHField(start = 38, length = 2, name = ISO_DESTINATION_COUNTRY_CODE, inclusion = MANDATORY)
+    @Field(start = 38, length = 2, name = ISO_DESTINATION_COUNTRY_CODE, inclusion = MANDATORY)
     public String getISODestinationCountryCode() {
         return ISODestinationCountryCode;
     }
@@ -100,7 +100,7 @@ public class IATBatchHeader extends BatchHeader {
         return this;
     }
 
-    @ACHField(start = 40, length = 10, name = ORIGINATOR_ID, inclusion = MANDATORY)
+    @Field(start = 40, length = 10, name = ORIGINATOR_ID, inclusion = MANDATORY)
     public String getOriginatorID() {
         return originatorID;
     }
@@ -122,7 +122,7 @@ public class IATBatchHeader extends BatchHeader {
         return super.setStandardEntryClassCode(standardEntryClassCode);
     }
 
-    @ACHField(start = 63, length = 3, name = ISO_ORIGINATING_COUNTRY_CODE, inclusion = MANDATORY)
+    @Field(start = 63, length = 3, name = ISO_ORIGINATING_COUNTRY_CODE, inclusion = MANDATORY)
     public String getISOOriginatingCurrencyCode() {
         return ISOOriginatingCurrencyCode;
     }
@@ -132,7 +132,7 @@ public class IATBatchHeader extends BatchHeader {
         return this;
     }
 
-    @ACHField(start = 66, length = 3, name = ISO_DESTINATION_CURRENCY_CODE, inclusion = MANDATORY)
+    @Field(start = 66, length = 3, name = ISO_DESTINATION_CURRENCY_CODE, inclusion = MANDATORY)
     public String getISODestinationCurrencyCode() {
         return ISODestinationCurrencyCode;
     }

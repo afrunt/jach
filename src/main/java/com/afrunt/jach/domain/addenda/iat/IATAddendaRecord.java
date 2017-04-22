@@ -18,7 +18,7 @@
  */
 package com.afrunt.jach.domain.addenda.iat;
 
-import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.Field;
 import com.afrunt.jach.domain.AddendaRecord;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
@@ -36,7 +36,7 @@ public abstract class IATAddendaRecord extends AddendaRecord {
      *
      * @return
      */
-    @ACHField(start = 87, length = 7, name = ENTRY_DETAIL_SEQUENCE_NUMBER, inclusion = MANDATORY)
+    @Field(start = 87, length = 7, name = ENTRY_DETAIL_SEQUENCE_NUMBER, inclusion = MANDATORY)
     public Long getEntryDetailSequenceNumber() {
         return entryDetailSequenceNumber;
     }

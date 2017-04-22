@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.addenda.iat;
 
-import com.afrunt.jach.annotation.ACHField;
-import com.afrunt.jach.annotation.ACHRecordType;
+import com.afrunt.jach.annotation.Field;
+import com.afrunt.jach.annotation.RecordType;
 import com.afrunt.jach.annotation.Values;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.BLANK;
@@ -28,7 +28,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@RecordType
 public class ThirdIATAddendaRecord extends IATAddendaRecord {
     public static final String THIRD_IAT_ADDENDA_TYPE_CODE = "12";
     public static final String ORIGINATOR_S_CITY_STATE_PROVINCE = "Originator's City & State/Province";
@@ -49,7 +49,7 @@ public class ThirdIATAddendaRecord extends IATAddendaRecord {
      *
      * @return
      */
-    @ACHField(start = 3, length = 35, name = ORIGINATOR_S_CITY_STATE_PROVINCE, inclusion = MANDATORY)
+    @Field(start = 3, length = 35, name = ORIGINATOR_S_CITY_STATE_PROVINCE, inclusion = MANDATORY)
     public String getOriginatorCityAndStateProvince() {
         return originatorCityAndStateProvince;
     }
@@ -65,7 +65,7 @@ public class ThirdIATAddendaRecord extends IATAddendaRecord {
      *
      * @return
      */
-    @ACHField(start = 38, length = 35, name = ORIGINATOR_S_COUNTRY_POSTAL_CODE, inclusion = MANDATORY)
+    @Field(start = 38, length = 35, name = ORIGINATOR_S_COUNTRY_POSTAL_CODE, inclusion = MANDATORY)
     public String getOriginatorCountryAndPostalCode() {
         return originatorCountryAndPostalCode;
     }
@@ -75,7 +75,7 @@ public class ThirdIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @ACHField(start = 73, length = 14, name = RESERVED, inclusion = BLANK)
+    @Field(start = 73, length = 14, name = RESERVED, inclusion = BLANK)
     public String getReserved() {
         return reserved(14);
     }

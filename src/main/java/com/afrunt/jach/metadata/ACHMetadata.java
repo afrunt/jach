@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.metadata;
 
-import com.afrunt.jach.domain.ACHRecord;
 import com.afrunt.jach.exception.ACHException;
+import com.afrunt.jach.domain.ACHRecord;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,9 +45,5 @@ public class ACHMetadata {
                 .filter(rt -> rt.getType().equals(record.getClass()))
                 .findFirst()
                 .orElseThrow(() -> new ACHException("Metadata not found for type " + record.getClass()));
-    }
-
-    public Set<ACHRecordTypeMetadata> getRecordTypes() {
-        return recordTypes;
     }
 }
