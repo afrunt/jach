@@ -18,6 +18,7 @@
  */
 package com.afrunt.jach.test;
 
+import com.afrunt.jach.ACH;
 import com.afrunt.jach.ACHMarshaller;
 import com.afrunt.jach.ACHUnmarshaller;
 import com.afrunt.jach.document.ACHDocument;
@@ -32,21 +33,17 @@ import java.util.Scanner;
 /**
  * @author Andrii Frunt
  */
-public class ACHMarshallerTest {
+public class ACHTest {
     private static final String[] ACH_FILES = {"ach.txt", "ach-iat.txt", "ach-return.txt", "ach-tr.txt","ach-payrol.txt"};
 
     @Test
     public void testMarshalling() {
-        MetadataCollector metadataCollector = new MetadataCollector();
-        ACHUnmarshaller unmarshaller = new ACHUnmarshaller(metadataCollector);
-
-        ACHMarshaller marshaller = new ACHMarshaller(metadataCollector);
-
+        ACH ach = new ACH();
 
         for (String achFileName : ACH_FILES) {
-            ACHDocument document = unmarshaller.unmarshal(getClass().getClassLoader().getResourceAsStream(achFileName));
+            ACHDocument document = ach.read(getClass().getClassLoader().getResourceAsStream(achFileName));
 
-            String out = marshaller.marshal(document);
+            String out = ach.write(document);
             testFilesAreEquals(getClass().getClassLoader().getResourceAsStream(achFileName), new ByteArrayInputStream(out.getBytes()));
         }
 
