@@ -3,12 +3,18 @@
 ### Usage
 Basically, to use jACH first instantiate the ACH class
 ```java
+import com.afrunt.jach.ACH;
+//...
 ACH ach = new ACH();
+//...
 ```
 To parse the ACH document you simply need to pass the document's InputStream to read() method
 ```java
+import com.afrunt.jach.document.ACHDocument;
+//...
 InputStream is = ...;
 ACHDocument document = ach.read(is);
+//...
 ```
 To convert the java object model back to ACH document just pass the instance of ACHDocument to the write() method
 ```java
