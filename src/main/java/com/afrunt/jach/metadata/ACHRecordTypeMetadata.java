@@ -38,17 +38,19 @@ public class ACHRecordTypeMetadata {
         this.fieldsMetadata = new TreeSet<>(fieldsMetadata.stream()
                 .sorted().collect(Collectors.toList()));
         this.fieldsMetadata.forEach(fm -> fm.setRecordClassName(getRecordClassName()));
-    }
 
-    public String getRecordTypeCode() {
         ACHFieldMetadata recordTypeCodeField = getFieldsMetadata().stream()
                 .filter(ACHFieldMetadata::isRecordTypeCode)
                 .findFirst()
                 .orElseThrow(() -> new ACHException("ACHRecord type code not found for " + this));
 
-        return recordTypeCodeField.getValues().stream()
+        recordTypeCode = recordTypeCodeField.getValues().stream()
                 .findFirst()
                 .orElseThrow(() -> new ACHException("ACHRecord type code value not found for " + this));
+    }
+
+    public String getRecordTypeCode() {
+        return recordTypeCode;
     }
 
     public boolean recordTypeCodeIs(String recordTypeCode) {
