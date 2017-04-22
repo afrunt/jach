@@ -46,4 +46,8 @@ public class ACHMetadata {
                 .findFirst()
                 .orElseThrow(() -> new ACHException("Metadata not found for type " + record.getClass()));
     }
+
+    public Set<ACHRecordTypeMetadata> getRecordTypes() {
+        return recordTypes;
+    }
 }
