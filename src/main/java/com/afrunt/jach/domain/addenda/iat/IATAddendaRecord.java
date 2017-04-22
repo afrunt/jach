@@ -18,7 +18,7 @@
  */
 package com.afrunt.jach.domain.addenda.iat;
 
-import com.afrunt.jach.annotation.Field;
+import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.domain.AddendaRecord;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
@@ -31,12 +31,12 @@ public abstract class IATAddendaRecord extends AddendaRecord {
 
     /**
      * This field contains the ascending sequence number section of the Entry Detail Record‟s trace number.
-     * This number is the same as the last seven digits of the trace number (Field 13) of the related Entry Detail
+     * This number is the same as the last seven digits of the trace number (ACHField 13) of the related Entry Detail
      * Record.
      *
-     * @return
+     * @return Entry Detail Sequence Number
      */
-    @Field(start = 87, length = 7, name = ENTRY_DETAIL_SEQUENCE_NUMBER, inclusion = MANDATORY)
+    @ACHField(start = 87, length = 7, name = ENTRY_DETAIL_SEQUENCE_NUMBER, inclusion = MANDATORY)
     public Long getEntryDetailSequenceNumber() {
         return entryDetailSequenceNumber;
     }

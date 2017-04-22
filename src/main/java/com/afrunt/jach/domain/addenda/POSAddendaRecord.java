@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.addenda;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Values;
 import com.afrunt.jach.domain.AddendaRecord;
 
@@ -34,7 +34,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.REQUIRED;
  *
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class POSAddendaRecord extends AddendaRecord {
     public static final String POS_ADDENDA_TYPE_CODE = "02";
     public static final String REFERENCE_INFORMATION_1 = "Reference Information #1";
@@ -65,7 +65,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return POS_ADDENDA_TYPE_CODE;
     }
 
-    @Field(start = 3, length = 6, name = REFERENCE_INFORMATION_1)
+    @ACHField(start = 3, length = 6, name = REFERENCE_INFORMATION_1)
     public String getReferenceInformation1() {
         return referenceInformation1;
     }
@@ -75,7 +75,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 10, length = 2, name = REFERENCE_INFORMATION_2)
+    @ACHField(start = 10, length = 2, name = REFERENCE_INFORMATION_2)
     public String getReferenceInformation2() {
         return referenceInformation2;
     }
@@ -85,7 +85,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 13, length = 6, inclusion = REQUIRED, name = TERMINAL_ID_CODE)
+    @ACHField(start = 13, length = 6, inclusion = REQUIRED, name = TERMINAL_ID_CODE)
     public String getTerminalIDCode() {
         return terminalIDCode;
     }
@@ -95,7 +95,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 19, length = 5, inclusion = REQUIRED, name = TRANSACTION_SERIAL_NUMBER)
+    @ACHField(start = 19, length = 5, inclusion = REQUIRED, name = TRANSACTION_SERIAL_NUMBER)
     public String getTransactionSerialNumber() {
         return transactionSerialNumber;
     }
@@ -105,7 +105,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 25, length = 3, inclusion = REQUIRED, name = TRANSACTION_DATE, dateFormat = "yMd")
+    @ACHField(start = 25, length = 3, inclusion = REQUIRED, name = TRANSACTION_DATE, dateFormat = "yMd")
     public Date getTransactionDate() {
         return transactionDate;
     }
@@ -115,7 +115,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 29, length = 5, name = AUTHORIZATION_CODE_OR_CARD_EXPIRATION)
+    @ACHField(start = 29, length = 5, name = AUTHORIZATION_CODE_OR_CARD_EXPIRATION)
     public String getAuthorizationCodeOrCardExpiration() {
         return authorizationCodeOrCardExpiration;
     }
@@ -125,7 +125,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 35, length = 26, inclusion = REQUIRED, name = TERMINAL_LOCATION)
+    @ACHField(start = 35, length = 26, inclusion = REQUIRED, name = TERMINAL_LOCATION)
     public String getTerminalLocation() {
         return terminalLocation;
     }
@@ -135,7 +135,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 62, length = 14, inclusion = REQUIRED, name = TERMINAL_CITY)
+    @ACHField(start = 62, length = 14, inclusion = REQUIRED, name = TERMINAL_CITY)
     public String getTerminalCity() {
         return terminalCity;
     }
@@ -145,7 +145,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 77, length = 2, inclusion = REQUIRED, name = TERMINAL_STATE)
+    @ACHField(start = 77, length = 2, inclusion = REQUIRED, name = TERMINAL_STATE)
     public String getTerminalState() {
         return terminalState;
     }
@@ -155,7 +155,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 79, length = 14, inclusion = MANDATORY, name = TRACE_NUMBER)
+    @ACHField(start = 79, length = 14, inclusion = MANDATORY, name = TRACE_NUMBER)
     public BigInteger getTraceNumber() {
         return traceNumber;
     }

@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.addenda.iat;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Values;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.BLANK;
@@ -28,7 +28,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class ForeignCorrespondentBankIATAddendaRecord extends IATAddendaRecord {
     public static final String FOREIGN_CORRESPONDENT_BANK_ADDENDA_TYPE_CODE = "18";
     public static final String NATIONAL_CLEARING_SYSTEM = "01";
@@ -53,7 +53,7 @@ public class ForeignCorrespondentBankIATAddendaRecord extends IATAddendaRecord {
         return FOREIGN_CORRESPONDENT_BANK_ADDENDA_TYPE_CODE;
     }
 
-    @Field(start = 3, length = 35, inclusion = MANDATORY, name = FOREIGN_CORRESPONDENT_BANK_NAME)
+    @ACHField(start = 3, length = 35, inclusion = MANDATORY, name = FOREIGN_CORRESPONDENT_BANK_NAME)
     public String getBankName() {
         return bankName;
     }
@@ -63,7 +63,7 @@ public class ForeignCorrespondentBankIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 38, length = 2, inclusion = MANDATORY, values = {NATIONAL_CLEARING_SYSTEM, BIC, IBAN},
+    @ACHField(start = 38, length = 2, inclusion = MANDATORY, values = {NATIONAL_CLEARING_SYSTEM, BIC, IBAN},
             name = FOREIGN_CORRESPONDENT_BANK_IDENTIFICATION_NUMBER_QUALIFIER)
     public String getBankIDNumberQualifier() {
         return bankIDNumberQualifier;
@@ -74,7 +74,7 @@ public class ForeignCorrespondentBankIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 40, length = 34, inclusion = MANDATORY,
+    @ACHField(start = 40, length = 34, inclusion = MANDATORY,
             name = FOREIGN_CORRESPONDENT_BANK_IDENTIFICATION_NUMBER)
     public String getBankIDNumber() {
         return bankIDNumber;
@@ -85,7 +85,7 @@ public class ForeignCorrespondentBankIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 74, length = 3, inclusion = MANDATORY,
+    @ACHField(start = 74, length = 3, inclusion = MANDATORY,
             name = FOREIGN_CORRESPONDENT_BANK_BRANCH_COUNTRY_CODE)
     public String getBankBranchCountryCode() {
         return bankBranchCountryCode;
@@ -96,12 +96,12 @@ public class ForeignCorrespondentBankIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 77, length = 6, inclusion = BLANK, name = RESERVED)
+    @ACHField(start = 77, length = 6, inclusion = BLANK, name = RESERVED)
     public String getReserved() {
         return reserved(6);
     }
 
-    @Field(start = 83, length = 4, inclusion = MANDATORY, name = ADDENDA_SEQUENCE_NUMBER)
+    @ACHField(start = 83, length = 4, inclusion = MANDATORY, name = ADDENDA_SEQUENCE_NUMBER)
     public Integer getAddendaSequenceNumber() {
         return addendaSequenceNumber;
     }

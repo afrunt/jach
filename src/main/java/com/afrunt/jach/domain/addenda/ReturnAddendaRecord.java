@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.addenda;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Values;
 import com.afrunt.jach.domain.AddendaRecord;
 
@@ -31,7 +31,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.REQUIRED;
 /**
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class ReturnAddendaRecord extends AddendaRecord {
     public static final String RETURN_ADDENDA_TYPE_CODE = "99";
     public static final String ADDENDA_INFORMATION = "Addenda Information";
@@ -53,7 +53,7 @@ public class ReturnAddendaRecord extends AddendaRecord {
         return RETURN_ADDENDA_TYPE_CODE;
     }
 
-    @Field(start = 3, length = 3, inclusion = MANDATORY, name = RETURN_REASON_CODE)
+    @ACHField(start = 3, length = 3, inclusion = MANDATORY, name = RETURN_REASON_CODE)
     public String getReturnReasonCode() {
         return returnReasonCode;
     }
@@ -63,7 +63,7 @@ public class ReturnAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 6, length = 15, inclusion = MANDATORY, name = ORIGINAL_ENTRY_TRACE_NUMBER)
+    @ACHField(start = 6, length = 15, inclusion = MANDATORY, name = ORIGINAL_ENTRY_TRACE_NUMBER)
     public BigInteger getOriginalEntryTraceNumber() {
         return originalEntryTraceNumber;
     }
@@ -73,7 +73,7 @@ public class ReturnAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 21, length = 6, name = DATE_OF_DEATH)
+    @ACHField(start = 21, length = 6, name = DATE_OF_DEATH)
     public String getDateOfDeath() {
         return dateOfDeath;
     }
@@ -83,7 +83,7 @@ public class ReturnAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 27, length = 8, inclusion = REQUIRED, name = ORIGINAL_RECEIVING_DFI_IDENTIFICATION)
+    @ACHField(start = 27, length = 8, inclusion = REQUIRED, name = ORIGINAL_RECEIVING_DFI_IDENTIFICATION)
     public String getOriginalReceivingDFIID() {
         return originalReceivingDFIID;
     }
@@ -93,7 +93,7 @@ public class ReturnAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 35, length = 43, name = ADDENDA_INFORMATION)
+    @ACHField(start = 35, length = 43, name = ADDENDA_INFORMATION)
     public String getAddendaInformation() {
         return addendaInformation;
     }
@@ -103,7 +103,7 @@ public class ReturnAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 79, length = 15, inclusion = MANDATORY, name = AddendaRecord.TRACE_NUMBER)
+    @ACHField(start = 79, length = 15, inclusion = MANDATORY, name = AddendaRecord.TRACE_NUMBER)
     public BigInteger getTraceNumber() {
         return traceNumber;
     }

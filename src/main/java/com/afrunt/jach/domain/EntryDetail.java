@@ -18,7 +18,7 @@
  */
 package com.afrunt.jach.domain;
 
-import com.afrunt.jach.annotation.Field;
+import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.annotation.Values;
 
 import java.math.BigDecimal;
@@ -53,7 +53,7 @@ public abstract class EntryDetail extends ACHRecord {
         return ENTRY_DETAIL_RECORD_TYPE_CODE;
     }
 
-    @Field(start = 1, length = 2, name = TRANSACTION_CODE, inclusion = MANDATORY)
+    @ACHField(start = 1, length = 2, name = TRANSACTION_CODE, inclusion = MANDATORY)
     public Integer getTransactionCode() {
         return this.transactionCode;
     }
@@ -63,7 +63,7 @@ public abstract class EntryDetail extends ACHRecord {
         return this;
     }
 
-    @Field(start = 3, length = 8, name = RECEIVING_DFI_IDENTIFICATION, inclusion = MANDATORY)
+    @ACHField(start = 3, length = 8, name = RECEIVING_DFI_IDENTIFICATION, inclusion = MANDATORY)
     public String getReceivingDfiIdentification() {
         return receivingDfiIdentification;
     }
@@ -73,7 +73,7 @@ public abstract class EntryDetail extends ACHRecord {
         return this;
     }
 
-    @Field(start = 11, length = 1, name = CHECK_DIGIT, inclusion = MANDATORY)
+    @ACHField(start = 11, length = 1, name = CHECK_DIGIT, inclusion = MANDATORY)
     public Short getCheckDigit() {
         return this.checkDigit;
     }
@@ -83,7 +83,7 @@ public abstract class EntryDetail extends ACHRecord {
         return this;
     }
 
-    @Field(start = 29, length = 10, inclusion = MANDATORY, name = AMOUNT)
+    @ACHField(start = 29, length = 10, inclusion = MANDATORY, name = AMOUNT)
     public BigDecimal getAmount() {
         return this.amount;
     }
@@ -93,7 +93,7 @@ public abstract class EntryDetail extends ACHRecord {
         return this;
     }
 
-    @Field(start = 78, length = 1, values = {"0", "1"}, inclusion = MANDATORY, name = ADDENDA_RECORD_INDICATOR)
+    @ACHField(start = 78, length = 1, values = {"0", "1"}, inclusion = MANDATORY, name = ADDENDA_RECORD_INDICATOR)
     public Short getAddendaRecordIndicator() {
         return this.addendaRecordIndicator;
     }
@@ -103,7 +103,7 @@ public abstract class EntryDetail extends ACHRecord {
         return this;
     }
 
-    @Field(start = 79, length = 15, name = TRACE_NUMBER, inclusion = MANDATORY)
+    @ACHField(start = 79, length = 15, name = TRACE_NUMBER, inclusion = MANDATORY)
     public Long getTraceNumber() {
         return this.traceNumber;
     }

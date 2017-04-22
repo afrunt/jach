@@ -18,7 +18,7 @@
  */
 package com.afrunt.jach.domain;
 
-import com.afrunt.jach.annotation.Field;
+import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.annotation.DateFormat;
 import com.afrunt.jach.annotation.Values;
 
@@ -58,7 +58,7 @@ public abstract class BatchHeader extends ACHRecord {
         return BATCH_HEADER_RECORD_TYPE_CODE;
     }
 
-    @Field(start = 1, length = 3, name = SERVICE_CLASS_CODE, inclusion = MANDATORY, values = {"200", "220", "225", "280"})
+    @ACHField(start = 1, length = 3, name = SERVICE_CLASS_CODE, inclusion = MANDATORY, values = {"200", "220", "225", "280"})
     public String getServiceClassCode() {
         return serviceClassCode;
     }
@@ -68,7 +68,7 @@ public abstract class BatchHeader extends ACHRecord {
         return this;
     }
 
-    @Field(start = 50, length = 3, name = STANDARD_ENTRY_CLASS_CODE, inclusion = MANDATORY, typeTag = true)
+    @ACHField(start = 50, length = 3, name = STANDARD_ENTRY_CLASS_CODE, inclusion = MANDATORY, typeTag = true)
     public String getStandardEntryClassCode() {
         return standardEntryClassCode;
     }
@@ -78,7 +78,7 @@ public abstract class BatchHeader extends ACHRecord {
         return this;
     }
 
-    @Field(start = 53, length = 10, name = COMPANY_ENTRY_DESCRIPTION, inclusion = MANDATORY)
+    @ACHField(start = 53, length = 10, name = COMPANY_ENTRY_DESCRIPTION, inclusion = MANDATORY)
     public String getCompanyEntryDescription() {
         return companyEntryDescription;
     }
@@ -88,7 +88,7 @@ public abstract class BatchHeader extends ACHRecord {
         return this;
     }
 
-    @Field(start = 69, length = 6, name = EFFECTIVE_ENTRY_DATE, inclusion = REQUIRED)
+    @ACHField(start = 69, length = 6, name = EFFECTIVE_ENTRY_DATE, inclusion = REQUIRED)
     @DateFormat("yyMMdd")
     public Date getEffectiveEntryDate() {
         return effectiveEntryDate;
@@ -99,7 +99,7 @@ public abstract class BatchHeader extends ACHRecord {
         return this;
     }
 
-    @Field(start = 75, length = 3, name = SETTLEMENT_DATE, inclusion = OPTIONAL)
+    @ACHField(start = 75, length = 3, name = SETTLEMENT_DATE, inclusion = OPTIONAL)
     public Short getSettlementDate() {
         return settlementDate;
     }
@@ -109,7 +109,7 @@ public abstract class BatchHeader extends ACHRecord {
         return this;
     }
 
-    @Field(start = 78, length = 1, name = ORIGINATOR_STATUS_CODE, inclusion = MANDATORY)
+    @ACHField(start = 78, length = 1, name = ORIGINATOR_STATUS_CODE, inclusion = MANDATORY)
     public String getOriginatorStatusCode() {
         return originatorStatusCode;
     }
@@ -119,7 +119,7 @@ public abstract class BatchHeader extends ACHRecord {
         return this;
     }
 
-    @Field(start = 79, length = 8, name = ORIGINATOR_DFI_IDENTIFIER, inclusion = MANDATORY)
+    @ACHField(start = 79, length = 8, name = ORIGINATOR_DFI_IDENTIFIER, inclusion = MANDATORY)
     public String getOriginatorDFIIdentifier() {
         return originatorDFIIdentifier;
     }
@@ -129,7 +129,7 @@ public abstract class BatchHeader extends ACHRecord {
         return this;
     }
 
-    @Field(start = 87, length = 7, name = BATCH_NUMBER, inclusion = MANDATORY)
+    @ACHField(start = 87, length = 7, name = BATCH_NUMBER, inclusion = MANDATORY)
     public Integer getBatchNumber() {
         return batchNumber;
     }

@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.addenda.iat;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.BLANK;
 import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
@@ -27,7 +27,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class FifthIATAddendaRecord extends IATAddendaRecord {
     public static final String FIFTH_ADDENDA_TYPE_CODE = "14";
     public static final String RDFI_S_NAME = "RDFI's name";
@@ -41,13 +41,13 @@ public class FifthIATAddendaRecord extends IATAddendaRecord {
     private String receivingDFIBranchCountryCode;
 
     @Override
-    @Field(start = 1, length = 2, name = ADDENDA_TYPE_CODE, inclusion = MANDATORY,
+    @ACHField(start = 1, length = 2, name = ADDENDA_TYPE_CODE, inclusion = MANDATORY,
             values = FIFTH_ADDENDA_TYPE_CODE, typeTag = true)
     public String getAddendaTypeCode() {
         return FIFTH_ADDENDA_TYPE_CODE;
     }
 
-    @Field(start = 3, length = 35, name = RDFI_S_NAME, inclusion = MANDATORY)
+    @ACHField(start = 3, length = 35, name = RDFI_S_NAME, inclusion = MANDATORY)
     public String getReceivingDFIName() {
         return receivingDFIName;
     }
@@ -57,7 +57,7 @@ public class FifthIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 38, length = 2, name = RECEIVING_DFI_IDENTIFICATION_NUMBER_QUALIFIER, inclusion = MANDATORY,
+    @ACHField(start = 38, length = 2, name = RECEIVING_DFI_IDENTIFICATION_NUMBER_QUALIFIER, inclusion = MANDATORY,
             values = {"01", "02", "03"})
     public String getReceivingDFIIDNumberQualifier() {
         return receivingDFIIDNumberQualifier;
@@ -68,7 +68,7 @@ public class FifthIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 40, length = 34, name = RECEIVING_DFI_IDENTIFICATION_NUMBER, inclusion = MANDATORY)
+    @ACHField(start = 40, length = 34, name = RECEIVING_DFI_IDENTIFICATION_NUMBER, inclusion = MANDATORY)
     public String getReceivingDFIIDNumber() {
         return receivingDFIIDNumber;
     }
@@ -78,7 +78,7 @@ public class FifthIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 74, length = 3, name = RECEIVING_DFI_BRANCH_COUNTRY_CODE, inclusion = MANDATORY)
+    @ACHField(start = 74, length = 3, name = RECEIVING_DFI_BRANCH_COUNTRY_CODE, inclusion = MANDATORY)
     public String getReceivingDFIBranchCountryCode() {
         return receivingDFIBranchCountryCode;
     }
@@ -88,7 +88,7 @@ public class FifthIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 77, length = 10, name = RESERVED, inclusion = BLANK)
+    @ACHField(start = 77, length = 10, name = RESERVED, inclusion = BLANK)
     public String getReserved() {
         return reserved(10);
     }

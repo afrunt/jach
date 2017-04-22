@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.addenda;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Values;
 import com.afrunt.jach.domain.AddendaRecord;
 
@@ -29,7 +29,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.OPTIONAL;
 /**
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class GeneralAddendaRecord extends AddendaRecord {
     private static final String CCD_ADDENDA_TYPE_CODE = "05";
     private static final String PAYMENT_RELATED_INFORMATION = "Payment Related Information";
@@ -46,7 +46,7 @@ public class GeneralAddendaRecord extends AddendaRecord {
         return CCD_ADDENDA_TYPE_CODE;
     }
 
-    @Field(start = 3, length = 80, name = PAYMENT_RELATED_INFORMATION, inclusion = OPTIONAL)
+    @ACHField(start = 3, length = 80, name = PAYMENT_RELATED_INFORMATION, inclusion = OPTIONAL)
     public String getPaymentRelatedInformation() {
         return paymentRelatedInformation;
     }
@@ -56,7 +56,7 @@ public class GeneralAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 83, length = 4, name = ADDENDA_SEQUENCE_NUMBER, inclusion = MANDATORY)
+    @ACHField(start = 83, length = 4, name = ADDENDA_SEQUENCE_NUMBER, inclusion = MANDATORY)
     public Integer getAddendaSequenceNumber() {
         return addendaSequenceNumber;
     }
@@ -66,7 +66,7 @@ public class GeneralAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @Field(start = 87, length = 7, name = ENTRY_DETAIL_SEQUENCE_NUMBER, inclusion = MANDATORY)
+    @ACHField(start = 87, length = 7, name = ENTRY_DETAIL_SEQUENCE_NUMBER, inclusion = MANDATORY)
     public Long getEntryDetailSequenceNumber() {
         return entryDetailSequenceNumber;
     }

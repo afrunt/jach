@@ -18,7 +18,7 @@
  */
 package com.afrunt.jach.logic;
 
-import com.afrunt.jach.annotation.Field;
+import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.domain.ACHRecord;
 import com.afrunt.jach.domain.RecordTypes;
 import com.afrunt.jach.exception.ACHException;
@@ -182,7 +182,7 @@ public class ACHProcessor {
     }
 
     private Date dateValueFromString(String value, ACHFieldMetadata fm) {
-        if (Field.EMPTY_DATE_PATTERN.equals(fm.getDateFormat())) {
+        if (ACHField.EMPTY_DATE_PATTERN.equals(fm.getDateFormat())) {
             throw new ACHException("Date pattern should be specified for field " + fm);
         }
         try {

@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.detail;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Inclusion;
 import com.afrunt.jach.annotation.InclusionRequirement;
 import com.afrunt.jach.domain.NonIATEntryDetail;
@@ -29,7 +29,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class BOCEntryDetail extends NonIATEntryDetail {
 
     private String checkSerialNumber;
@@ -42,7 +42,7 @@ public class BOCEntryDetail extends NonIATEntryDetail {
         return super.getAddendaRecordIndicator();
     }
 
-    @Field(start = 39, length = 15, inclusion = MANDATORY, name = NonIATEntryDetail.CHECK_SERIAL_NUMBER)
+    @ACHField(start = 39, length = 15, inclusion = MANDATORY, name = NonIATEntryDetail.CHECK_SERIAL_NUMBER)
     public String getCheckSerialNumber() {
         return checkSerialNumber;
     }
@@ -52,7 +52,7 @@ public class BOCEntryDetail extends NonIATEntryDetail {
         return this;
     }
 
-    @Field(start = 54, length = 22, name = "Individual Name")
+    @ACHField(start = 54, length = 22, name = "Individual Name")
     public String getIndividualName() {
         return individualName;
     }
@@ -62,7 +62,7 @@ public class BOCEntryDetail extends NonIATEntryDetail {
         return this;
     }
 
-    @Field(start = 76, length = 2, name = "Discretionary Data")
+    @ACHField(start = 76, length = 2, name = "Discretionary Data")
     public String getDiscretionaryData() {
         return discretionaryData;
     }

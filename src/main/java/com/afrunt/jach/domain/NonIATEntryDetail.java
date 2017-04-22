@@ -18,7 +18,7 @@
  */
 package com.afrunt.jach.domain;
 
-import com.afrunt.jach.annotation.Field;
+import com.afrunt.jach.annotation.ACHField;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.REQUIRED;
 
@@ -33,7 +33,7 @@ public abstract class NonIATEntryDetail extends EntryDetail {
 
     private String dfiAccountNumber;
 
-    @Field(start = 12, length = 29, inclusion = REQUIRED, name = DFI_ACCOUNT_NUMBER)
+    @ACHField(start = 12, length = 29, inclusion = REQUIRED, name = DFI_ACCOUNT_NUMBER)
     public String getDfiAccountNumber() {
         return this.dfiAccountNumber;
     }

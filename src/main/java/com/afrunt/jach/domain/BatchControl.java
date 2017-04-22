@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Values;
 
 import java.math.BigDecimal;
@@ -30,7 +30,7 @@ import static com.afrunt.jach.domain.RecordTypes.Constants.BATCH_CONTROL_RECORD_
 /**
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class BatchControl extends ACHRecord {
     public static final String RECORD_TYPE_CODE = "Record Type Code";
     public static final String SERVICE_CLASS_CODE = "Service Class Code";
@@ -56,7 +56,7 @@ public class BatchControl extends ACHRecord {
         return BATCH_CONTROL_RECORD_TYPE_CODE;
     }
 
-    @Field(start = 1, length = 3, name = SERVICE_CLASS_CODE, inclusion = MANDATORY, values = {"200", "220", "225", "280"})
+    @ACHField(start = 1, length = 3, name = SERVICE_CLASS_CODE, inclusion = MANDATORY, values = {"200", "220", "225", "280"})
     public Integer getServiceClassCode() {
         return this.serviceClassCode;
     }
@@ -66,7 +66,7 @@ public class BatchControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 4, length = 6, name = ENTRY_ADDENDA_COUNT, inclusion = MANDATORY)
+    @ACHField(start = 4, length = 6, name = ENTRY_ADDENDA_COUNT, inclusion = MANDATORY)
     public Integer getEntryAddendaCount() {
         return this.entryAddendaCount;
     }
@@ -76,7 +76,7 @@ public class BatchControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 10, length = 10, name = ENTRY_HASH, inclusion = MANDATORY)
+    @ACHField(start = 10, length = 10, name = ENTRY_HASH, inclusion = MANDATORY)
     public BigDecimal getEntryHash() {
         return this.entryHash;
     }
@@ -86,7 +86,7 @@ public class BatchControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 20, length = 12, name = TOTAL_DEBITS, inclusion = MANDATORY)
+    @ACHField(start = 20, length = 12, name = TOTAL_DEBITS, inclusion = MANDATORY)
     public BigDecimal getTotalDebits() {
         return this.totalDebits;
     }
@@ -96,7 +96,7 @@ public class BatchControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 32, length = 12, name = TOTAL_CREDITS, inclusion = MANDATORY)
+    @ACHField(start = 32, length = 12, name = TOTAL_CREDITS, inclusion = MANDATORY)
     public BigDecimal getTotalCredits() {
         return this.totalCredits;
     }
@@ -106,7 +106,7 @@ public class BatchControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 44, length = 10, name = COMPANY_IDENTIFICATION, inclusion = MANDATORY)
+    @ACHField(start = 44, length = 10, name = COMPANY_IDENTIFICATION, inclusion = MANDATORY)
     public String getCompanyIdentification() {
         return this.companyIdentification;
     }
@@ -116,7 +116,7 @@ public class BatchControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 54, length = 19, name = MESSAGE_AUTHENTICATION_CODE, inclusion = OPTIONAL)
+    @ACHField(start = 54, length = 19, name = MESSAGE_AUTHENTICATION_CODE, inclusion = OPTIONAL)
     public String getMessageAuthenticationCode() {
         return this.messageAuthenticationCode;
     }
@@ -126,12 +126,12 @@ public class BatchControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 73, length = 6, name = RESERVED, inclusion = BLANK)
+    @ACHField(start = 73, length = 6, name = RESERVED, inclusion = BLANK)
     public String getReserved() {
         return reserved(6);
     }
 
-    @Field(start = 79, length = 8, name = "Originating DFI Identification", inclusion = MANDATORY)
+    @ACHField(start = 79, length = 8, name = "Originating DFI Identification", inclusion = MANDATORY)
     public String getOriginatingDfiIdentification() {
         return this.originatingDfiIdentification;
     }
@@ -141,7 +141,7 @@ public class BatchControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 87, length = 7, name = "Batch Number", inclusion = MANDATORY)
+    @ACHField(start = 87, length = 7, name = "Batch Number", inclusion = MANDATORY)
     public Integer getBatchNumber() {
         return this.batchNumber;
     }

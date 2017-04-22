@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.addenda.iat;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Values;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.BLANK;
@@ -28,7 +28,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class SixthIATAddendaRecord extends IATAddendaRecord {
 
     public static final String SIXTH_IAT_ADDENDA_TYPE_CODE = "15";
@@ -43,7 +43,7 @@ public class SixthIATAddendaRecord extends IATAddendaRecord {
         return SIXTH_IAT_ADDENDA_TYPE_CODE;
     }
 
-    @Field(start = 3, length = 15, name = RECEIVER_IDENTIFICATION_NUMBER)
+    @ACHField(start = 3, length = 15, name = RECEIVER_IDENTIFICATION_NUMBER)
     public String getReceiverIdentificationNumber() {
         return receiverIdentificationNumber;
     }
@@ -53,7 +53,7 @@ public class SixthIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 18, length = 35, name = RECEIVER_STREET_ADDRESS, inclusion = MANDATORY)
+    @ACHField(start = 18, length = 35, name = RECEIVER_STREET_ADDRESS, inclusion = MANDATORY)
     public String getReceiverStreetAddress() {
         return receiverStreetAddress;
     }
@@ -63,7 +63,7 @@ public class SixthIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 53, length = 34, name = RESERVED, inclusion = BLANK)
+    @ACHField(start = 53, length = 34, name = RESERVED, inclusion = BLANK)
     public String getReserved() {
         return reserved(34);
     }

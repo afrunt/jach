@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Values;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
@@ -28,7 +28,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.OPTIONAL;
 /**
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class GeneralBatchHeader extends BatchHeader {
     public static final String COMPANY_NAME = "Company Name";
     public static final String COMPANY_DISCRETIONARY_DATA = "Company Discretionary Data";
@@ -39,7 +39,7 @@ public class GeneralBatchHeader extends BatchHeader {
     private String companyID;
     private String companyDescriptiveDate;
 
-    @Field(start = 4, length = 16, name = COMPANY_NAME, inclusion = MANDATORY)
+    @ACHField(start = 4, length = 16, name = COMPANY_NAME, inclusion = MANDATORY)
     public String getCompanyName() {
         return companyName;
     }
@@ -50,7 +50,7 @@ public class GeneralBatchHeader extends BatchHeader {
         return this;
     }
 
-    @Field(start = 20, length = 20, name = COMPANY_DISCRETIONARY_DATA, inclusion = OPTIONAL)
+    @ACHField(start = 20, length = 20, name = COMPANY_DISCRETIONARY_DATA, inclusion = OPTIONAL)
     public String getCompanyDiscretionaryData() {
         return companyDiscretionaryData;
     }
@@ -60,7 +60,7 @@ public class GeneralBatchHeader extends BatchHeader {
         return this;
     }
 
-    @Field(start = 40, length = 10, name = COMPANY_ID, inclusion = MANDATORY)
+    @ACHField(start = 40, length = 10, name = COMPANY_ID, inclusion = MANDATORY)
     public String getCompanyID() {
         return companyID;
     }
@@ -86,7 +86,7 @@ public class GeneralBatchHeader extends BatchHeader {
         return super.getStandardEntryClassCode();
     }
 
-    @Field(start = 63, length = 6, name = COMPANY_DESCRIPTIVE_DATE, inclusion = OPTIONAL)
+    @ACHField(start = 63, length = 6, name = COMPANY_DESCRIPTIVE_DATE, inclusion = OPTIONAL)
     public String getCompanyDescriptiveDate() {
         return companyDescriptiveDate;
     }

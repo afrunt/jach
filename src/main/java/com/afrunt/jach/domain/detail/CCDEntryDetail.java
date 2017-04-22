@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.detail;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.domain.NonIATEntryDetail;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.REQUIRED;
@@ -27,13 +27,13 @@ import static com.afrunt.jach.annotation.InclusionRequirement.REQUIRED;
 /**
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class CCDEntryDetail extends NonIATEntryDetail {
     private String identificationNumber;
     private String receivingCompanyName;
     private String discretionaryData;
 
-    @Field(start = 39, length = 15, name = NonIATEntryDetail.IDENTIFICATION_NUMBER)
+    @ACHField(start = 39, length = 15, name = NonIATEntryDetail.IDENTIFICATION_NUMBER)
     public String getIdentificationNumber() {
         return identificationNumber;
     }
@@ -43,7 +43,7 @@ public class CCDEntryDetail extends NonIATEntryDetail {
         return this;
     }
 
-    @Field(start = 54, length = 22, inclusion = REQUIRED, name = NonIATEntryDetail.RECEIVING_COMPANY_NAME)
+    @ACHField(start = 54, length = 22, inclusion = REQUIRED, name = NonIATEntryDetail.RECEIVING_COMPANY_NAME)
     public String getReceivingCompanyName() {
         return receivingCompanyName;
     }
@@ -53,7 +53,7 @@ public class CCDEntryDetail extends NonIATEntryDetail {
         return this;
     }
 
-    @Field(start = 76, length = 2, name = "Discretionary Data")
+    @ACHField(start = 76, length = 2, name = "Discretionary Data")
     public String getDiscretionaryData() {
         return discretionaryData;
     }

@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.detail;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.domain.NonIATEntryDetail;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
@@ -28,13 +28,13 @@ import static com.afrunt.jach.annotation.InclusionRequirement.REQUIRED;
 /**
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class TELEntryDetail extends NonIATEntryDetail {
     private String identificationNumber;
     private String individualName;
     private String paymentTypeCode;
 
-    @Field(start = 39, length = 15, inclusion = MANDATORY, name = NonIATEntryDetail.IDENTIFICATION_NUMBER)
+    @ACHField(start = 39, length = 15, inclusion = MANDATORY, name = NonIATEntryDetail.IDENTIFICATION_NUMBER)
     public String getIdentificationNumber() {
         return identificationNumber;
     }
@@ -44,7 +44,7 @@ public class TELEntryDetail extends NonIATEntryDetail {
         return this;
     }
 
-    @Field(start = 54, length = 22, name = "Individual Name")
+    @ACHField(start = 54, length = 22, name = "Individual Name")
     public String getIndividualName() {
         return individualName;
     }
@@ -54,7 +54,7 @@ public class TELEntryDetail extends NonIATEntryDetail {
         return this;
     }
 
-    @Field(start = 76, length = 2, inclusion = REQUIRED, name = "Payment Type Code")
+    @ACHField(start = 76, length = 2, inclusion = REQUIRED, name = "Payment Type Code")
     public String getPaymentTypeCode() {
         return paymentTypeCode;
     }

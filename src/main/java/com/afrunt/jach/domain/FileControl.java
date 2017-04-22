@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Values;
 
 import java.math.BigDecimal;
@@ -31,7 +31,7 @@ import static com.afrunt.jach.domain.RecordTypes.Constants.FILE_CONTROL_RECORD_T
 /**
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class FileControl extends ACHRecord {
     public static final String BATCH_COUNT = "Batch Count";
     public static final String BLOCK_COUNT = "Block Count";
@@ -53,7 +53,7 @@ public class FileControl extends ACHRecord {
     }
 
 
-    @Field(start = 1, length = 6, name = BATCH_COUNT, inclusion = MANDATORY)
+    @ACHField(start = 1, length = 6, name = BATCH_COUNT, inclusion = MANDATORY)
     public Integer getBatchCount() {
         return this.batchCount;
     }
@@ -63,7 +63,7 @@ public class FileControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 7, length = 6, name = BLOCK_COUNT, inclusion = MANDATORY)
+    @ACHField(start = 7, length = 6, name = BLOCK_COUNT, inclusion = MANDATORY)
     public Integer getBlockCount() {
         return this.blockCount;
     }
@@ -73,7 +73,7 @@ public class FileControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 13, length = 8, name = ENTRY_ADDENDA_COUNT, inclusion = MANDATORY)
+    @ACHField(start = 13, length = 8, name = ENTRY_ADDENDA_COUNT, inclusion = MANDATORY)
     public Integer getEntryAddendaCount() {
         return this.entryAddendaCount;
     }
@@ -83,7 +83,7 @@ public class FileControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 21, length = 10, name = ENTRY_HASH, inclusion = MANDATORY)
+    @ACHField(start = 21, length = 10, name = ENTRY_HASH, inclusion = MANDATORY)
     public Long getEntryHashTotals() {
         return this.entryHashTotals;
     }
@@ -93,7 +93,7 @@ public class FileControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 31, length = 12, name = TOTAL_DEBITS, inclusion = MANDATORY)
+    @ACHField(start = 31, length = 12, name = TOTAL_DEBITS, inclusion = MANDATORY)
     public BigDecimal getTotalDebits() {
         return this.totalDebits;
     }
@@ -103,7 +103,7 @@ public class FileControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 43, length = 12, name = TOTAL_CREDITS, inclusion = MANDATORY)
+    @ACHField(start = 43, length = 12, name = TOTAL_CREDITS, inclusion = MANDATORY)
     public BigDecimal getTotalCredits() {
         return this.totalCredits;
     }
@@ -113,7 +113,7 @@ public class FileControl extends ACHRecord {
         return this;
     }
 
-    @Field(start = 55, length = 39, name = RESERVED, inclusion = BLANK)
+    @ACHField(start = 55, length = 39, name = RESERVED, inclusion = BLANK)
     public String getReserved() {
         return reserved(39);
     }

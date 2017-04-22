@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.addenda.iat;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Values;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.*;
@@ -30,7 +30,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
  *
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class FirstIATAddendaRecord extends IATAddendaRecord {
     public static final String FIRST_IAT_ADDENDA_TYPE_CODE = "10";
     public static final String TRANSACTION_TYPE_CODE = "Transaction Type Code";
@@ -76,7 +76,7 @@ public class FirstIATAddendaRecord extends IATAddendaRecord {
      *
      * @return type of payment
      */
-    @Field(start = 3, length = 3, name = TRANSACTION_TYPE_CODE, inclusion = REQUIRED, values = {
+    @ACHField(start = 3, length = 3, name = TRANSACTION_TYPE_CODE, inclusion = REQUIRED, values = {
             "ANN", "BUS", "DEP", "LOA", "MIS", "MOR", "PEN", "RLS", "SAL", "TAX", "TEL", "WEB", "ARC", "BOC", "POP", "RCK"
     })
     public String getTransactionTypeCode() {
@@ -93,7 +93,7 @@ public class FirstIATAddendaRecord extends IATAddendaRecord {
      *
      * @return
      */
-    @Field(start = 6, length = 18, name = FOREIGN_PAYMENT_AMOUNT, inclusion = REQUIRED)
+    @ACHField(start = 6, length = 18, name = FOREIGN_PAYMENT_AMOUNT, inclusion = REQUIRED)
     public String getForeignPaymentAmount() {
         return foreignPaymentAmount;
     }
@@ -103,7 +103,7 @@ public class FirstIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 24, length = 22, name = FOREIGN_TRACE_NUMBER, inclusion = OPTIONAL)
+    @ACHField(start = 24, length = 22, name = FOREIGN_TRACE_NUMBER, inclusion = OPTIONAL)
     public String getForeignTraceNumber() {
         return foreignTraceNumber;
     }
@@ -113,7 +113,7 @@ public class FirstIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 46, length = 35, name = RECEIVING_COMPANY_NAME_OR_INDIVIDUAL_NAME, inclusion = MANDATORY)
+    @ACHField(start = 46, length = 35, name = RECEIVING_COMPANY_NAME_OR_INDIVIDUAL_NAME, inclusion = MANDATORY)
     public String getReceivingCompanyNameOrIndividualName() {
         return receivingCompanyNameOrIndividualName;
     }
@@ -123,7 +123,7 @@ public class FirstIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 81, length = 6, name = RESERVED, inclusion = BLANK)
+    @ACHField(start = 81, length = 6, name = RESERVED, inclusion = BLANK)
     public String getReserved() {
         return reserved(6);
     }

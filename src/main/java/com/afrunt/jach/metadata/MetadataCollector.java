@@ -84,7 +84,7 @@ public class MetadataCollector {
         return Arrays.stream(cl.getDeclaredMethods())
                 .filter(m -> m.getName().startsWith("get")
                         && !Void.class.equals(m.getReturnType())
-                        && m.isAnnotationPresent(Field.class)
+                        && m.isAnnotationPresent(ACHField.class)
                         && ACHFieldMetadata.VALID_FIELD_TYPES_SET.contains(m.getReturnType())
                 )
                 .collect(Collectors.toSet());
@@ -173,7 +173,7 @@ public class MetadataCollector {
 
     private ACHFieldMetadata fieldDefinition(Method getter, ACHFieldMetadata fieldMetadata) {
 
-        return Optional.ofNullable(getter.getAnnotation(Field.class))
+        return Optional.ofNullable(getter.getAnnotation(ACHField.class))
                 .map(annotation ->
                         fieldMetadata.setStart(annotation.start())
                                 .setLength(annotation.length())
@@ -209,7 +209,7 @@ public class MetadataCollector {
             String setterName = "set" + capitalize(fieldNameFromGetter(getter));
             return cl.getDeclaredMethod(setterName, getter.getReturnType());
         } catch (NoSuchMethodException e) {
-            //Field without setter
+            //ACHField without setter
             return null;
         }
     }
@@ -223,7 +223,7 @@ public class MetadataCollector {
                 .map(pkg -> new Reflections(pkg))
                 .map(rfl -> rfl.getSubTypesOf(ACHRecord.class))
                 .flatMap(Set::stream)
-                .filter(c -> c.isAnnotationPresent(RecordType.class)
+                .filter(c -> c.isAnnotationPresent(ACHRecordType.class)
                         && !Modifier.isAbstract(c.getModifiers())
                         && !c.isInterface()
                 )
@@ -246,7 +246,7 @@ public class MetadataCollector {
 
     private void validateFieldMetadata(ACHFieldMetadata fm) {
         if (fm.isBlank() && fm.hasConstantValues()) {
-            throw new ACHException("Field cannot be BLANK and contain constant values");
+            throw new ACHException("ACHField cannot be BLANK and contain constant values");
         }
 
         if (fm.isTypeTag() && (!fm.isMandatory() || fm.getConstantValues().isEmpty())) {
@@ -254,7 +254,7 @@ public class MetadataCollector {
         }
 
         if (fm.isDate()) {
-            if (fm.getDateFormat().equals(Field.EMPTY_DATE_PATTERN)) {
+            if (fm.getDateFormat().equals(ACHField.EMPTY_DATE_PATTERN)) {
                 throw new ACHException("Date format is required for date fields");
             }
 

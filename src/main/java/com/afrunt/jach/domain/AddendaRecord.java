@@ -18,7 +18,7 @@
  */
 package com.afrunt.jach.domain;
 
-import com.afrunt.jach.annotation.Field;
+import com.afrunt.jach.annotation.ACHField;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 
@@ -32,13 +32,13 @@ public abstract class AddendaRecord extends ACHRecord {
     public static final String TRACE_NUMBER = "Trace Number";
 
     @Override
-    @Field(length = 1, name = RECORD_TYPE_CODE, inclusion = MANDATORY, values = ADDENDA_RECORD_TYPE_CODE,
+    @ACHField(length = 1, name = RECORD_TYPE_CODE, inclusion = MANDATORY, values = ADDENDA_RECORD_TYPE_CODE,
             typeTag = true)
     public String getRecordTypeCode() {
         return ADDENDA_RECORD_TYPE_CODE;
     }
 
-    @Field(start = 1, length = 2, name = AddendaRecord.ADDENDA_TYPE_CODE, inclusion = MANDATORY, typeTag = true)
+    @ACHField(start = 1, length = 2, name = AddendaRecord.ADDENDA_TYPE_CODE, inclusion = MANDATORY, typeTag = true)
     public abstract String getAddendaTypeCode();
 
 

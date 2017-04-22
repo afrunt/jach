@@ -18,8 +18,8 @@
  */
 package com.afrunt.jach.domain.addenda.iat;
 
-import com.afrunt.jach.annotation.Field;
-import com.afrunt.jach.annotation.RecordType;
+import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Values;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
@@ -27,7 +27,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@RecordType
+@ACHRecordType
 public class RemittanceIATAddendaRecord extends IATAddendaRecord {
     public static final String REMITTANCE_IAT_ADDENDA_TYPE_CODE = "17";
     public static final String PAYMENT_RELATED_INFORMATION = "Payment Related Information";
@@ -41,7 +41,7 @@ public class RemittanceIATAddendaRecord extends IATAddendaRecord {
         return REMITTANCE_IAT_ADDENDA_TYPE_CODE;
     }
 
-    @Field(start = 3, length = 80, name = PAYMENT_RELATED_INFORMATION)
+    @ACHField(start = 3, length = 80, name = PAYMENT_RELATED_INFORMATION)
     public String getPaymentRelatedInformation() {
         return paymentRelatedInformation;
     }
@@ -51,7 +51,7 @@ public class RemittanceIATAddendaRecord extends IATAddendaRecord {
         return this;
     }
 
-    @Field(start = 83, length = 4, name = ADDENDA_SEQUENCE_NUMBER, inclusion = MANDATORY)
+    @ACHField(start = 83, length = 4, name = ADDENDA_SEQUENCE_NUMBER, inclusion = MANDATORY)
     public Integer getAddendaSequenceNumber() {
         return addendaSequenceNumber;
     }
