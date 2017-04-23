@@ -29,24 +29,19 @@ import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 
 /**
  * @author Andrii Frunt
  */
 public class MetadataCollector {
-    private Set<String> packages = new HashSet<>(Collections.singletonList("com.afrunt.jach.domain"));
-
     private Set<ACHRecordTypeMetadata> metadata;
 
     public MetadataCollector() {
     }
 
-    public MetadataCollector(Collection<String> packages) {
-        this.packages.addAll(ofNullable(packages).orElse(emptyList()));
-    }
 
     public ACHMetadata collectMetadata() {
         return new ACHMetadata(collectTypesMetadata());
@@ -219,7 +214,7 @@ public class MetadataCollector {
     }
 
     private Set<Class<? extends ACHRecord>> findACHRecordTypes() {
-        return packages.stream()
+        return Stream.of("com.afrunt.jach.domain")
                 .map(pkg -> new Reflections(pkg))
                 .map(rfl -> rfl.getSubTypesOf(ACHRecord.class))
                 .flatMap(Set::stream)
