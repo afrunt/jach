@@ -31,14 +31,13 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
  * @author Andrii Frunt
  */
-public class ACHProcessor {
+class ACHProcessor {
     static final String LINE_SEPARATOR = Optional.ofNullable(System.getProperty("line.separator")).orElse("\n");
 
     private MetadataCollector metadataCollector;
@@ -48,7 +47,7 @@ public class ACHProcessor {
     }
 
     ACHRecordTypeMetadata typeOfRecord(String str) {
-        str = validateLine(str, 0);
+        str = validateLine(str);
         String recordTypeCode = extractRecordTypeCode(str);
         Set<ACHRecordTypeMetadata> types = getMetadata().typesForRecordTypeCode(recordTypeCode);
 
@@ -85,31 +84,11 @@ public class ACHProcessor {
         }
     }
 
-    private String validateLine(String line, int lineNumber) {
-        if (line == null) {
-            throw error("ACH record cannot be null");
-        }
-
-        int lineLength = line.length();
-
-        if (lineLength != ACHRecord.ACH_RECORD_LENGTH) {
-            throw error(String.format("Wrong length (%s) (line: %s) of the record: %s", lineLength, lineNumber, line));
-        }
-
-        String recordTypeCode = extractRecordTypeCode(line);
-
-        if (!RecordTypes.validRecordTypeCode(recordTypeCode)) {
-            throw error(String.format("Unknown record type code (%s) (line: %s) of the record: %s", recordTypeCode, lineNumber, line));
-        }
-
-        return line;
-    }
-
     String extractRecordTypeCode(String line) {
         return line.substring(0, 1);
     }
 
-    public ACHMetadata getMetadata() {
+    ACHMetadata getMetadata() {
         return metadataCollector.collectMetadata();
     }
 
@@ -117,18 +96,6 @@ public class ACHProcessor {
         return metadata.getFieldsMetadata().stream()
                 .map(fm -> str.substring(fm.getStart(), fm.getEnd()))
                 .collect(Collectors.toList());
-    }
-
-    void throwError(String message) throws ACHException {
-        throw error(message);
-    }
-
-    protected ACHException error(String message) {
-        return new ACHException(message);
-    }
-
-    protected ACHException error(String message, Throwable e) {
-        return new ACHException(message, e);
     }
 
     String formatFieldValue(ACHFieldMetadata fm, Object value) {
@@ -148,12 +115,15 @@ public class ACHProcessor {
 
         if (fm.isNumber()) {
             if (value instanceof BigDecimal) {
-                stringValue = String.valueOf(((BigDecimal) value)
-                        .multiply(BigDecimal.valueOf(10).pow(fm.getDigitsAfterComma()))
-                        .longValue());
+                stringValue = String.valueOf(
+                        moveDecimalLeft((BigDecimal) value, fm.getDigitsAfterComma())
+                                .longValue()
+                );
             } else if (value instanceof Double) {
-                stringValue = String.valueOf(BigDecimal.valueOf((Double) value).multiply(BigDecimal.valueOf(10).pow(fm.getDigitsAfterComma()))
-                        .longValue());
+                stringValue = String.valueOf(
+                        moveDecimalLeft(BigDecimal.valueOf((Double) value), fm.getDigitsAfterComma())
+                                .longValue()
+                );
             } else {
                 stringValue = value.toString();
             }
@@ -162,14 +132,30 @@ public class ACHProcessor {
                 throw error("Value exceeds the maximum length of the field " + fm);
             }
 
-            stringValue = StringUtil.leftPad(stringValue, fm.getLength(), "0");
+            stringValue = padNumber(stringValue, fm.getLength());
         }
 
         return stringValue;
     }
 
+    void throwError(String message) throws ACHException {
+        throw error(message);
+    }
+
+    ACHException error(String message) {
+        return new ACHException(message);
+    }
+
+    ACHException error(String message, Throwable e) {
+        return new ACHException(message, e);
+    }
+
     private String padString(Object value, int length) {
         return StringUtil.rightPad(value.toString(), length);
+    }
+
+    private String padNumber(Object value, int length) {
+        return StringUtil.leftPad(value.toString(), length, "0");
     }
 
     private Number numberFromString(String value, ACHFieldMetadata fm) {
@@ -192,11 +178,11 @@ public class ACHProcessor {
     }
 
     private BigDecimal moveDecimalRight(BigDecimal number, int digitsAfterComma) {
-        return moveDecimal(number, n -> n.divide(decimalAdjuster(digitsAfterComma)));
+        return number.divide(decimalAdjuster(digitsAfterComma));
     }
 
-    private BigDecimal moveDecimal(BigDecimal number, Function<BigDecimal, BigDecimal> fn) {
-        return fn.apply(number);
+    private BigDecimal moveDecimalLeft(BigDecimal number, int digitsAfterComma) {
+        return number.multiply(decimalAdjuster(digitsAfterComma));
     }
 
     private BigDecimal decimalAdjuster(int digitsAfterComma) {
@@ -257,5 +243,25 @@ public class ACHProcessor {
         } else {
             return 0;
         }
+    }
+
+    private String validateLine(String line) {
+        if (line == null) {
+            throw error("ACH record cannot be null");
+        }
+
+        int lineLength = line.length();
+
+        if (lineLength != ACHRecord.ACH_RECORD_LENGTH) {
+            throw error(String.format("Wrong length (%s) (line: %s) of the record: %s", lineLength, 0, line));
+        }
+
+        String recordTypeCode = extractRecordTypeCode(line);
+
+        if (!RecordTypes.validRecordTypeCode(recordTypeCode)) {
+            throw error(String.format("Unknown record type code (%s) (line: %s) of the record: %s", recordTypeCode, 0, line));
+        }
+
+        return line;
     }
 }
