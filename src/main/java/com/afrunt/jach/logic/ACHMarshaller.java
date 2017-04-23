@@ -115,24 +115,31 @@ public class ACHMarshaller extends ACHProcessor {
 
         for (ACHFieldMetadata fm : fieldsMetadata) {
             Object value = retrieveFieldValue(record, fm);
-            String formattedValue = formatFieldValue(fm, value);
-            boolean valueIsBlank = StringUtil.isBlank(formattedValue);
-
-            if (!fm.valueSatisfies(formattedValue)) {
-                error("Wrong value(" + formattedValue + ") for the field " + fm);
-            }
-
-            if (valueIsBlank && fm.isMandatory()) {
-                error(fm + " is mandatory and cannot be blank");
-            }
-
-            String headString = recordString.substring(0, fm.getStart());
-            String tailString = recordString.substring(fm.getEnd());
-            recordString = headString + formattedValue + tailString;
+            String formattedValue = validateFormattedValue(fm, formatFieldValue(fm, value));
+            recordString = changeRecordStringWithFieldValue(recordString, fm, formattedValue);
         }
 
-
+        record.setRecord(recordString);
         return recordString;
+    }
+
+    private String validateFormattedValue(ACHFieldMetadata fm, String formattedValue) {
+        boolean valueIsBlank = StringUtil.isBlank(formattedValue);
+
+        if (!fm.valueSatisfies(formattedValue)) {
+            error("Wrong value(" + formattedValue + ") for the field " + fm);
+        }
+
+        if (valueIsBlank && fm.isMandatory()) {
+            error(fm + " is mandatory and cannot be blank");
+        }
+        return formattedValue;
+    }
+
+    private String changeRecordStringWithFieldValue(String recordString, ACHFieldMetadata fm, String formattedValue) {
+        String headString = recordString.substring(0, fm.getStart());
+        String tailString = recordString.substring(fm.getEnd());
+        return headString + formattedValue + tailString;
     }
 
     private Object retrieveFieldValue(ACHRecord record, ACHFieldMetadata fm) {

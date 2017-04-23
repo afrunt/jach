@@ -42,25 +42,34 @@ import static java.util.Optional.ofNullable;
  * @author Andrii Frunt
  */
 public class MetadataCollector {
-    private Set<ACHRecordTypeMetadata> metadata;
+    private ACHMetadata metadata;
+    private Set<ACHRecordTypeMetadata> typesMetadata;
+    private Set<Class<? extends ACHRecord>> recordClasses;
 
     public MetadataCollector() {
     }
 
 
     public ACHMetadata collectMetadata() {
-        return new ACHMetadata(collectTypesMetadata());
+        if (metadata == null) {
+            metadata = new ACHMetadata(collectTypesMetadata());
+            return metadata;
+        } else {
+            return metadata;
+        }
     }
 
     public Set<ACHRecordTypeMetadata> collectTypesMetadata() {
-        if (metadata == null) {
+        if (typesMetadata == null) {
             Set<ACHRecordTypeMetadata> collectedMetadata = findACHRecordTypes().stream()
                     .map(this::collectRecordTypeMetadata)
                     .collect(Collectors.toSet());
-            metadata = Collections.unmodifiableSet(collectedMetadata);
+            typesMetadata = Collections.unmodifiableSet(collectedMetadata);
+            return typesMetadata;
+        } else {
+            return typesMetadata;
         }
 
-        return metadata;
     }
 
     public Set<ACHRecordTypeMetadata> collectMetadataForRecordTypeCode(String code) {
@@ -217,12 +226,17 @@ public class MetadataCollector {
 
     private Set<Class<? extends ACHRecord>> findACHRecordTypes() {
         // Need to remove Reflections library
-        return getRecordClasses().stream()
-                .filter(c -> c.isAnnotationPresent(ACHRecordType.class)
-                        && !Modifier.isAbstract(c.getModifiers())
-                        && !c.isInterface()
-                )
-                .collect(Collectors.toSet());
+        if (recordClasses == null) {
+            recordClasses = getRecordClasses().stream()
+                    .filter(c -> c.isAnnotationPresent(ACHRecordType.class)
+                            && !Modifier.isAbstract(c.getModifiers())
+                            && !c.isInterface()
+                    )
+                    .collect(Collectors.toSet());
+            return recordClasses;
+        } else {
+            return recordClasses;
+        }
 
         /*return Stream.of("com.afrunt.jach.domain")
                 .map(pkg -> new Reflections(pkg))

@@ -111,7 +111,7 @@ public class ACHUnmarshaller extends ACHProcessor {
                     document.setFileHeader((FileHeader) record);
                 } else if (record.is(FILE_CONTROL)) {
                     document.setFileControl((FileControl) record);
-                    return document;
+                    return returnDocument();
                 } else if (record.is(BATCH_HEADER)) {
                     currentBatch = new ACHBatch().setBatchHeader((BatchHeader) record);
                     document.addBatch(currentBatch);
@@ -128,8 +128,17 @@ public class ACHUnmarshaller extends ACHProcessor {
                     currentDetail.addAddendaRecord((AddendaRecord) record);
                 }
             }
+            return returnDocument();
+        }
 
-            return document;
+        private ACHDocument returnDocument() {
+            ACHDocument currentDocument = document;
+            //Unlink references
+            document = null;
+            currentBatch = null;
+            currentDetail = null;
+            currentLine = null;
+            return currentDocument;
         }
 
         private void validateLine() {

@@ -157,7 +157,6 @@ public class ACHProcessor {
             stringValue = StringUtil.leftPad(stringValue, fm.getLength(), "0");
         }
 
-
         return stringValue;
     }
 
