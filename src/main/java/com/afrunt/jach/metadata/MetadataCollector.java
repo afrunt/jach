@@ -80,7 +80,7 @@ public class MetadataCollector {
                 .filter(m -> m.getName().startsWith("get")
                         && !Void.class.equals(m.getReturnType())
                         && m.isAnnotationPresent(ACHField.class)
-                        && ACHFieldMetadata.VALID_FIELD_TYPES_SET.contains(m.getReturnType())
+                        && ACHFieldMetadata.VALID_FIELD_TYPES.contains(m.getReturnType())
                 )
                 .collect(Collectors.toSet());
     }

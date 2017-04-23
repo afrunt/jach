@@ -37,7 +37,7 @@ import static java.util.Collections.unmodifiableList;
  * @author Andrii Frunt
  */
 public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
-    public static final Collection<Class<?>> VALID_FIELD_TYPES_SET = unmodifiableList(asList(Integer.class, Long.class,
+    public static final Collection<Class<?>> VALID_FIELD_TYPES = unmodifiableList(asList(Integer.class, Long.class,
             Short.class, Double.class, BigInteger.class, BigDecimal.class, String.class, Date.class));
 
     private String name;
@@ -56,14 +56,6 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
     private String recordClassName;
 
     public ACHFieldMetadata() {
-    }
-
-    public ACHFieldMetadata(String name, Class<?> fieldType, ACHField annotation, Method getter, Method setter) {
-        this.name = name;
-        this.fieldType = fieldType;
-        this.annotation = annotation;
-        this.getter = getter;
-        this.setter = setter;
     }
 
     public boolean fieldNameIs(String name) {
