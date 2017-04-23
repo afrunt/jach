@@ -28,7 +28,6 @@ import com.afrunt.jach.metadata.MetadataCollector;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -75,7 +74,9 @@ public class ACHUnmarshaller extends ACHProcessor {
     }
 
     private void validateInputValue(ACHFieldMetadata fm, String valueString) {
-        if (fm.hasConstantValues() && !fm.valueSatisfiesToConstantValues(valueString)) {
+        boolean emptyOptional = fm.isOptional() && "".equals(valueString.trim());
+        boolean valueNotSatisfiesToConstantValues = fm.hasConstantValues() && !fm.valueSatisfiesToConstantValues(valueString);
+        if (valueNotSatisfiesToConstantValues && !emptyOptional) {
             throwError(String.format("%s is wrong value for field %s. Valid values are %s",
                     valueString, fm, StringUtil.join(fm.getPossibleValues(), ",")));
         }
@@ -83,8 +84,7 @@ public class ACHUnmarshaller extends ACHProcessor {
 
     private void applyFieldValue(ACHRecord record, ACHFieldMetadata fm, Object value) {
         try {
-            Method setter = fm.getSetter();
-            setter.invoke(record, value);
+            fm.getSetter().invoke(record, value);
         } catch (InvocationTargetException | IllegalAccessException e) {
             throw error("Error applying value to field " + fm, e);
         }

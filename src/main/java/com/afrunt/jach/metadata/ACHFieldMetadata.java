@@ -84,7 +84,7 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
         }
 
         if (isString()) {
-            return !isMandatory() || !"".equals(value.trim());
+            return true;
         } else if (isNumber()) {
 
             if (isOptional() && StringUtil.isBlank(value)) {
@@ -368,7 +368,7 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
     @Override
     public String toString() {
         String typeName = fieldType.getName();
-        return recordClassName + "->" + this.name + "[" + typeName.substring(typeName.lastIndexOf('.') + 1) + "]";
+        return recordClassName + "->" + this.name + "[" + typeName.substring(typeName.lastIndexOf('.') + 1) + ":" + getLength() + "] " + inclusion;
     }
 
     @Override

@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
  */
 public class ACHMarshaller extends ACHProcessor {
     private Charset charset = Charset.forName("UTF-8");
+    private boolean failOnWrongValues = true;
 
     public ACHMarshaller(MetadataCollector metadataCollector) {
         super(metadataCollector);
@@ -54,6 +55,11 @@ public class ACHMarshaller extends ACHProcessor {
         } catch (IOException e) {
             throw new ACHException("Error marshalling ACH document", e);
         }
+    }
+
+    public ACHMarshaller setFailOnWrongValues(boolean failOnWrongValues) {
+        this.failOnWrongValues = failOnWrongValues;
+        return this;
     }
 
     private void marshal(ACHDocument document, OutputStream outputStream) {
@@ -119,11 +125,11 @@ public class ACHMarshaller extends ACHProcessor {
     }
 
     private String validateFormattedValue(ACHFieldMetadata fm, String formattedValue) {
-        if (!fm.valueSatisfies(formattedValue)) {
-            throwError("Wrong value(" + formattedValue + ") for the field " + fm);
+        if (failOnWrongValues && !fm.valueSatisfies(formattedValue)) {
+            throwError("Wrong value(\"" + formattedValue + "\" [" + formattedValue.length() + "]) for the field " + fm);
         }
 
-        if (StringUtil.isBlank(formattedValue) && fm.isMandatory()) {
+        if (failOnWrongValues && StringUtil.isBlank(formattedValue) && fm.isMandatory()) {
             throwError(fm + " is mandatory and cannot be blank");
         }
 
