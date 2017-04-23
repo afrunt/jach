@@ -79,7 +79,7 @@ public class ACH {
         return metadataCollector.collectMetadata();
     }
 
-    public ACH setFailOnWrongValues(boolean failOnWrongValues) {
+    public ACH setFailWritingOnWrongValues(boolean failOnWrongValues) {
         marshaller.setFailOnWrongValues(failOnWrongValues);
         return this;
     }
