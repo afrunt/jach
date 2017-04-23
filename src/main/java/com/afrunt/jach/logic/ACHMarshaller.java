@@ -69,7 +69,7 @@ public class ACHMarshaller extends ACHProcessor {
 
             writer.flush();
         } catch (IOException e) {
-            throw new ACHException("Error marshalling ACH document", e);
+            throw error("Error marshalling ACH document", e);
         }
     }
 
@@ -83,7 +83,7 @@ public class ACHMarshaller extends ACHProcessor {
 
             writeLine(writer, marshalRecord(batch.getBatchControl()));
         } catch (IOException e) {
-            throw new ACHException("Error marshalling batch", e);
+            throw error("Error marshalling batch", e);
         }
     }
 
@@ -96,7 +96,7 @@ public class ACHMarshaller extends ACHProcessor {
             }
 
         } catch (IOException e) {
-            throw new ACHException("Error marshalling details", e);
+            throw error("Error marshalling details", e);
         }
     }
 
@@ -120,11 +120,11 @@ public class ACHMarshaller extends ACHProcessor {
 
     private String validateFormattedValue(ACHFieldMetadata fm, String formattedValue) {
         if (!fm.valueSatisfies(formattedValue)) {
-            error("Wrong value(" + formattedValue + ") for the field " + fm);
+            throwError("Wrong value(" + formattedValue + ") for the field " + fm);
         }
 
         if (StringUtil.isBlank(formattedValue) && fm.isMandatory()) {
-            error(fm + " is mandatory and cannot be blank");
+            throwError(fm + " is mandatory and cannot be blank");
         }
 
         return formattedValue;
@@ -140,42 +140,41 @@ public class ACHMarshaller extends ACHProcessor {
         try {
             return fm.getGetter().invoke(record);
         } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new ACHException("Error retrieving value from field " + fm, e);
+            throw error("Error retrieving value from field " + fm, e);
         }
     }
 
     private void validateDocument(ACHDocument document) {
         if (document == null) {
-            error("Document cannot be null");
+            throwError("Document cannot be null");
             return;
         }
 
         if (document.getFileHeader() == null) {
-            error("File header cannot be null");
+            throwError("File header cannot be null");
         }
 
         if (document.getFileControl() == null) {
-            error("File control cannot be null");
+            throwError("File control cannot be null");
         }
 
         if (document.getBatchCount() == 0) {
-            error("At least one batch is required");
+            throwError("At least one batch is required");
         }
-
     }
 
     private void validateBatch(ACHBatch batch) {
         if (batch.getBatchHeader() == null) {
-            error("Batch header is required");
+            throwError("Batch header is required");
         }
 
         if (batch.getBatchControl() == null) {
-            error("Batch control is required");
+            throwError("Batch control is required");
         }
 
         for (ACHBatchDetail detail : batch.getDetails()) {
             if (detail.getDetailRecord() == null) {
-                error("Detail record is required");
+                throwError("Detail record is required");
             }
         }
     }

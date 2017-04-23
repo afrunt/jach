@@ -58,8 +58,14 @@ public class ACHRecordTypeMetadata {
     }
 
     public ACHRecord createInstance() {
+        return createInstance(null);
+    }
+
+    public ACHRecord createInstance(String recordString) {
         try {
-            return getType().newInstance();
+            return getType()
+                    .newInstance()
+                    .setRecord(recordString);
         } catch (Exception e) {
             throw new ACHException("Error during record instantiation " + type);
         }

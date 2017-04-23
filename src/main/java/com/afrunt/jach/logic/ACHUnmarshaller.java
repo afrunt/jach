@@ -22,7 +22,6 @@ import com.afrunt.jach.document.ACHBatch;
 import com.afrunt.jach.document.ACHBatchDetail;
 import com.afrunt.jach.document.ACHDocument;
 import com.afrunt.jach.domain.*;
-import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
 import com.afrunt.jach.metadata.ACHRecordTypeMetadata;
 import com.afrunt.jach.metadata.MetadataCollector;
@@ -48,37 +47,38 @@ public class ACHUnmarshaller extends ACHProcessor {
         return new StatefulUnmarshaller().unmarshalDocument(is);
     }
 
-    private ACHRecord unmarshalRecord(String line, ACHRecordTypeMetadata recordType) {
-        List<String> strings = splitString(line, recordType);
-
-        int i = 0;
-        ACHRecord record = recordType.createInstance();
-        record.setRecord(line);
-
-        for (ACHFieldMetadata fm : recordType.getFieldsMetadata()) {
-            String valueString = strings.get(i);
-            Object value = fieldValueFromString(valueString, fm);
-
-            if (!fm.isReadOnly()) {
-
-                if (fm.hasConstantValues() && !fm.valueSatisfiesToConstantValues(valueString)) {
-                    error(String.format("%s is wrong value for field %s. Valid values are %s",
-                            valueString, fm, StringUtil.join(fm.getPossibleValues(), ",")));
-                }
-
-                applyFieldValue(record, fm, value);
-            }
-
-
-            i++;
-        }
-        return record;
-
-    }
-
     @SuppressWarnings("unchecked")
     public <T extends ACHRecord> T unmarshalRecord(String line, Class<T> recordClass) {
         return (T) unmarshalRecord(line, getMetadata().typeForClass(recordClass));
+    }
+
+    private ACHRecord unmarshalRecord(String line, ACHRecordTypeMetadata recordType) {
+        List<String> strings = splitString(line, recordType);
+
+        ACHRecord record = recordType.createInstance(line);
+
+        int i = 0;
+
+        for (ACHFieldMetadata fm : recordType.getFieldsMetadata()) {
+            String valueString = strings.get(i);
+
+            validateInputValue(fm, valueString);
+
+            if (!fm.isReadOnly()) {
+                applyFieldValue(record, fm, fieldValueFromString(valueString, fm));
+            }
+
+            i++;
+        }
+
+        return record;
+    }
+
+    private void validateInputValue(ACHFieldMetadata fm, String valueString) {
+        if (fm.hasConstantValues() && !fm.valueSatisfiesToConstantValues(valueString)) {
+            throwError(String.format("%s is wrong value for field %s. Valid values are %s",
+                    valueString, fm, StringUtil.join(fm.getPossibleValues(), ",")));
+        }
     }
 
     private void applyFieldValue(ACHRecord record, ACHFieldMetadata fm, Object value) {
@@ -86,7 +86,7 @@ public class ACHUnmarshaller extends ACHProcessor {
             Method setter = fm.getSetter();
             setter.invoke(record, value);
         } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new ACHException("Error applying value to field " + fm, e);
+            throw error("Error applying value to field " + fm, e);
         }
     }
 
@@ -145,27 +145,27 @@ public class ACHUnmarshaller extends ACHProcessor {
             String recordTypeCode = extractRecordTypeCode(currentLine);
 
             if (!RecordTypes.validRecordTypeCode(recordTypeCode)) {
-                error("Unknown record type code " + recordTypeCode);
+                throwValidationError("Unknown record type code " + recordTypeCode);
             }
 
             if ((lineNumber == 1) && !FILE_HEADER.is(currentLine)) {
-                error("First line should be the file header, that start with 1");
+                throwValidationError("First line should be the file header, that start with 1");
             }
 
             if (RecordTypes.BATCH_CONTROL.is(currentLine) && currentBatch == null) {
-                error("Unexpected batch control record");
+                throwValidationError("Unexpected batch control record");
             }
 
             if (RecordTypes.BATCH_HEADER.is(currentLine) && currentBatch != null) {
-                error("Unexpected batch header record");
+                throwValidationError("Unexpected batch header record");
             }
 
             if (RecordTypes.ENTRY_DETAIL.is(currentLine) && currentBatch == null) {
-                error("Unexpected entry detail record");
+                throwValidationError("Unexpected entry detail record");
             }
 
             if (RecordTypes.ADDENDA.is(currentLine) && currentDetail == null) {
-                error("Unexpected addenda record");
+                throwValidationError("Unexpected addenda record");
             }
         }
 
@@ -178,12 +178,12 @@ public class ACHUnmarshaller extends ACHProcessor {
                 return entryDetailTypes.stream()
                         .filter(t -> t.getRecordClassName().startsWith(batchType))
                         .findFirst()
-                        .orElseThrow(() -> new ACHException("Type of detail record not found for string: " + currentLine));
+                        .orElseThrow(() -> error("Type of detail record not found for string: " + currentLine));
             }
         }
 
-        private void error(String message) {
-            throw new ACHException("Line " + lineNumber + ". " + message);
+        private void throwValidationError(String message) {
+            throwError("Line " + lineNumber + ". " + message);
         }
     }
 }

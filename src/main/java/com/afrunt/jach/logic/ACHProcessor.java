@@ -31,6 +31,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -75,30 +76,30 @@ public class ACHProcessor {
             if (StringUtil.isNumeric(value)) {
                 return numberFromString(value, fm);
             } else {
-                throw new ACHException(String.format("Cannot parse string %s to number for field %s", value.trim(), fm));
+                throw error(String.format("Cannot parse string %s to number for field %s", value.trim(), fm));
             }
         } else if (fm.isDate()) {
             return dateValueFromString(value, fm);
         } else {
-            throw new ACHException("Unsupported type " + fm.getFieldType() + " of the field " + fm);
+            throw error("Unsupported type " + fm.getFieldType() + " of the field " + fm);
         }
     }
 
     private String validateLine(String line, int lineNumber) {
         if (line == null) {
-            throw new ACHException("ACH record cannot be null");
+            throw error("ACH record cannot be null");
         }
 
         int lineLength = line.length();
 
         if (lineLength != ACHRecord.ACH_RECORD_LENGTH) {
-            throw new ACHException(String.format("Wrong length (%s) (line: %s) of the record: %s", lineLength, lineNumber, line));
+            throw error(String.format("Wrong length (%s) (line: %s) of the record: %s", lineLength, lineNumber, line));
         }
 
         String recordTypeCode = extractRecordTypeCode(line);
 
         if (!RecordTypes.validRecordTypeCode(recordTypeCode)) {
-            throw new ACHException(String.format("Unknown record type code (%s) (line: %s) of the record: %s", recordTypeCode, lineNumber, line));
+            throw error(String.format("Unknown record type code (%s) (line: %s) of the record: %s", recordTypeCode, lineNumber, line));
         }
 
         return line;
@@ -118,8 +119,16 @@ public class ACHProcessor {
                 .collect(Collectors.toList());
     }
 
-    void error(String message) throws ACHException {
-        throw new ACHException(message);
+    void throwError(String message) throws ACHException {
+        throw error(message);
+    }
+
+    protected ACHException error(String message) {
+        return new ACHException(message);
+    }
+
+    protected ACHException error(String message, Throwable e) {
+        return new ACHException(message, e);
     }
 
     String formatFieldValue(ACHFieldMetadata fm, Object value) {
@@ -128,12 +137,11 @@ public class ACHProcessor {
         }
 
         if (fm.isString()) {
-            return StringUtil.rightPad(value.toString(), fm.getLength());
+            return padString(value, fm.getLength());
         }
 
         if (fm.isDate()) {
-            SimpleDateFormat sdf = new SimpleDateFormat(fm.getDateFormat());
-            return sdf.format(value);
+            return new SimpleDateFormat(fm.getDateFormat()).format(value);
         }
 
         String stringValue = null;
@@ -151,13 +159,17 @@ public class ACHProcessor {
             }
 
             if (stringValue.length() > fm.getLength()) {
-                throw new ACHException("Value exceeds the maximum length of the field " + fm);
+                throw error("Value exceeds the maximum length of the field " + fm);
             }
 
             stringValue = StringUtil.leftPad(stringValue, fm.getLength(), "0");
         }
 
         return stringValue;
+    }
+
+    private String padString(Object value, int length) {
+        return StringUtil.rightPad(value.toString(), length);
     }
 
     private Number numberFromString(String value, ACHFieldMetadata fm) {
@@ -169,25 +181,36 @@ public class ACHProcessor {
         } else if (fm.isLong()) {
             return number.longValue();
         } else if (fm.isDouble()) {
-            return number.divide(BigDecimal.valueOf(10).pow(fm.getDigitsAfterComma())).doubleValue();
+            return moveDecimalRight(number, fm.getDigitsAfterComma()).doubleValue();
         } else if (fm.isBigInteger()) {
             return number.toBigInteger();
         } else if (fm.isBigDecimal()) {
-            return number.divide(BigDecimal.valueOf(10).pow(fm.getDigitsAfterComma()));
+            return moveDecimalRight(number, fm.getDigitsAfterComma());
         } else {
-            throw new ACHException("Unsupported field type " + fm.getFieldType() + " of the field " + fm);
+            throw error("Unsupported field type " + fm.getFieldType() + " of the field " + fm);
         }
+    }
+
+    private BigDecimal moveDecimalRight(BigDecimal number, int digitsAfterComma) {
+        return moveDecimal(number, n -> n.divide(decimalAdjuster(digitsAfterComma)));
+    }
+
+    private BigDecimal moveDecimal(BigDecimal number, Function<BigDecimal, BigDecimal> fn) {
+        return fn.apply(number);
+    }
+
+    private BigDecimal decimalAdjuster(int digitsAfterComma) {
+        return BigDecimal.TEN.pow(digitsAfterComma);
     }
 
     private Date dateValueFromString(String value, ACHFieldMetadata fm) {
         if (ACHField.EMPTY_DATE_PATTERN.equals(fm.getDateFormat())) {
-            throw new ACHException("Date pattern should be specified for field " + fm);
+            throwError("Date pattern should be specified for field " + fm);
         }
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(fm.getDateFormat());
-            return sdf.parse(value);
+            return new SimpleDateFormat(fm.getDateFormat()).parse(value);
         } catch (ParseException e) {
-            throw new ACHException("Error parsing date " + value + " with pattern " + fm.getDateFormat() + " for field " + fm, e);
+            throw error("Error parsing date " + value + " with pattern " + fm.getDateFormat() + " for field " + fm, e);
         }
     }
 
@@ -195,16 +218,16 @@ public class ACHProcessor {
         Integer highestRate = rateMap.keySet().stream()
                 .sorted(Comparator.reverseOrder())
                 .findFirst()
-                .orElseThrow(() -> new ACHException("Type not found"));
+                .orElseThrow(() -> error("Type not found"));
 
         Set<ACHRecordTypeMetadata> typesWithHighestRate = rateMap.get(highestRate);
         if (typesWithHighestRate.size() > 1) {
-            throw new ACHException("More than one type found for string");
+            throwError("More than one type found for string");
         }
 
         return typesWithHighestRate.stream()
                 .findFirst()
-                .orElseThrow(() -> new ACHException("Type not found"));
+                .orElseThrow(() -> error("Type not found"));
     }
 
     private Map<Integer, Set<ACHRecordTypeMetadata>> rankTypes(String str, Set<ACHRecordTypeMetadata> types) {
