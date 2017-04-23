@@ -26,7 +26,6 @@ import com.afrunt.jach.metadata.ACHFieldMetadata;
 import com.afrunt.jach.metadata.ACHMetadata;
 import com.afrunt.jach.metadata.ACHRecordTypeMetadata;
 import com.afrunt.jach.metadata.MetadataCollector;
-import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -73,7 +72,7 @@ public class ACHProcessor {
         }
 
         if (fm.isNumber()) {
-            if (StringUtils.isNumeric(value.trim())) {
+            if (StringUtil.isNumeric(value)) {
                 return numberFromString(value, fm);
             } else {
                 throw new ACHException(String.format("Cannot parse string %s to number for field %s", value.trim(), fm));
@@ -125,11 +124,11 @@ public class ACHProcessor {
 
     String formatFieldValue(ACHFieldMetadata fm, Object value) {
         if (value == null) {
-            return StringUtils.rightPad("", fm.getLength());
+            return StringUtil.filledWithSpaces(fm.getLength());
         }
 
         if (fm.isString()) {
-            return StringUtils.rightPad(value.toString(), fm.getLength());
+            return StringUtil.rightPad(value.toString(), fm.getLength());
         }
 
         if (fm.isDate()) {
@@ -155,7 +154,7 @@ public class ACHProcessor {
                 throw new ACHException("Value exceeds the maximum length of the field " + fm);
             }
 
-            stringValue = StringUtils.leftPad(stringValue, fm.getLength(), "0");
+            stringValue = StringUtil.leftPad(stringValue, fm.getLength(), "0");
         }
 
 

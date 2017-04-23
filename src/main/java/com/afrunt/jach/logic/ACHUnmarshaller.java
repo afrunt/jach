@@ -26,7 +26,6 @@ import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
 import com.afrunt.jach.metadata.ACHRecordTypeMetadata;
 import com.afrunt.jach.metadata.MetadataCollector;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -64,7 +63,7 @@ public class ACHUnmarshaller extends ACHProcessor {
 
                 if (fm.hasConstantValues() && !fm.valueSatisfiesToConstantValues(valueString)) {
                     error(String.format("%s is wrong value for field %s. Valid values are %s",
-                            valueString, fm, StringUtils.join(fm.getPossibleValues(), ",")));
+                            valueString, fm, StringUtil.join(fm.getPossibleValues(), ",")));
                 }
 
                 applyFieldValue(record, fm, value);
@@ -77,6 +76,7 @@ public class ACHUnmarshaller extends ACHProcessor {
 
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends ACHRecord> T unmarshalRecord(String line, Class<T> recordClass) {
         return (T) unmarshalRecord(line, getMetadata().typeForClass(recordClass));
     }

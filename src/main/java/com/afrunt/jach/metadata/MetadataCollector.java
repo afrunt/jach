@@ -21,7 +21,7 @@ package com.afrunt.jach.metadata;
 import com.afrunt.jach.annotation.*;
 import com.afrunt.jach.domain.ACHRecord;
 import com.afrunt.jach.exception.ACHException;
-import org.apache.commons.lang3.StringUtils;
+import com.afrunt.jach.logic.StringUtil;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Method;
@@ -31,6 +31,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.afrunt.jach.logic.StringUtil.uncapitalize;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -130,7 +131,7 @@ public class MetadataCollector {
     }
 
     private String getterNameFromFieldName(String fieldName) {
-        return "get" + capitalize(fieldName);
+        return "get" + StringUtil.capitalize(fieldName);
     }
 
     private Method getterForField(Class<?> cl, String fieldName, Class<?> fieldType) {
@@ -198,7 +199,7 @@ public class MetadataCollector {
 
     private Method findSetterForGetter(Class<?> cl, Method getter) {
         try {
-            String setterName = "set" + capitalize(fieldNameFromGetter(getter));
+            String setterName = "set" + StringUtil.capitalize(fieldNameFromGetter(getter));
             return cl.getDeclaredMethod(setterName, getter.getReturnType());
         } catch (NoSuchMethodException e) {
             //ACHField without setter
@@ -221,15 +222,6 @@ public class MetadataCollector {
                 )
                 .collect(Collectors.toSet());
     }
-
-    private String capitalize(String str) {
-        return StringUtils.capitalize(str);
-    }
-
-    private String uncapitalize(String str) {
-        return StringUtils.uncapitalize(str);
-    }
-
 
     private ACHRecordTypeMetadata validateTypeMetadata(ACHRecordTypeMetadata tm) {
         tm.getFieldsMetadata().forEach(this::validateFieldMetadata);

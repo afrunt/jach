@@ -27,7 +27,6 @@ import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
 import com.afrunt.jach.metadata.ACHRecordTypeMetadata;
 import com.afrunt.jach.metadata.MetadataCollector;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -107,7 +106,7 @@ public class ACHMarshaller extends ACHProcessor {
     }
 
     private String marshalRecord(ACHRecord record) {
-        String recordString = StringUtils.leftPad("", ACHRecord.ACH_RECORD_LENGTH);
+        String recordString = StringUtil.filledWithSpaces(ACHRecord.ACH_RECORD_LENGTH);
         ACHRecordTypeMetadata typeMetadata = getMetadata().typeOfRecord(record);
 
         List<ACHFieldMetadata> fieldsMetadata = typeMetadata.getFieldsMetadata().stream()
@@ -117,9 +116,16 @@ public class ACHMarshaller extends ACHProcessor {
         for (ACHFieldMetadata fm : fieldsMetadata) {
             Object value = retrieveFieldValue(record, fm);
             String formattedValue = formatFieldValue(fm, value);
+            boolean valueIsBlank = StringUtil.isBlank(formattedValue);
+
             if (!fm.valueSatisfies(formattedValue)) {
                 error("Wrong value(" + formattedValue + ") for the field " + fm);
             }
+
+            if (valueIsBlank && fm.isMandatory()) {
+                error(fm + " is mandatory and cannot be blank");
+            }
+
             String headString = recordString.substring(0, fm.getStart());
             String tailString = recordString.substring(fm.getEnd());
             recordString = headString + formattedValue + tailString;

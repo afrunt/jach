@@ -19,7 +19,7 @@
 package com.afrunt.jach.domain;
 
 import com.afrunt.jach.annotation.ACHField;
-import org.apache.commons.lang3.StringUtils;
+import com.afrunt.jach.logic.StringUtil;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 
@@ -45,7 +45,7 @@ public abstract class ACHRecord {
     }
 
     public String reserved(int length) {
-        return StringUtils.leftPad("", length);
+        return StringUtil.filledWithSpaces(length);
     }
 
     public boolean is(RecordTypes type) {
