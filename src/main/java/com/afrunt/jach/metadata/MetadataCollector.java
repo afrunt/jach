@@ -90,15 +90,13 @@ public class MetadataCollector {
     }
 
     private Set<ACHFieldMetadata> collectFieldsMetadata(Class<? extends ACHRecord> type) {
-        return new TreeSet<>(collectExtFieldsMetadata(type));
-    }
-
-    public List<ACHFieldMetadata> collectExtFieldsMetadata(Class<? extends ACHRecord> type) {
-        return findACHRecordTypes().stream()
-                .filter(t -> t.equals(type))
-                .findFirst()
-                .map(t -> collectFieldsMetadata(achRecordClassHierarchy(t), new HashMap<>()))
-                .orElseThrow(() -> new ACHException("Type is not an ACH record " + type));
+        return new TreeSet<>(
+                findACHRecordTypes().stream()
+                        .filter(t -> t.equals(type))
+                        .findFirst()
+                        .map(t -> collectFieldsMetadata(achRecordClassHierarchy(t), new HashMap<>()))
+                        .orElseThrow(() -> new ACHException("Type is not an ACH record " + type))
+        );
     }
 
     private List<ACHFieldMetadata> collectFieldsMetadata(List<Class<?>> types, Map<String, ACHFieldMetadata> acc) {
@@ -167,7 +165,6 @@ public class MetadataCollector {
     }
 
     private ACHFieldMetadata fieldDefinition(Method getter, ACHFieldMetadata fieldMetadata) {
-
         return Optional.ofNullable(getter.getAnnotation(ACHField.class))
                 .map(annotation ->
                         fieldMetadata.setStart(annotation.start())

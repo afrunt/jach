@@ -20,6 +20,7 @@ package com.afrunt.jach.test;
 
 import com.afrunt.jach.ACH;
 import com.afrunt.jach.document.ACHDocument;
+import com.afrunt.jach.domain.FileHeader;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,18 +33,16 @@ import java.util.Scanner;
  */
 public class ACHTest {
     private static final String[] ACH_FILES = {"ach.txt", "ach-iat.txt", "ach-return.txt", "ach-tr.txt", "ach-payrol.txt"};
+    private ACH ach = new ACH();
 
     @Test
-    public void testMarshalling() {
-        ACH ach = new ACH();
-
+    public void testReadWrite() {
         for (String achFileName : ACH_FILES) {
             ACHDocument document = ach.read(getClass().getClassLoader().getResourceAsStream(achFileName));
 
             String out = ach.write(document);
             testFilesAreEquals(getClass().getClassLoader().getResourceAsStream(achFileName), new ByteArrayInputStream(out.getBytes()));
         }
-
     }
 
     private void testFilesAreEquals(InputStream is1, InputStream is2) {

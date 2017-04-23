@@ -77,6 +77,10 @@ public class ACHUnmarshaller extends ACHProcessor {
 
     }
 
+    public <T extends ACHRecord> T unmarshalRecord(String line, Class<T> recordClass) {
+        return (T) unmarshalRecord(line, getMetadata().typeForClass(recordClass));
+    }
+
     private void applyFieldValue(ACHRecord record, ACHFieldMetadata fm, Object value) {
         try {
             Method setter = fm.getSetter();

@@ -23,9 +23,6 @@ package com.afrunt.jach.exception;
  */
 public class ACHException extends RuntimeException {
 
-    public ACHException() {
-    }
-
     public ACHException(String message) {
         super(message);
     }

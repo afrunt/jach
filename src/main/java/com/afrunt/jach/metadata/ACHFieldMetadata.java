@@ -68,6 +68,84 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
         return this.fieldType.equals(fieldType);
     }
 
+    public boolean valueSatisfies(String value) {
+        if (isBlank()) {
+            return "".equals(value.trim());
+        } else if (hasConstantValues()) {
+            return valueSatisfiesToConstantValues(value);
+        } else {
+            return valueSatisfiesToFormat(value);
+        }
+    }
+
+    public boolean valueSatisfiesToFormat(String value) {
+        if (value.length() != getLength()) {
+            return false;
+        }
+
+        if (isString()) {
+            return !isMandatory() || !"".equals(value.trim());
+        } else if (isNumber()) {
+
+            if (isOptional() && StringUtils.isBlank(value)) {
+                return true;
+            }
+
+            if (!isFractional() && value.contains(".")) {
+                return false;
+            }
+
+            try {
+                if (BigDecimal.ZERO.compareTo(new BigDecimal(value.trim())) == 1) {
+                    // Numbers should not be less, than ZERO
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                return false;
+            }
+        } else if (isDate()) {
+            SimpleDateFormat sdf = new SimpleDateFormat(getDateFormat());
+            try {
+                sdf.parse(value);
+                return true;
+            } catch (ParseException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public boolean valueSatisfiesToConstantValues(String value) {
+        if (hasConstantValues()) {
+            return getConstantValues().contains(value) || (isOptional() && "".equals(value.trim()));
+        } else {
+            return true;
+        }
+    }
+
+    public List<String> getPossibleValues() {
+        List<String> result = new ArrayList<>();
+
+        result.addAll(getConstantValues());
+
+        if (result.isEmpty()) {
+            if (isString()) {
+                result.add("Any string value with maximum length of " + getLength());
+            } else if (isNumber()) {
+                result.add("Any numeric value with maximum length of " + getLength());
+            } else if (isDate()) {
+                result.add("Any date value with with pattern " + getDateFormat());
+            } else {
+                result.add("DEADBEAF");
+            }
+        }
+
+        return result;
+    }
+
     public boolean isString() {
         return typeIs(String.class);
     }
@@ -112,52 +190,6 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
         return fieldNameIs("recordTypeCode") && positionIs(0, 1);
     }
 
-    public boolean valueSatisfies(String value) {
-        if (isBlank()) {
-            return "".equals(value.trim());
-        } else if (hasConstantValues()) {
-            return valueSatisfiesToConstantValues(value);
-        } else {
-            return valueSatisfiesToFormat(value);
-        }
-    }
-
-    public boolean valueSatisfiesToFormat(String value) {
-        if (value.length() != getLength()) {
-            return false;
-        }
-
-        if (isString()) {
-            return !isMandatory() || !"".equals(value.trim());
-        } else if (isNumber()) {
-
-            if (isOptional() && StringUtils.isBlank(value)) {
-                return true;
-            }
-
-            if (!isFractional() && value.contains(".")) {
-                return false;
-            }
-
-            try {
-                new BigDecimal(value.trim());
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
-        } else if (isDate()) {
-            SimpleDateFormat sdf = new SimpleDateFormat(getDateFormat());
-            try {
-                sdf.parse(value);
-                return true;
-            } catch (ParseException e) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
     public boolean isDate() {
         return typeIs(Date.class);
     }
@@ -166,18 +198,9 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
         return isNumber() && (typeIs(Double.class) || typeIs(BigDecimal.class));
     }
 
-    public boolean valueSatisfiesToConstantValues(String value) {
-        if (hasConstantValues()) {
-            return getConstantValues().contains(value) || (isOptional() && "".equals(value.trim()));
-        } else {
-            return true;
-        }
-    }
-
     public boolean hasConstantValues() {
         return getValues().size() > 0;
     }
-
 
     public Set<String> getConstantValues() {
         return Collections.unmodifiableSet(getValues());
@@ -276,28 +299,6 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
         this.fieldType = fieldType;
         return this;
     }
-
-    public List<String> getPossibleValues() {
-        List<String> result = new ArrayList<>();
-
-        result.addAll(getConstantValues());
-
-
-        if (result.isEmpty()) {
-            if (isString()) {
-                result.add("Any string value with maximum length of " + getLength());
-            } else if (isNumber()) {
-                result.add("Any numeric value with maximum length of " + getLength());
-            } else if (isDate()) {
-                result.add("Any date value with with pattern " + getDateFormat());
-            } else {
-                result.add("DEADBEAF");
-            }
-        }
-
-        return result;
-    }
-
 
     public InclusionRequirement getInclusion() {
         return inclusion;

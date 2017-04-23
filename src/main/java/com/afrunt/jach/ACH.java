@@ -19,6 +19,7 @@
 package com.afrunt.jach;
 
 import com.afrunt.jach.document.ACHDocument;
+import com.afrunt.jach.domain.ACHRecord;
 import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.logic.ACHMarshaller;
 import com.afrunt.jach.logic.ACHUnmarshaller;
@@ -42,6 +43,10 @@ public class ACH {
         metadataCollector = new MetadataCollector();
         unmarshaller = new ACHUnmarshaller(metadataCollector);
         marshaller = new ACHMarshaller(metadataCollector);
+    }
+
+    public <T extends ACHRecord> T readRecord(String line, Class<T> recordClass) {
+        return unmarshaller.unmarshalRecord(line, recordClass);
     }
 
     public ACHDocument read(InputStream is) {

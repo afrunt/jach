@@ -41,9 +41,12 @@ public class ACHMetadata {
     }
 
     public ACHRecordTypeMetadata typeOfRecord(ACHRecord record) {
+        return typeForClass(record.getClass());
+    }
+
+    public ACHRecordTypeMetadata typeForClass(Class<? extends ACHRecord> cl) {
         return recordTypes.stream()
-                .filter(rt -> rt.getType().equals(record.getClass()))
-                .findFirst()
-                .orElseThrow(() -> new ACHException("Metadata not found for type " + record.getClass()));
+                .filter(rt -> rt.getType().equals(cl))
+                .findFirst().orElseThrow(() -> new ACHException("Record type not found for class " + cl));
     }
 }
