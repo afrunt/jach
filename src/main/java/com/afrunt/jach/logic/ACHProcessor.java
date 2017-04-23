@@ -118,7 +118,7 @@ public class ACHProcessor {
                 .collect(Collectors.toList());
     }
 
-    void error(String message) {
+    void error(String message) throws ACHException {
         throw new ACHException(message);
     }
 
