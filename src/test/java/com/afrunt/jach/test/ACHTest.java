@@ -20,7 +20,6 @@ package com.afrunt.jach.test;
 
 import com.afrunt.jach.ACH;
 import com.afrunt.jach.document.ACHDocument;
-import com.afrunt.jach.domain.FileHeader;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -67,6 +67,8 @@ public class ACHDocument {
     }
 
     public int getBatchCount() {
-        return Optional.ofNullable(batches).map(List::size).orElse(0);
+        return Optional.ofNullable(batches)
+                .map(List::size)
+                .orElse(0);
     }
 }
