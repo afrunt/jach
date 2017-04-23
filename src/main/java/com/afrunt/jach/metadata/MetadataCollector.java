@@ -19,17 +19,21 @@
 package com.afrunt.jach.metadata;
 
 import com.afrunt.jach.annotation.*;
-import com.afrunt.jach.domain.ACHRecord;
+import com.afrunt.jach.domain.*;
+import com.afrunt.jach.domain.addenda.CORAddendaRecord;
+import com.afrunt.jach.domain.addenda.GeneralAddendaRecord;
+import com.afrunt.jach.domain.addenda.POSAddendaRecord;
+import com.afrunt.jach.domain.addenda.ReturnAddendaRecord;
+import com.afrunt.jach.domain.addenda.iat.*;
+import com.afrunt.jach.domain.detail.*;
 import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.logic.StringUtil;
-import org.reflections.Reflections;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.afrunt.jach.logic.StringUtil.uncapitalize;
 import static java.util.Optional.ofNullable;
@@ -212,7 +216,15 @@ public class MetadataCollector {
     }
 
     private Set<Class<? extends ACHRecord>> findACHRecordTypes() {
-        return Stream.of("com.afrunt.jach.domain")
+        // Need to remove Reflections library
+        return getRecordClasses().stream()
+                .filter(c -> c.isAnnotationPresent(ACHRecordType.class)
+                        && !Modifier.isAbstract(c.getModifiers())
+                        && !c.isInterface()
+                )
+                .collect(Collectors.toSet());
+
+        /*return Stream.of("com.afrunt.jach.domain")
                 .map(pkg -> new Reflections(pkg))
                 .map(rfl -> rfl.getSubTypesOf(ACHRecord.class))
                 .flatMap(Set::stream)
@@ -220,7 +232,45 @@ public class MetadataCollector {
                         && !Modifier.isAbstract(c.getModifiers())
                         && !c.isInterface()
                 )
-                .collect(Collectors.toSet());
+                .collect(Collectors.toSet());*/
+    }
+
+    private Set<Class<? extends ACHRecord>> getRecordClasses() {
+        return new HashSet<>(Arrays.asList(
+                EntryDetail.class,
+                RemittanceIATAddendaRecord.class,
+                AddendaRecord.class,
+                SixthIATAddendaRecord.class,
+                IATAddendaRecord.class,
+                CORAddendaRecord.class,
+                ThirdIATAddendaRecord.class,
+                ForeignCorrespondentBankIATAddendaRecord.class,
+                IATEntryDetail.class,
+                RCKEntryDetail.class,
+                GeneralBatchHeader.class,
+                BatchControl.class,
+                TELEntryDetail.class,
+                NonIATEntryDetail.class,
+                FirstIATAddendaRecord.class,
+                FileControl.class,
+                BOCEntryDetail.class,
+                ReturnAddendaRecord.class,
+                BatchHeader.class,
+                SecondIATAddendaRecord.class,
+                SeventhIATAddendaRecord.class,
+                CTXEntryDetail.class,
+                GeneralAddendaRecord.class,
+                POPEntryDetail.class,
+                FifthIATAddendaRecord.class,
+                CCDEntryDetail.class,
+                POSAddendaRecord.class,
+                FourthIATAddendaRecord.class,
+                WEBEntryDetail.class,
+                PPDEntryDetail.class,
+                IATBatchHeader.class,
+                FileHeader.class,
+                ARCEntryDetail.class)
+        );
     }
 
     private ACHRecordTypeMetadata validateTypeMetadata(ACHRecordTypeMetadata tm) {

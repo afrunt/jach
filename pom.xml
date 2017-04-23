@@ -62,12 +62,12 @@
             <version>${commons-lang3.version}</version>
         </dependency>-->
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>${reflections.version}</version>
         </dependency>
-
+-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
