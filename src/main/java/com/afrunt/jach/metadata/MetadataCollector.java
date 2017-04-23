@@ -59,7 +59,7 @@ public class MetadataCollector {
         }
     }
 
-    public Set<ACHRecordTypeMetadata> collectTypesMetadata() {
+    private Set<ACHRecordTypeMetadata> collectTypesMetadata() {
         if (typesMetadata == null) {
             Set<ACHRecordTypeMetadata> collectedMetadata = findACHRecordTypes().stream()
                     .map(this::collectRecordTypeMetadata)
@@ -72,13 +72,7 @@ public class MetadataCollector {
 
     }
 
-    public Set<ACHRecordTypeMetadata> collectMetadataForRecordTypeCode(String code) {
-        return collectTypesMetadata().stream()
-                .filter(m -> code.equals(m.getRecordTypeCode()))
-                .collect(Collectors.toSet());
-    }
-
-    public List<Class<?>> achRecordClassHierarchy(Class<?> cl) {
+    private List<Class<?>> achRecordClassHierarchy(Class<?> cl) {
         List<Class<?>> hierarchy = new ArrayList<>();
         while (!Object.class.equals(cl)) {
             hierarchy.add(cl);
@@ -89,7 +83,7 @@ public class MetadataCollector {
         return hierarchy;
     }
 
-    public Set<Method> findAnnotatedGetters(Class<?> cl) {
+    private Set<Method> findAnnotatedGetters(Class<?> cl) {
         return Arrays.stream(cl.getDeclaredMethods())
                 .filter(m -> m.getName().startsWith("get")
                         && !Void.class.equals(m.getReturnType())
