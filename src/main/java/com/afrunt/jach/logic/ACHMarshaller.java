@@ -117,6 +117,9 @@ public class ACHMarshaller extends ACHProcessor {
         for (ACHFieldMetadata fm : fieldsMetadata) {
             Object value = retrieveFieldValue(record, fm);
             String formattedValue = formatFieldValue(fm, value);
+            if (!fm.valueSatisfies(formattedValue)) {
+                error("Wrong value(" + formattedValue + ") for the field " + fm);
+            }
             String headString = recordString.substring(0, fm.getStart());
             String tailString = recordString.substring(fm.getEnd());
             recordString = headString + formattedValue + tailString;

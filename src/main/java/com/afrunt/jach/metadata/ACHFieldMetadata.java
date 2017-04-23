@@ -20,6 +20,7 @@ package com.afrunt.jach.metadata;
 
 import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.annotation.InclusionRequirement;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -137,12 +138,18 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
         if (isString()) {
             return !isMandatory() || !"".equals(value.trim());
         } else if (isNumber()) {
+
+            if (isOptional() && StringUtils.isBlank(value)) {
+                return true;
+            }
+
             if (!isFractional() && value.contains(".")) {
                 return false;
             }
 
             try {
                 new BigDecimal(value.trim());
+                return true;
             } catch (Exception e) {
                 return false;
             }
@@ -157,7 +164,6 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
         } else {
             return false;
         }
-        return false;
     }
 
     public boolean isDate() {
