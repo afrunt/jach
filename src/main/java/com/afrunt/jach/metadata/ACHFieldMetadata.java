@@ -97,7 +97,7 @@ public class ACHFieldMetadata implements Comparable<ACHFieldMetadata> {
 
             try {
                 if (BigDecimal.ZERO.compareTo(new BigDecimal(value.trim())) == 1) {
-                    // Numbers should not be less, than ZERO
+                    // Numbers should be positive or zero
                     return false;
                 } else {
                     return true;
