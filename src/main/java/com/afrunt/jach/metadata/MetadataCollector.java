@@ -62,7 +62,7 @@ public class MetadataCollector {
     private Set<ACHRecordTypeMetadata> collectTypesMetadata() {
         if (typesMetadata == null) {
             Set<ACHRecordTypeMetadata> collectedMetadata = findACHRecordTypes().stream()
-                    .map(this::collectRecordTypeMetadata)
+                    .map(this::collectTypeMetadata)
                     .collect(Collectors.toSet());
             typesMetadata = Collections.unmodifiableSet(collectedMetadata);
             return typesMetadata;
@@ -93,7 +93,7 @@ public class MetadataCollector {
                 .collect(Collectors.toSet());
     }
 
-    private ACHRecordTypeMetadata collectRecordTypeMetadata(Class<? extends ACHRecord> type) {
+    public ACHRecordTypeMetadata collectTypeMetadata(Class<? extends ACHRecord> type) {
         return validateTypeMetadata(new ACHRecordTypeMetadata(type, collectFieldsMetadata(type)));
     }
 
@@ -221,7 +221,7 @@ public class MetadataCollector {
     private Set<Class<? extends ACHRecord>> findACHRecordTypes() {
         // Need to remove Reflections library
         if (recordClasses == null) {
-            recordClasses = getRecordClasses().stream()
+            recordClasses = classes().stream()
                     .filter(c -> c.isAnnotationPresent(ACHRecordType.class)
                             && !Modifier.isAbstract(c.getModifiers())
                             && !c.isInterface()
@@ -243,7 +243,7 @@ public class MetadataCollector {
                 .collect(Collectors.toSet());*/
     }
 
-    private Set<Class<? extends ACHRecord>> getRecordClasses() {
+    public Set<Class<? extends ACHRecord>> classes() {
         return new HashSet<>(Arrays.asList(
                 EntryDetail.class,
                 RemittanceIATAddendaRecord.class,
