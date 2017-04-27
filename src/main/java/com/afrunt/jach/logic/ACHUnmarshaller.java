@@ -64,7 +64,7 @@ public class ACHUnmarshaller extends ACHProcessor {
             validateInputValue(fm, valueString);
 
             if (!fm.isReadOnly()) {
-                applyFieldValue(record, fm, fieldValueFromString(valueString, fm));
+                fm.applyValue(record, fieldValueFromString(valueString, fm));
             }
 
             i++;
@@ -79,14 +79,6 @@ public class ACHUnmarshaller extends ACHProcessor {
         if (valueNotSatisfiesToConstantValues && !emptyOptional) {
             throwError(String.format("%s is wrong value for field %s. Valid values are %s",
                     valueString, fm, StringUtil.join(fm.getPossibleValues(), ",")));
-        }
-    }
-
-    private void applyFieldValue(ACHRecord record, ACHFieldMetadata fm, Object value) {
-        try {
-            fm.getSetter().invoke(record, value);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw error("Error applying value to field " + fm, e);
         }
     }
 
