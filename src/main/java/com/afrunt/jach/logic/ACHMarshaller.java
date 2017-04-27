@@ -24,9 +24,8 @@ import com.afrunt.jach.document.ACHDocument;
 import com.afrunt.jach.domain.ACHRecord;
 import com.afrunt.jach.domain.AddendaRecord;
 import com.afrunt.jach.exception.ACHException;
+import com.afrunt.jach.metadata.ACHBeanMetadata;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
-import com.afrunt.jach.metadata.ACHRecordTypeMetadata;
-import com.afrunt.jach.metadata.MetadataCollector;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -44,7 +43,7 @@ public class ACHMarshaller extends ACHProcessor {
     private Charset charset = Charset.forName("UTF-8");
     private boolean failOnWrongValues = true;
 
-    public ACHMarshaller(MetadataCollector metadataCollector) {
+    public ACHMarshaller(ACHMetadataCollector metadataCollector) {
         super(metadataCollector);
     }
 
@@ -108,9 +107,9 @@ public class ACHMarshaller extends ACHProcessor {
 
     private String marshalRecord(ACHRecord record) {
         String recordString = StringUtil.filledWithSpaces(ACHRecord.ACH_RECORD_LENGTH);
-        ACHRecordTypeMetadata typeMetadata = getMetadata().typeOfRecord(record);
+        ACHBeanMetadata typeMetadata = getMetadata().getBeanMetadata(record.getClass());
 
-        List<ACHFieldMetadata> fieldsMetadata = typeMetadata.getFieldsMetadata().stream()
+        List<ACHFieldMetadata> fieldsMetadata = typeMetadata.getACHFieldsMetadata().stream()
                 .sorted()
                 .collect(Collectors.toList());
 

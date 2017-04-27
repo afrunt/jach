@@ -22,9 +22,9 @@ import com.afrunt.jach.document.ACHDocument;
 import com.afrunt.jach.domain.ACHRecord;
 import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.logic.ACHMarshaller;
+import com.afrunt.jach.logic.ACHMetadataCollector;
 import com.afrunt.jach.logic.ACHUnmarshaller;
 import com.afrunt.jach.metadata.ACHMetadata;
-import com.afrunt.jach.metadata.MetadataCollector;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -35,12 +35,12 @@ import java.io.OutputStream;
  * @author Andrii Frunt
  */
 public class ACH {
-    private MetadataCollector metadataCollector;
+    private ACHMetadataCollector metadataCollector;
     private ACHUnmarshaller unmarshaller;
     private ACHMarshaller marshaller;
 
     public ACH() {
-        metadataCollector = new MetadataCollector();
+        metadataCollector = new ACHMetadataCollector();
         unmarshaller = new ACHUnmarshaller(metadataCollector);
         marshaller = new ACHMarshaller(metadataCollector);
     }

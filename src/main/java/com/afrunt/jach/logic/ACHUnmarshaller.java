@@ -22,9 +22,8 @@ import com.afrunt.jach.document.ACHBatch;
 import com.afrunt.jach.document.ACHBatchDetail;
 import com.afrunt.jach.document.ACHDocument;
 import com.afrunt.jach.domain.*;
+import com.afrunt.jach.metadata.ACHBeanMetadata;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
-import com.afrunt.jach.metadata.ACHRecordTypeMetadata;
-import com.afrunt.jach.metadata.MetadataCollector;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -38,7 +37,7 @@ import static com.afrunt.jach.domain.RecordTypes.*;
  * @author Andrii Frunt
  */
 public class ACHUnmarshaller extends ACHProcessor {
-    public ACHUnmarshaller(MetadataCollector metadataCollector) {
+    public ACHUnmarshaller(ACHMetadataCollector metadataCollector) {
         super(metadataCollector);
     }
 
@@ -48,17 +47,18 @@ public class ACHUnmarshaller extends ACHProcessor {
 
     @SuppressWarnings("unchecked")
     public <T extends ACHRecord> T unmarshalRecord(String line, Class<T> recordClass) {
-        return (T) unmarshalRecord(line, getMetadata().typeForClass(recordClass));
+        return (T) unmarshalRecord(line, getMetadata().getBeanMetadata(recordClass));
     }
 
-    private ACHRecord unmarshalRecord(String line, ACHRecordTypeMetadata recordType) {
+    private ACHRecord unmarshalRecord(String line, ACHBeanMetadata recordType) {
         List<String> strings = splitString(line, recordType);
 
-        ACHRecord record = recordType.createInstance(line);
+        ACHRecord record = (ACHRecord) recordType.createInstance();
+        record.setRecord(line);
 
         int i = 0;
 
-        for (ACHFieldMetadata fm : recordType.getFieldsMetadata()) {
+        for (ACHFieldMetadata fm : recordType.getACHFieldsMetadata()) {
             String valueString = strings.get(i);
 
             validateInputValue(fm, valueString);
@@ -169,14 +169,14 @@ public class ACHUnmarshaller extends ACHProcessor {
             }
         }
 
-        private ACHRecordTypeMetadata findRecordType() {
+        private ACHBeanMetadata findRecordType() {
             if (!ENTRY_DETAIL.is(currentLine)) {
                 return typeOfRecord(currentLine);
             } else {
-                Set<ACHRecordTypeMetadata> entryDetailTypes = typesForRecordTypeCode(ENTRY_DETAIL.getRecordTypeCode());
+                Set<ACHBeanMetadata> entryDetailTypes = typesForRecordTypeCode(ENTRY_DETAIL.getRecordTypeCode());
                 String batchType = currentBatch.getBatchType();
                 return entryDetailTypes.stream()
-                        .filter(t -> t.getRecordClassName().startsWith(batchType))
+                        .filter(t -> t.getBeanClassName().startsWith(batchType))
                         .findFirst()
                         .orElseThrow(() -> error("Type of detail record not found for string: " + currentLine));
             }

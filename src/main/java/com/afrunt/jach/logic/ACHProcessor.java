@@ -22,10 +22,9 @@ import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.domain.ACHRecord;
 import com.afrunt.jach.domain.RecordTypes;
 import com.afrunt.jach.exception.ACHException;
+import com.afrunt.jach.metadata.ACHBeanMetadata;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
 import com.afrunt.jach.metadata.ACHMetadata;
-import com.afrunt.jach.metadata.ACHRecordTypeMetadata;
-import com.afrunt.jach.metadata.MetadataCollector;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -40,16 +39,16 @@ import java.util.stream.IntStream;
 class ACHProcessor {
     static final String LINE_SEPARATOR = Optional.ofNullable(System.getProperty("line.separator")).orElse("\n");
 
-    private MetadataCollector metadataCollector;
+    private ACHMetadataCollector metadataCollector;
 
-    ACHProcessor(MetadataCollector metadataCollector) {
+    ACHProcessor(ACHMetadataCollector metadataCollector) {
         this.metadataCollector = metadataCollector;
     }
 
-    ACHRecordTypeMetadata typeOfRecord(String str) {
+    ACHBeanMetadata typeOfRecord(String str) {
         str = validateLine(str);
         String recordTypeCode = extractRecordTypeCode(str);
-        Set<ACHRecordTypeMetadata> types = getMetadata().typesForRecordTypeCode(recordTypeCode);
+        Set<ACHBeanMetadata> types = getMetadata().typesForRecordTypeCode(recordTypeCode);
 
         if (types.isEmpty()) {
             return null;
@@ -58,7 +57,7 @@ class ACHProcessor {
         }
     }
 
-    Set<ACHRecordTypeMetadata> typesForRecordTypeCode(String recordTypeCode) {
+    Set<ACHBeanMetadata> typesForRecordTypeCode(String recordTypeCode) {
         return getMetadata().typesForRecordTypeCode(recordTypeCode);
     }
 
@@ -92,10 +91,11 @@ class ACHProcessor {
         return metadataCollector.collectMetadata();
     }
 
-    List<String> splitString(String str, ACHRecordTypeMetadata metadata) {
-        return metadata.getFieldsMetadata().stream()
+    List<String> splitString(String str, ACHBeanMetadata metadata) {
+        return metadata.getACHFieldsMetadata().stream()
                 .map(fm -> str.substring(fm.getStart(), fm.getEnd()))
                 .collect(Collectors.toList());
+
     }
 
     String formatFieldValue(ACHFieldMetadata fm, Object value) {
@@ -200,13 +200,13 @@ class ACHProcessor {
         }
     }
 
-    private ACHRecordTypeMetadata getTypeWithHighestRate(Map<Integer, Set<ACHRecordTypeMetadata>> rateMap) {
+    private ACHBeanMetadata getTypeWithHighestRate(Map<Integer, Set<ACHBeanMetadata>> rateMap) {
         Integer highestRate = rateMap.keySet().stream()
                 .sorted(Comparator.reverseOrder())
                 .findFirst()
                 .orElseThrow(() -> error("Type not found"));
 
-        Set<ACHRecordTypeMetadata> typesWithHighestRate = rateMap.get(highestRate);
+        Set<ACHBeanMetadata> typesWithHighestRate = rateMap.get(highestRate);
         if (typesWithHighestRate.size() > 1) {
             throwError("More than one type found for string");
         }
@@ -216,12 +216,12 @@ class ACHProcessor {
                 .orElseThrow(() -> error("Type not found"));
     }
 
-    private Map<Integer, Set<ACHRecordTypeMetadata>> rankTypes(String str, Set<ACHRecordTypeMetadata> types) {
-        Map<Integer, Set<ACHRecordTypeMetadata>> result = new HashMap<>();
+    private Map<Integer, Set<ACHBeanMetadata>> rankTypes(String str, Set<ACHBeanMetadata> types) {
+        Map<Integer, Set<ACHBeanMetadata>> result = new HashMap<>();
 
-        for (ACHRecordTypeMetadata type : types) {
+        for (ACHBeanMetadata type : types) {
             int rank = rankType(str, type);
-            Set<ACHRecordTypeMetadata> rankSet = result.getOrDefault(rank, new HashSet<>());
+            Set<ACHBeanMetadata> rankSet = result.getOrDefault(rank, new HashSet<>());
             rankSet.add(type);
             result.put(rank, rankSet);
         }
@@ -229,9 +229,9 @@ class ACHProcessor {
         return result;
     }
 
-    private int rankType(String str, ACHRecordTypeMetadata typeMetadata) {
-        List<String> strings = splitString(str, typeMetadata);
-        List<ACHFieldMetadata> fms = new ArrayList<>(typeMetadata.getFieldsMetadata());
+    private int rankType(String str, ACHBeanMetadata beanMetadata) {
+        List<String> strings = splitString(str, beanMetadata);
+        List<ACHFieldMetadata> fms = new ArrayList<>(beanMetadata.getACHFieldsMetadata());
         return IntStream.range(0, strings.size())
                 .map(i -> rankField(strings.get(i), fms.get(i)))
                 .reduce(0, (left, right) -> left + right);

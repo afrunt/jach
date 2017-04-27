@@ -18,23 +18,26 @@
  */
 package com.afrunt.jach.metadata;
 
-import com.afrunt.beanmetadata.Metadata;
-import com.afrunt.jach.annotation.ACHRecordType;
+import com.afrunt.beanmetadata.BeanMetadata;
+import com.afrunt.jach.annotation.ACHField;
 
+import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author Andrii Frunt
  */
-public class ACHMetadata extends Metadata<ACHBeanMetadata, ACHFieldMetadata> {
-    public Set<ACHBeanMetadata> getACHBeansMetadata() {
-        return getAnnotatedWith(ACHRecordType.class);
+public class ACHBeanMetadata extends BeanMetadata<ACHFieldMetadata> {
+    public Set<ACHFieldMetadata> getACHFieldsMetadata() {
+        return getFieldsAnnotatedWith(ACHField.class);
     }
 
-    public Set<ACHBeanMetadata> typesForRecordTypeCode(String recordTypeCode) {
-        return getACHBeansMetadata().stream()
-                .filter(b -> b.recordTypeCodeIs(recordTypeCode))
-                .collect(Collectors.toSet());
+    public boolean recordTypeCodeIs(String recordTypeCode) {
+        return recordTypeCode.equals(getRecordTypeCode());
+    }
+
+    public String getRecordTypeCode() {
+        List<String> constantValues = getFieldMetadata("recordTypeCode").getValues();
+        return constantValues.get(0);
     }
 }

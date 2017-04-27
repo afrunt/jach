@@ -50,24 +50,15 @@
 
     <properties>
         <junit.version>4.12</junit.version>
-        <reflections.version>0.9.11</reflections.version>
-        <commons-lang3.version>3.4</commons-lang3.version>
+        <bean-metadata.version>0.1-dev</bean-metadata.version>
     </properties>
 
     <dependencies>
-        <!--All needed methods implemented within the project-->
-        <!--<dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
-        </dependency>-->
-
-        <!--<dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>${reflections.version}</version>
+        <dependency>
+            <groupId>com.afrunt</groupId>
+            <artifactId>bean-metadata</artifactId>
+            <version>${bean-metadata.version}</version>
         </dependency>
--->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
