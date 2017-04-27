@@ -137,10 +137,6 @@ public class MetadataCollector {
         }
     }
 
-    private String getterNameFromFieldName(String fieldName) {
-        return "get" + StringUtil.capitalize(fieldName);
-    }
-
     private Method getterForField(Class<?> cl, String fieldName, Class<?> fieldType) {
         return Arrays.stream(cl.getDeclaredMethods())
                 .filter(m -> m.getName().equals(getterNameFromFieldName(fieldName)) && m.getReturnType().equals(fieldType))
@@ -212,6 +208,10 @@ public class MetadataCollector {
             //ACHField without setter
             return null;
         }
+    }
+
+    private String getterNameFromFieldName(String fieldName) {
+        return "get" + StringUtil.capitalize(fieldName);
     }
 
     private String fieldNameFromGetter(Method getter) {
