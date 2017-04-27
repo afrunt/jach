@@ -26,7 +26,6 @@ import com.afrunt.jach.metadata.ACHBeanMetadata;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
 
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
