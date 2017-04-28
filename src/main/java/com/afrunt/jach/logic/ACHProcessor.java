@@ -53,18 +53,8 @@ class ACHProcessor {
         return new ACHException(message, e);
     }
 
-
-    protected BigDecimal moveDecimalRight(BigDecimal number, int digitsAfterComma) {
-        return number.divide(decimalAdjuster(digitsAfterComma));
-    }
-
-    protected BigDecimal moveDecimalLeft(BigDecimal number, int digitsAfterComma) {
-        return number.multiply(decimalAdjuster(digitsAfterComma));
-    }
-
     protected BigDecimal decimalAdjuster(int digitsAfterComma) {
         return BigDecimal.TEN.pow(digitsAfterComma);
     }
-
 
 }

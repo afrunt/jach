@@ -226,16 +226,20 @@ public class ACHWriter extends ACHProcessor {
         }
     }
 
-    protected String padString(Object value, int length) {
+    private String padString(Object value, int length) {
         return StringUtil.rightPad(value.toString(), length);
     }
 
-    protected String padNumber(Object value, int length) {
+    private String padNumber(Object value, int length) {
         return StringUtil.leftPad(value.toString(), length, "0");
     }
 
     private void writeLine(OutputStreamWriter writer, String line) throws IOException {
         writer.write(line);
         writer.write(LINE_SEPARATOR);
+    }
+
+    private BigDecimal moveDecimalLeft(BigDecimal number, int digitsAfterComma) {
+        return number.multiply(decimalAdjuster(digitsAfterComma));
     }
 }

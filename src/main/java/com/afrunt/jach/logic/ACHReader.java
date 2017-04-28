@@ -229,6 +229,10 @@ public class ACHReader extends ACHProcessor {
         }
     }
 
+    private BigDecimal moveDecimalRight(BigDecimal number, int digitsAfterComma) {
+        return number.divide(decimalAdjuster(digitsAfterComma));
+    }
+
     private class StatefulUnmarshaller {
         private int lineNumber = 0;
         private String currentLine;
