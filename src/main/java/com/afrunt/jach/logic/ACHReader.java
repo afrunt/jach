@@ -319,7 +319,7 @@ public class ACHReader extends ACHProcessor {
                 Set<ACHBeanMetadata> entryDetailTypes = getMetadata().typesForRecordTypeCode(ENTRY_DETAIL.getRecordTypeCode());
                 String batchType = currentBatch.getBatchType();
                 return entryDetailTypes.stream()
-                        .filter(t -> t.getBeanClassName().startsWith(batchType))
+                        .filter(t -> t.getSimpleTypeName().startsWith(batchType))
                         .findFirst()
                         .orElseThrow(() -> error("Type of detail record not found for string: " + currentLine));
             }
