@@ -32,45 +32,47 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * @author Andrii Frunt
  */
-public class ACHMarshaller extends ACHProcessor {
+public class ACHWriter extends ACHProcessor {
     private Charset charset = Charset.forName("UTF-8");
     private boolean failOnWrongValues = true;
 
-    public ACHMarshaller(ACHMetadataCollector metadataCollector) {
+    public ACHWriter(ACHMetadataCollector metadataCollector) {
         super(metadataCollector);
     }
 
-    public String marshal(ACHDocument document) {
+    public String write(ACHDocument document) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            marshal(document, baos);
+            write(document, baos);
             return baos.toString(charset.name());
         } catch (IOException e) {
             throw new ACHException("Error marshalling ACH document", e);
         }
     }
 
-    public ACHMarshaller setFailOnWrongValues(boolean failOnWrongValues) {
+    public ACHWriter setFailOnWrongValues(boolean failOnWrongValues) {
         this.failOnWrongValues = failOnWrongValues;
         return this;
     }
 
-    private void marshal(ACHDocument document, OutputStream outputStream) {
+    public void write(ACHDocument document, OutputStream outputStream) {
         try {
             validateDocument(document);
             OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 
-            writeLine(writer, marshalRecord(document.getFileHeader()));
+            writeLine(writer, writeRecord(document.getFileHeader()));
 
-            document.getBatches().forEach(b -> marshalBatch(b, writer));
+            document.getBatches().forEach(b -> writeBatch(b, writer));
 
-            writer.write(marshalRecord(document.getFileControl()));
+            writer.write(writeRecord(document.getFileControl()));
 
             writer.flush();
         } catch (IOException e) {
@@ -78,26 +80,26 @@ public class ACHMarshaller extends ACHProcessor {
         }
     }
 
-    private void marshalBatch(ACHBatch batch, OutputStreamWriter writer) {
+    private void writeBatch(ACHBatch batch, OutputStreamWriter writer) {
         try {
             validateBatch(batch);
 
-            writeLine(writer, marshalRecord(batch.getBatchHeader()));
+            writeLine(writer, writeRecord(batch.getBatchHeader()));
 
-            batch.getDetails().forEach(d -> marshalBatchDetail(d, writer));
+            batch.getDetails().forEach(d -> writeBatchDetail(d, writer));
 
-            writeLine(writer, marshalRecord(batch.getBatchControl()));
+            writeLine(writer, writeRecord(batch.getBatchControl()));
         } catch (IOException e) {
             throw error("Error marshalling batch", e);
         }
     }
 
-    private void marshalBatchDetail(ACHBatchDetail detail, OutputStreamWriter writer) {
+    private void writeBatchDetail(ACHBatchDetail detail, OutputStreamWriter writer) {
         try {
-            writeLine(writer, marshalRecord(detail.getDetailRecord()));
+            writeLine(writer, writeRecord(detail.getDetailRecord()));
 
             for (AddendaRecord addendaRecord : detail.getAddendaRecords()) {
-                writeLine(writer, marshalRecord(addendaRecord));
+                writeLine(writer, writeRecord(addendaRecord));
             }
 
         } catch (IOException e) {
@@ -105,7 +107,7 @@ public class ACHMarshaller extends ACHProcessor {
         }
     }
 
-    private String marshalRecord(ACHRecord record) {
+    private String writeRecord(ACHRecord record) {
         String recordString = StringUtil.filledWithSpaces(ACHRecord.ACH_RECORD_LENGTH);
         ACHBeanMetadata typeMetadata = getMetadata().getBeanMetadata(record.getClass());
 
@@ -121,6 +123,46 @@ public class ACHMarshaller extends ACHProcessor {
 
         record.setRecord(recordString);
         return recordString;
+    }
+
+    String formatFieldValue(ACHFieldMetadata fm, Object value) {
+        if (value == null) {
+            return StringUtil.filledWithSpaces(fm.getLength());
+        }
+
+        if (fm.isString()) {
+            return padString(value, fm.getLength());
+        }
+
+        if (fm.isDate()) {
+            return new SimpleDateFormat(fm.getDateFormat()).format(value);
+        }
+
+        String stringValue = null;
+
+        if (fm.isNumber()) {
+            if (value instanceof BigDecimal) {
+                stringValue = String.valueOf(
+                        moveDecimalLeft((BigDecimal) value, fm.getDigitsAfterComma())
+                                .longValue()
+                );
+            } else if (value instanceof Double) {
+                stringValue = String.valueOf(
+                        moveDecimalLeft(BigDecimal.valueOf((Double) value), fm.getDigitsAfterComma())
+                                .longValue()
+                );
+            } else {
+                stringValue = value.toString();
+            }
+
+            if (stringValue.length() > fm.getLength()) {
+                throw error("Value exceeds the maximum length of the field " + fm);
+            }
+
+            stringValue = padNumber(stringValue, fm.getLength());
+        }
+
+        return stringValue;
     }
 
     private String validateFormattedValue(ACHFieldMetadata fm, String formattedValue) {
@@ -182,6 +224,14 @@ public class ACHMarshaller extends ACHProcessor {
                 throwError("Detail record is required");
             }
         }
+    }
+
+    protected String padString(Object value, int length) {
+        return StringUtil.rightPad(value.toString(), length);
+    }
+
+    protected String padNumber(Object value, int length) {
+        return StringUtil.leftPad(value.toString(), length, "0");
     }
 
     private void writeLine(OutputStreamWriter writer, String line) throws IOException {

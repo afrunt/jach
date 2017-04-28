@@ -1,13 +1,6 @@
 package com.afrunt.jach.logic;
 
 import com.afrunt.beanmetadata.MetadataCollector;
-import com.afrunt.jach.domain.*;
-import com.afrunt.jach.domain.addenda.CORAddendaRecord;
-import com.afrunt.jach.domain.addenda.GeneralAddendaRecord;
-import com.afrunt.jach.domain.addenda.POSAddendaRecord;
-import com.afrunt.jach.domain.addenda.ReturnAddendaRecord;
-import com.afrunt.jach.domain.addenda.iat.*;
-import com.afrunt.jach.domain.detail.*;
 import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.metadata.ACHBeanMetadata;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
@@ -15,48 +8,11 @@ import com.afrunt.jach.metadata.ACHMetadata;
 
 import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.HashSet;
 
 /**
  * @author Andrii Frunt
  */
 public class ACHMetadataCollector extends MetadataCollector<ACHMetadata, ACHBeanMetadata, ACHFieldMetadata> {
-    public static final HashSet<Class<?>> ACH_CLASSES = new HashSet<>(Arrays.asList(
-            EntryDetail.class,
-            RemittanceIATAddendaRecord.class,
-            AddendaRecord.class,
-            SixthIATAddendaRecord.class,
-            IATAddendaRecord.class,
-            CORAddendaRecord.class,
-            ThirdIATAddendaRecord.class,
-            ForeignCorrespondentBankIATAddendaRecord.class,
-            IATEntryDetail.class,
-            RCKEntryDetail.class,
-            GeneralBatchHeader.class,
-            BatchControl.class,
-            TELEntryDetail.class,
-            NonIATEntryDetail.class,
-            FirstIATAddendaRecord.class,
-            FileControl.class,
-            BOCEntryDetail.class,
-            ReturnAddendaRecord.class,
-            BatchHeader.class,
-            SecondIATAddendaRecord.class,
-            SeventhIATAddendaRecord.class,
-            CTXEntryDetail.class,
-            GeneralAddendaRecord.class,
-            POPEntryDetail.class,
-            FifthIATAddendaRecord.class,
-            CCDEntryDetail.class,
-            POSAddendaRecord.class,
-            FourthIATAddendaRecord.class,
-            WEBEntryDetail.class,
-            PPDEntryDetail.class,
-            IATBatchHeader.class,
-            FileHeader.class,
-            ARCEntryDetail.class)
-    );
 
     @Override
     protected ACHMetadata newMetadata() {
@@ -113,10 +69,4 @@ public class ACHMetadataCollector extends MetadataCollector<ACHMetadata, ACHBean
             }
         }
     }
-
-    public ACHMetadata collectMetadata() {
-        return collectMetadata(ACH_CLASSES);
-    }
-
-
 }
