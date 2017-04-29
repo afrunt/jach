@@ -45,7 +45,7 @@ public class ACHReader extends ACHProcessor {
     }
 
     public ACHDocument read(InputStream is) {
-        return new StatefulUnmarshaller().readDocument(is);
+        return new StatefulACHReader().readDocument(is);
     }
 
     @SuppressWarnings("unchecked")
@@ -60,8 +60,8 @@ public class ACHReader extends ACHProcessor {
 
     }
 
-    protected ACHBeanMetadata typeOfRecord(String str) {
-        str = validateLine(str);
+    protected ACHBeanMetadata typeOfString(String str) {
+        str = validateString(str);
         String recordTypeCode = extractRecordTypeCode(str);
         Set<ACHBeanMetadata> types = getMetadata().typesForRecordTypeCode(recordTypeCode);
 
@@ -72,7 +72,7 @@ public class ACHReader extends ACHProcessor {
         }
     }
 
-    protected String validateLine(String line) {
+    protected String validateString(String line) {
         if (line == null) {
             throw error("ACH record cannot be null");
         }
@@ -90,10 +90,6 @@ public class ACHReader extends ACHProcessor {
         }
 
         return line;
-    }
-
-    protected Set<ACHBeanMetadata> typesForRecordTypeCode(String recordTypeCode) {
-        return getMetadata().typesForRecordTypeCode(recordTypeCode);
     }
 
     private int rankType(String str, ACHBeanMetadata beanMetadata) {
@@ -233,7 +229,7 @@ public class ACHReader extends ACHProcessor {
         return number.divide(decimalAdjuster(digitsAfterComma));
     }
 
-    private class StatefulUnmarshaller {
+    private class StatefulACHReader {
         private int lineNumber = 0;
         private String currentLine;
         private ACHDocument document = new ACHDocument();
@@ -246,7 +242,7 @@ public class ACHReader extends ACHProcessor {
             while (sc.hasNextLine()) {
                 ++lineNumber;
                 currentLine = sc.nextLine();
-                validateLine();
+                validateString();
 
                 ACHRecord record = readRecord(currentLine, findRecordType());
 
@@ -284,7 +280,7 @@ public class ACHReader extends ACHProcessor {
             return currentDocument;
         }
 
-        private void validateLine() {
+        private void validateString() {
             String recordTypeCode = extractRecordTypeCode(currentLine);
 
             if (!RecordTypes.validRecordTypeCode(recordTypeCode)) {
@@ -314,7 +310,7 @@ public class ACHReader extends ACHProcessor {
 
         private ACHBeanMetadata findRecordType() {
             if (!ENTRY_DETAIL.is(currentLine)) {
-                return typeOfRecord(currentLine);
+                return typeOfString(currentLine);
             } else {
                 Set<ACHBeanMetadata> entryDetailTypes = getMetadata().typesForRecordTypeCode(ENTRY_DETAIL.getRecordTypeCode());
                 String batchType = currentBatch.getBatchType();
