@@ -19,16 +19,14 @@
 package com.afrunt.jach.logic;
 
 import com.afrunt.jach.ACH;
-import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.metadata.ACHMetadata;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 /**
  * @author Andrii Frunt
  */
-class ACHProcessor {
+class ACHProcessor implements ACHErrorMixIn, ACHFieldConversionSupport {
     static final String LINE_SEPARATOR = Optional.ofNullable(System.getProperty("line.separator")).orElse("\n");
 
     private ACHMetadataCollector metadataCollector;
@@ -39,22 +37,6 @@ class ACHProcessor {
 
     ACHMetadata getMetadata() {
         return metadataCollector.collectMetadata(ACH.ACH_CLASSES);
-    }
-
-    void throwError(String message) throws ACHException {
-        throw error(message);
-    }
-
-    ACHException error(String message) {
-        return new ACHException(message);
-    }
-
-    ACHException error(String message, Throwable e) {
-        return new ACHException(message, e);
-    }
-
-    protected BigDecimal decimalAdjuster(int digitsAfterComma) {
-        return BigDecimal.TEN.pow(digitsAfterComma);
     }
 
 }

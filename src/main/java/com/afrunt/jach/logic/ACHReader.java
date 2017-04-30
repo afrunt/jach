@@ -18,7 +18,6 @@
  */
 package com.afrunt.jach.logic;
 
-import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.document.ACHBatch;
 import com.afrunt.jach.document.ACHBatchDetail;
 import com.afrunt.jach.document.ACHDocument;
@@ -27,9 +26,6 @@ import com.afrunt.jach.metadata.ACHBeanMetadata;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
 
 import java.io.InputStream;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -92,49 +88,28 @@ public class ACHReader extends ACHProcessor {
         return line;
     }
 
-    private ACHRecord readRecord(String line, ACHBeanMetadata recordType) {
-        List<String> strings = splitString(line, recordType);
+    private ACHRecord readRecord(String line, ACHBeanMetadata beanMetadata) {
+        List<String> strings = splitString(line, beanMetadata);
 
-        ACHRecord record = (ACHRecord) recordType.createInstance();
+        ACHRecord record = (ACHRecord) beanMetadata.createInstance();
         record.setRecord(line);
 
         int i = 0;
 
-        for (ACHFieldMetadata fm : recordType.getACHFieldsMetadata()) {
+        for (ACHFieldMetadata fm : beanMetadata.getACHFieldsMetadata()) {
             String valueString = strings.get(i);
 
             validateInputFieldValue(fm, valueString);
 
             if (!fm.isReadOnly()) {
-                fm.applyValue(record, fieldValueFromString(valueString, fm));
+                Object value = "".equals(valueString.trim()) ? null : valueToField(valueString, String.class, beanMetadata, fm);
+                fm.applyValue(record, value);
             }
 
             i++;
         }
 
         return record;
-    }
-
-    protected Object fieldValueFromString(String value, ACHFieldMetadata fm) {
-        if ("".equals(value.trim())) {
-            return null;
-        }
-
-        if (fm.isString()) {
-            return value;
-        }
-
-        if (fm.isNumber()) {
-            if (StringUtil.isNumeric(value)) {
-                return stringToNumber(value, fm);
-            } else {
-                throw error(String.format("Cannot parse string %s to number for field %s", value.trim(), fm));
-            }
-        } else if (fm.isDate()) {
-            return dateValueFromString(value, fm);
-        } else {
-            throw error("Unsupported type " + fm.getType() + " of the field " + fm);
-        }
     }
 
     protected void validateInputFieldValue(ACHFieldMetadata fm, String valueString) {
@@ -148,36 +123,6 @@ public class ACHReader extends ACHProcessor {
 
     private String extractRecordTypeCode(String line) {
         return line.substring(0, 1);
-    }
-
-    private Number stringToNumber(String value, ACHFieldMetadata fm) {
-        BigDecimal number = new BigDecimal(value.trim());
-        if (fm.isShort()) {
-            return number.shortValue();
-        } else if (fm.isInteger()) {
-            return number.intValue();
-        } else if (fm.isLong()) {
-            return number.longValue();
-        } else if (fm.isDouble()) {
-            return moveDecimalRight(number, fm.getDigitsAfterComma()).doubleValue();
-        } else if (fm.isBigInteger()) {
-            return number.toBigInteger();
-        } else if (fm.isBigDecimal()) {
-            return moveDecimalRight(number, fm.getDigitsAfterComma());
-        } else {
-            throw error("Unsupported field type " + fm.getType() + " of the field " + fm);
-        }
-    }
-
-    private Date dateValueFromString(String value, ACHFieldMetadata fm) {
-        if (ACHField.EMPTY_DATE_PATTERN.equals(fm.getDateFormat())) {
-            throwError("Date pattern should be specified for field " + fm);
-        }
-        try {
-            return new SimpleDateFormat(fm.getDateFormat()).parse(value);
-        } catch (ParseException e) {
-            throw error("Error parsing date " + value + " with pattern " + fm.getDateFormat() + " for field " + fm, e);
-        }
     }
 
     private ACHBeanMetadata getTypeWithHighestRate(Map<Integer, Set<ACHBeanMetadata>> rateMap) {
@@ -223,10 +168,6 @@ public class ACHReader extends ACHProcessor {
         } else {
             return 0;
         }
-    }
-
-    private BigDecimal moveDecimalRight(BigDecimal number, int digitsAfterComma) {
-        return number.divide(decimalAdjuster(digitsAfterComma));
     }
 
     private class StatefulACHReader {

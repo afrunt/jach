@@ -32,11 +32,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.afrunt.jach.logic.StringUtil.filledWithSpaces;
 
 /**
  * @author Andrii Frunt
@@ -108,7 +108,7 @@ public class ACHWriter extends ACHProcessor {
     }
 
     private String writeRecord(ACHRecord record) {
-        String recordString = StringUtil.filledWithSpaces(ACHRecord.ACH_RECORD_LENGTH);
+        String recordString = filledWithSpaces(ACHRecord.ACH_RECORD_LENGTH);
         ACHBeanMetadata typeMetadata = getMetadata().getBeanMetadata(record.getClass());
 
         List<ACHFieldMetadata> fieldsMetadata = typeMetadata.getACHFieldsMetadata().stream()
@@ -117,52 +117,14 @@ public class ACHWriter extends ACHProcessor {
 
         for (ACHFieldMetadata fm : fieldsMetadata) {
             Object value = retrieveFieldValue(record, fm);
-            String formattedValue = validateFormattedValue(fm, formatFieldValue(fm, value));
+            String formattedValue = value == null ? filledWithSpaces(fm.getLength()) : (String) fieldToValue(value, String.class, typeMetadata, fm);
+
+            formattedValue = validateFormattedValue(fm, formattedValue);
             recordString = changeRecordStringWithFieldValue(recordString, fm, formattedValue);
         }
 
         record.setRecord(recordString);
         return recordString;
-    }
-
-    String formatFieldValue(ACHFieldMetadata fm, Object value) {
-        if (value == null) {
-            return StringUtil.filledWithSpaces(fm.getLength());
-        }
-
-        if (fm.isString()) {
-            return padString(value, fm.getLength());
-        }
-
-        if (fm.isDate()) {
-            return new SimpleDateFormat(fm.getDateFormat()).format(value);
-        }
-
-        String stringValue = null;
-
-        if (fm.isNumber()) {
-            if (value instanceof BigDecimal) {
-                stringValue = String.valueOf(
-                        moveDecimalLeft((BigDecimal) value, fm.getDigitsAfterComma())
-                                .longValue()
-                );
-            } else if (value instanceof Double) {
-                stringValue = String.valueOf(
-                        moveDecimalLeft(BigDecimal.valueOf((Double) value), fm.getDigitsAfterComma())
-                                .longValue()
-                );
-            } else {
-                stringValue = value.toString();
-            }
-
-            if (stringValue.length() > fm.getLength()) {
-                throw error("Value exceeds the maximum length of the field " + fm);
-            }
-
-            stringValue = padNumber(stringValue, fm.getLength());
-        }
-
-        return stringValue;
     }
 
     private String validateFormattedValue(ACHFieldMetadata fm, String formattedValue) {
@@ -226,20 +188,8 @@ public class ACHWriter extends ACHProcessor {
         }
     }
 
-    private String padString(Object value, int length) {
-        return StringUtil.rightPad(value.toString(), length);
-    }
-
-    private String padNumber(Object value, int length) {
-        return StringUtil.leftPad(value.toString(), length, "0");
-    }
-
     private void writeLine(OutputStreamWriter writer, String line) throws IOException {
         writer.write(line);
         writer.write(LINE_SEPARATOR);
-    }
-
-    private BigDecimal moveDecimalLeft(BigDecimal number, int digitsAfterComma) {
-        return number.multiply(decimalAdjuster(digitsAfterComma));
     }
 }
