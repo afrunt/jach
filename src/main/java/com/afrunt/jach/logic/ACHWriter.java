@@ -42,7 +42,6 @@ import static com.afrunt.jach.logic.StringUtil.filledWithSpaces;
  */
 public class ACHWriter extends ACHProcessor {
     private Charset charset = Charset.forName("UTF-8");
-    private boolean failOnWrongValues = true;
 
     public ACHWriter(ACHMetadataCollector metadataCollector) {
         super(metadataCollector);
@@ -55,11 +54,6 @@ public class ACHWriter extends ACHProcessor {
         } catch (IOException e) {
             throw error("Error marshalling ACH document", e);
         }
-    }
-
-    public ACHWriter setFailOnWrongValues(boolean failOnWrongValues) {
-        this.failOnWrongValues = failOnWrongValues;
-        return this;
     }
 
     public void write(ACHDocument document, OutputStream outputStream) {
@@ -127,14 +121,6 @@ public class ACHWriter extends ACHProcessor {
     }
 
     private String validateFormattedValue(ACHFieldMetadata fm, String formattedValue) {
-        if (failOnWrongValues && !fm.valueSatisfies(formattedValue)) {
-            throwError("Wrong value(\"" + formattedValue + "\" [" + formattedValue.length() + "]) for the field " + fm);
-        }
-
-        if (failOnWrongValues && StringUtil.isBlank(formattedValue) && fm.isMandatory()) {
-            throwError(fm + " is mandatory and cannot be blank");
-        }
-
         return formattedValue;
     }
 

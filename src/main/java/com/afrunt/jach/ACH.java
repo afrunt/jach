@@ -122,9 +122,4 @@ public class ACH implements ACHErrorMixIn {
     public ACHMetadata getMetadata() {
         return metadataCollector.collectMetadata(ACH_CLASSES);
     }
-
-    public ACH setFailWritingOnWrongValues(boolean failOnWrongValues) {
-        marshaller.setFailOnWrongValues(failOnWrongValues);
-        return this;
-    }
 }
