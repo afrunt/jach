@@ -33,13 +33,17 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
  * @author Andrii Frunt
  */
 public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFieldMetadata> {
+    private ACHField achFieldAnnotation;
 
     public boolean isACHField() {
         return achAnnotation() != null;
     }
 
     private ACHField achAnnotation() {
-        return getAnnotation(ACHField.class);
+        if (achFieldAnnotation == null) {
+            achFieldAnnotation = getAnnotation(ACHField.class);
+        }
+        return achFieldAnnotation;
     }
 
     public String getAchFieldName() {
