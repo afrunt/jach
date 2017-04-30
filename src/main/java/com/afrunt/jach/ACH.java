@@ -70,6 +70,7 @@ public class ACH implements ACHErrorMixIn {
             POPEntryDetail.class,
             FifthIATAddendaRecord.class,
             CCDEntryDetail.class,
+            POSEntryDetail.class,
             POSAddendaRecord.class,
             FourthIATAddendaRecord.class,
             WEBEntryDetail.class,

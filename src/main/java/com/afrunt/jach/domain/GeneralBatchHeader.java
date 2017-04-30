@@ -73,14 +73,16 @@ public class GeneralBatchHeader extends BatchHeader {
     @Override
     @Values({
             "CCD", //Corporate Credit or Debit
-            "PPD", //Prearranged Payment and Deposit Entry
+            //"CBR", //Corporate cross-border payment entries
             "CTX", //Corporate Trade Exchange
+            "PPD", //Prearranged Payment and Deposit Entry
             "ARC", //Accounts Receivable Check
             "BOC", //Back Office Conversion
             "POP", //Point-of-Purchase Entry
             "TEL", //Telephone Authorized Entry
             "WEB", //Internet Authorized Entry
-            "RCK"  //Represented Check Entry
+            "RCK", //Represented Check Entry
+            "POS"  //Point of Sale
     })
     public String getStandardEntryClassCode() {
         return super.getStandardEntryClassCode();
