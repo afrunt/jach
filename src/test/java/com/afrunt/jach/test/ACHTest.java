@@ -32,7 +32,7 @@ import java.util.Scanner;
  */
 public class ACHTest {
     private static final String[] ACH_FILES = {"ach.txt", "ach-iat.txt", "ach-return.txt", "ach-tr.txt", "ach-payrol.txt",
-            "ach-web-ppd.txt"};
+            "ach-web-ppd.txt", "ach-pos.txt"};
     private ACH ach = new ACH();
 
     @Test

@@ -65,7 +65,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return POS_ADDENDA_TYPE_CODE;
     }
 
-    @ACHField(start = 3, length = 6, name = REFERENCE_INFORMATION_1)
+    @ACHField(start = 3, length = 7, name = REFERENCE_INFORMATION_1)
     public String getReferenceInformation1() {
         return referenceInformation1;
     }
@@ -75,7 +75,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 10, length = 2, name = REFERENCE_INFORMATION_2)
+    @ACHField(start = 10, length = 7, name = REFERENCE_INFORMATION_2)
     public String getReferenceInformation2() {
         return referenceInformation2;
     }
@@ -95,7 +95,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 19, length = 5, inclusion = REQUIRED, name = TRANSACTION_SERIAL_NUMBER)
+    @ACHField(start = 19, length = 6, inclusion = REQUIRED, name = TRANSACTION_SERIAL_NUMBER)
     public String getTransactionSerialNumber() {
         return transactionSerialNumber;
     }
@@ -105,7 +105,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 25, length = 3, inclusion = REQUIRED, name = TRANSACTION_DATE, dateFormat = "yMd")
+    @ACHField(start = 25, length = 4, inclusion = REQUIRED, name = TRANSACTION_DATE, dateFormat = "MMdd")
     public Date getTransactionDate() {
         return transactionDate;
     }
@@ -115,7 +115,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 29, length = 5, name = AUTHORIZATION_CODE_OR_CARD_EXPIRATION)
+    @ACHField(start = 29, length = 6, name = AUTHORIZATION_CODE_OR_CARD_EXPIRATION)
     public String getAuthorizationCodeOrCardExpiration() {
         return authorizationCodeOrCardExpiration;
     }
@@ -125,7 +125,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 35, length = 26, inclusion = REQUIRED, name = TERMINAL_LOCATION)
+    @ACHField(start = 35, length = 27, inclusion = REQUIRED, name = TERMINAL_LOCATION)
     public String getTerminalLocation() {
         return terminalLocation;
     }
@@ -135,7 +135,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 62, length = 14, inclusion = REQUIRED, name = TERMINAL_CITY)
+    @ACHField(start = 62, length = 15, inclusion = REQUIRED, name = TERMINAL_CITY)
     public String getTerminalCity() {
         return terminalCity;
     }
@@ -155,7 +155,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 79, length = 14, inclusion = MANDATORY, name = TRACE_NUMBER)
+    @ACHField(start = 79, length = 15, inclusion = MANDATORY, name = TRACE_NUMBER)
     public BigInteger getTraceNumber() {
         return traceNumber;
     }
