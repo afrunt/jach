@@ -70,19 +70,19 @@ public class ACHReader extends ACHProcessor {
 
     protected String validateString(String line) {
         if (line == null) {
-            throw error("ACH record cannot be null");
+            throwError("ACH record cannot be null");
         }
 
         int lineLength = line.length();
 
         if (lineLength != ACHRecord.ACH_RECORD_LENGTH) {
-            throw error(String.format("Wrong length (%s) (line: %s) of the record: %s", lineLength, 0, line));
+            throwError(String.format("Wrong length (%s) (line: %s) of the record: %s", lineLength, 0, line));
         }
 
         String recordTypeCode = extractRecordTypeCode(line);
 
         if (!RecordTypes.validRecordTypeCode(recordTypeCode)) {
-            throw error(String.format("Unknown record type code (%s) (line: %s) of the record: %s", recordTypeCode, 0, line));
+            throwError(String.format("Unknown record type code (%s) (line: %s) of the record: %s", recordTypeCode, 0, line));
         }
 
         return line;

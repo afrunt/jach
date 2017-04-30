@@ -54,7 +54,7 @@ public class ACHWriter extends ACHProcessor {
             write(document, baos);
             return baos.toString(charset.name());
         } catch (IOException e) {
-            throw new ACHException("Error marshalling ACH document", e);
+            throw error("Error marshalling ACH document", e);
         }
     }
 

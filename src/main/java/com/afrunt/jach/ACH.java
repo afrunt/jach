@@ -26,7 +26,7 @@ import com.afrunt.jach.domain.addenda.POSAddendaRecord;
 import com.afrunt.jach.domain.addenda.ReturnAddendaRecord;
 import com.afrunt.jach.domain.addenda.iat.*;
 import com.afrunt.jach.domain.detail.*;
-import com.afrunt.jach.exception.ACHException;
+import com.afrunt.jach.logic.ACHErrorMixIn;
 import com.afrunt.jach.logic.ACHMetadataCollector;
 import com.afrunt.jach.logic.ACHReader;
 import com.afrunt.jach.logic.ACHWriter;
@@ -42,7 +42,7 @@ import java.util.HashSet;
 /**
  * @author Andrii Frunt
  */
-public class ACH {
+public class ACH implements ACHErrorMixIn {
     public static final HashSet<Class<?>> ACH_CLASSES = new HashSet<>(Arrays.asList(
             EntryDetail.class,
             RemittanceIATAddendaRecord.class,
@@ -100,7 +100,7 @@ public class ACH {
         try (ByteArrayInputStream is = new ByteArrayInputStream(string.getBytes())) {
             return unmarshaller.read(is);
         } catch (IOException e) {
-            throw new ACHException("Error reading ACH document from string", e);
+            throw error("Error reading ACH document from string", e);
         }
     }
 
@@ -113,7 +113,7 @@ public class ACH {
             String str = marshaller.write(document);
             outputStream.write(str.getBytes());
         } catch (IOException e) {
-            throw new ACHException("Error writing ACH document to output stream", e);
+            throw error("Error writing ACH document to output stream", e);
         }
 
     }

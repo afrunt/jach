@@ -51,7 +51,7 @@ public interface ACHFieldConversionSupport extends FieldConversionSupport<ACHBea
 
     default Date valueStringToDate(String value, ACHBeanMetadata bm, ACHFieldMetadata fm) {
         if (ACHField.EMPTY_DATE_PATTERN.equals(fm.getDateFormat())) {
-            throw error("Date pattern should be specified for field " + fm);
+            throwError("Date pattern should be specified for field " + fm);
         }
         try {
             return new SimpleDateFormat(fm.getDateFormat()).parse(value);
@@ -66,7 +66,7 @@ public interface ACHFieldConversionSupport extends FieldConversionSupport<ACHBea
 
     default BigDecimal stringToBigDecimal(String value, ACHBeanMetadata bm, ACHFieldMetadata fm) {
         if (!StringUtil.isNumeric(value)) {
-            throw error(String.format("Cannot parse string %s to number for field %s", value.trim(), fm));
+            throwError(String.format("Cannot parse string %s to number for field %s", value.trim(), fm));
         }
 
         return new BigDecimal(value.trim());

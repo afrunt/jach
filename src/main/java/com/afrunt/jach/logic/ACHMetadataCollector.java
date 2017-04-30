@@ -53,12 +53,13 @@ public class ACHMetadataCollector extends MetadataCollector<ACHMetadata, ACHBean
 
         if (achField) {
             if (fm.isBlank() && fm.hasConstantValues()) {
-                throw error("ACHField cannot be BLANK and contain constant values");
+                throwError("ACHField cannot be BLANK and contain constant values");
             }
 
             if (fm.isTypeTag() && (!fm.isMandatory() || fm.getConstantValues().isEmpty())) {
-                throw error("TypeTag field should have some constant values and be mandatory " + fm);
+                throwError("TypeTag field should have some constant values and be mandatory " + fm);
             }
+
             validateDateField(fm);
         }
     }
@@ -72,17 +73,17 @@ public class ACHMetadataCollector extends MetadataCollector<ACHMetadata, ACHBean
         if (fm.isDate()) {
             String dateFormat = fm.getDateFormat();
             if (dateFormat == null) {
-                throw error("Date format is required for date fields " + fm);
+                throwError("Date format is required for date fields " + fm);
             }
 
             try {
                 new SimpleDateFormat(dateFormat);
             } catch (Exception e) {
-                throw error(dateFormat + " is wrong date format for field " + fm);
+                throwError(dateFormat + " is wrong date format for field " + fm);
             }
 
             if (dateFormat.length() != fm.getLength()) {
-                throw error("The length of date pattern should be equal to field length");
+                throwError("The length of date pattern should be equal to field length");
             }
         }
     }
