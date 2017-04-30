@@ -92,14 +92,6 @@ public class ACHReader extends ACHProcessor {
         return line;
     }
 
-    private int rankType(String str, ACHBeanMetadata beanMetadata) {
-        List<String> strings = splitString(str, beanMetadata);
-        List<ACHFieldMetadata> fms = new ArrayList<>(beanMetadata.getACHFieldsMetadata());
-        return IntStream.range(0, strings.size())
-                .map(i -> rankField(strings.get(i), fms.get(i)))
-                .reduce(0, (left, right) -> left + right);
-    }
-
     private ACHRecord readRecord(String line, ACHBeanMetadata recordType) {
         List<String> strings = splitString(line, recordType);
 
@@ -215,6 +207,14 @@ public class ACHReader extends ACHProcessor {
         }
 
         return result;
+    }
+
+    private int rankType(String str, ACHBeanMetadata beanMetadata) {
+        List<String> strings = splitString(str, beanMetadata);
+        List<ACHFieldMetadata> fms = new ArrayList<>(beanMetadata.getACHFieldsMetadata());
+        return IntStream.range(0, strings.size())
+                .map(i -> rankField(strings.get(i), fms.get(i)))
+                .reduce(0, (left, right) -> left + right);
     }
 
     private int rankField(String value, ACHFieldMetadata fieldMetadata) {
