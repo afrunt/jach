@@ -80,40 +80,40 @@ public class ACH implements ACHErrorMixIn {
             ARCEntryDetail.class)
     );
     private ACHMetadataCollector metadataCollector;
-    private ACHReader unmarshaller;
-    private ACHWriter marshaller;
+    private ACHReader reader;
+    private ACHWriter writer;
     private ACHMetadata metadata;
 
     public ACH() {
         metadataCollector = new ACHMetadataCollector();
         metadata = metadataCollector.collectMetadata(ACH_CLASSES);
-        unmarshaller = new ACHReader(metadata);
-        marshaller = new ACHWriter(metadata);
+        reader = new ACHReader(metadata);
+        writer = new ACHWriter(metadata);
     }
 
     public <T extends ACHRecord> T readRecord(String line, Class<T> recordClass) {
-        return unmarshaller.readRecord(line, recordClass);
+        return reader.readRecord(line, recordClass);
     }
 
     public ACHDocument read(InputStream is) {
-        return unmarshaller.read(is);
+        return reader.read(is);
     }
 
     public ACHDocument read(String string) {
         try (ByteArrayInputStream is = new ByteArrayInputStream(string.getBytes())) {
-            return unmarshaller.read(is);
+            return reader.read(is);
         } catch (IOException e) {
             throw error("Error reading ACH document from string", e);
         }
     }
 
     public String write(ACHDocument document) {
-        return marshaller.write(document);
+        return writer.write(document);
     }
 
     public void write(ACHDocument document, OutputStream outputStream) {
         try {
-            String str = marshaller.write(document);
+            String str = writer.write(document);
             outputStream.write(str.getBytes());
         } catch (IOException e) {
             throw error("Error writing ACH document to output stream", e);
