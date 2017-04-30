@@ -18,7 +18,6 @@
  */
 package com.afrunt.jach.logic;
 
-import com.afrunt.jach.ACH;
 import com.afrunt.jach.metadata.ACHMetadata;
 
 import java.util.Optional;
@@ -29,14 +28,13 @@ import java.util.Optional;
 class ACHProcessor implements ACHErrorMixIn, ACHFieldConversionSupport {
     static final String LINE_SEPARATOR = Optional.ofNullable(System.getProperty("line.separator")).orElse("\n");
 
-    private ACHMetadataCollector metadataCollector;
+    private ACHMetadata metadata;
 
-    ACHProcessor(ACHMetadataCollector metadataCollector) {
-        this.metadataCollector = metadataCollector;
+    public ACHProcessor(ACHMetadata metadata) {
+        this.metadata = metadata;
     }
 
     ACHMetadata getMetadata() {
-        return metadataCollector.collectMetadata(ACH.ACH_CLASSES);
+        return metadata;
     }
-
 }

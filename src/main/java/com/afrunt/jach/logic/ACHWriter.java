@@ -25,6 +25,7 @@ import com.afrunt.jach.domain.ACHRecord;
 import com.afrunt.jach.domain.AddendaRecord;
 import com.afrunt.jach.metadata.ACHBeanMetadata;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
+import com.afrunt.jach.metadata.ACHMetadata;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -43,8 +44,8 @@ import static com.afrunt.jach.logic.StringUtil.filledWithSpaces;
 public class ACHWriter extends ACHProcessor {
     private Charset charset = Charset.forName("UTF-8");
 
-    public ACHWriter(ACHMetadataCollector metadataCollector) {
-        super(metadataCollector);
+    public ACHWriter(ACHMetadata metadata) {
+        super(metadata);
     }
 
     public String write(ACHDocument document) {

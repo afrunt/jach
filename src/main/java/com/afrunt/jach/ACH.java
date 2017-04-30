@@ -82,11 +82,13 @@ public class ACH implements ACHErrorMixIn {
     private ACHMetadataCollector metadataCollector;
     private ACHReader unmarshaller;
     private ACHWriter marshaller;
+    private ACHMetadata metadata;
 
     public ACH() {
         metadataCollector = new ACHMetadataCollector();
-        unmarshaller = new ACHReader(metadataCollector);
-        marshaller = new ACHWriter(metadataCollector);
+        metadata = metadataCollector.collectMetadata(ACH_CLASSES);
+        unmarshaller = new ACHReader(metadata);
+        marshaller = new ACHWriter(metadata);
     }
 
     public <T extends ACHRecord> T readRecord(String line, Class<T> recordClass) {
@@ -120,6 +122,9 @@ public class ACH implements ACHErrorMixIn {
     }
 
     public ACHMetadata getMetadata() {
-        return metadataCollector.collectMetadata(ACH_CLASSES);
+        if (metadata == null) {
+            metadata = metadataCollector.collectMetadata(ACH_CLASSES);
+        }
+        return metadata;
     }
 }

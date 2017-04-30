@@ -24,6 +24,7 @@ import com.afrunt.jach.document.ACHDocument;
 import com.afrunt.jach.domain.*;
 import com.afrunt.jach.metadata.ACHBeanMetadata;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
+import com.afrunt.jach.metadata.ACHMetadata;
 
 import java.io.InputStream;
 import java.util.*;
@@ -36,8 +37,8 @@ import static com.afrunt.jach.domain.RecordTypes.*;
  * @author Andrii Frunt
  */
 public class ACHReader extends ACHProcessor {
-    public ACHReader(ACHMetadataCollector metadataCollector) {
-        super(metadataCollector);
+    public ACHReader(ACHMetadata metadata) {
+        super(metadata);
     }
 
     public ACHDocument read(InputStream is) {
