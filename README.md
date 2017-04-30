@@ -1,4 +1,15 @@
 ## Java library for reading and writing ACH documents
+Add jACH to your project. for maven projects just add this dependency:
+```xml
+<dependency>
+  <groupId>com.afrunt</groupId>
+  <artifactId>jach</artifactId>
+  <version>0.1-dev</version>
+</dependency>
+```
+Using jACH you can work with ACH documents such as:
+  * read textual ACH documents to java domain model
+  * write java ACH domain model back to textual ACH format
 
 ### Usage
 Basically, to use jACH first instantiate the ACH class
