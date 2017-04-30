@@ -23,7 +23,6 @@ import com.afrunt.jach.document.ACHBatchDetail;
 import com.afrunt.jach.document.ACHDocument;
 import com.afrunt.jach.domain.ACHRecord;
 import com.afrunt.jach.domain.AddendaRecord;
-import com.afrunt.jach.exception.ACHException;
 import com.afrunt.jach.metadata.ACHBeanMetadata;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
 
