@@ -8,8 +8,9 @@ Add jACH to your project. for maven projects just add this dependency:
 </dependency>
 ```
 Using jACH you can work with ACH documents such as:
-  * read textual ACH documents to java domain model
-  * write java ACH domain model back to textual ACH format
+  * Read textual ACH documents to java domain model
+  * Write java ACH domain model back to textual ACH format
+  * Supported ACH formats are ARC, BOC, CBR, CCD, CTX, IAT, POP, POS, PPD, RCK, TEL, WEB
   
 ### Usage
 Basically, to use jACH first instantiate the ACH class
