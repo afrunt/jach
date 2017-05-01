@@ -20,6 +20,9 @@ package com.afrunt.jach.logic;
 
 import com.afrunt.jach.metadata.ACHMetadata;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -30,11 +33,18 @@ class ACHProcessor implements ACHErrorMixIn, ACHFieldConversionSupport {
 
     private ACHMetadata metadata;
 
+    private Map<Integer, Method> methodsCache = new HashMap<>();
+
     public ACHProcessor(ACHMetadata metadata) {
         this.metadata = metadata;
     }
 
     ACHMetadata getMetadata() {
         return metadata;
+    }
+
+    @Override
+    public Map<Integer, Method> getMethodsCache() {
+        return methodsCache;
     }
 }

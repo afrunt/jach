@@ -32,7 +32,7 @@ import java.util.Scanner;
  */
 public class ACHTest {
     private static final String[] ACH_FILES = {"ach.txt", "ach-iat.txt", "ach-return.txt", "ach-tr.txt", "ach-payrol.txt",
-            "ach-web-ppd.txt", "ach-pos.txt"};
+            "ach-web-ppd.txt", "ach-pos.txt", "big-ach.txt"};
 
     @Test
     public void testReadWrite() {
@@ -40,9 +40,14 @@ public class ACHTest {
         ACH ach = new ACH();
         System.out.println(String.format("\nACH instantiated in %sms", (System.currentTimeMillis() - start)));
         for (String achFileName : ACH_FILES) {
+            start = System.currentTimeMillis();
             ACHDocument document = ach.read(getClass().getClassLoader().getResourceAsStream(achFileName));
+            System.out.println(String.format(achFileName + " read in %sms", (System.currentTimeMillis() - start)));
 
+            start = System.currentTimeMillis();
             String out = ach.write(document);
+            System.out.println(String.format(achFileName + " written in %sms", (System.currentTimeMillis() - start)));
+
             testFilesAreEquals(getClass().getClassLoader().getResourceAsStream(achFileName), new ByteArrayInputStream(out.getBytes()));
         }
     }
