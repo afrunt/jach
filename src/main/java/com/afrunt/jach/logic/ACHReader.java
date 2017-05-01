@@ -50,45 +50,6 @@ public class ACHReader extends ACHProcessor {
         return (T) readRecord(line, getMetadata().getBeanMetadata(recordClass));
     }
 
-    protected List<String> splitString(String str, ACHBeanMetadata metadata) {
-        return metadata.getACHFieldsMetadata().stream()
-                .map(fm -> str.substring(fm.getStart(), fm.getEnd()))
-                .collect(Collectors.toList());
-
-    }
-
-    protected ACHBeanMetadata typeOfString(String str) {
-        str = validateString(str);
-        String recordTypeCode = extractRecordTypeCode(str);
-        Set<ACHBeanMetadata> types = getMetadata().typesForRecordTypeCode(recordTypeCode);
-
-        if (types.isEmpty()) {
-            return null;
-        } else {
-            return getTypeWithHighestRate(rankTypes(str, types));
-        }
-    }
-
-    protected String validateString(String line) {
-        if (line == null) {
-            throwError("ACH record cannot be null");
-        }
-
-        int lineLength = line.length();
-
-        if (lineLength != ACHRecord.ACH_RECORD_LENGTH) {
-            throwError(String.format("Wrong length (%s) (line: %s) of the record: %s", lineLength, 0, line));
-        }
-
-        String recordTypeCode = extractRecordTypeCode(line);
-
-        if (!RecordTypes.validRecordTypeCode(recordTypeCode)) {
-            throwError(String.format("Unknown record type code (%s) (line: %s) of the record: %s", recordTypeCode, 0, line));
-        }
-
-        return line;
-    }
-
     private ACHRecord readRecord(String line, ACHBeanMetadata beanMetadata) {
         List<String> strings = splitString(line, beanMetadata);
 
@@ -107,13 +68,51 @@ public class ACHReader extends ACHProcessor {
                 fm.applyValue(record, value);
             }
 
-            i++;
+            ++i;
         }
 
         return record;
     }
 
-    protected void validateInputFieldValue(ACHFieldMetadata fm, String valueString) {
+    private List<String> splitString(String str, ACHBeanMetadata metadata) {
+        return metadata.getACHFieldsMetadata().stream()
+                .map(fm -> str.substring(fm.getStart(), fm.getEnd()))
+                .collect(Collectors.toList());
+    }
+
+    private ACHBeanMetadata typeOfString(String str) {
+        str = validateString(str);
+        String recordTypeCode = extractRecordTypeCode(str);
+        Set<ACHBeanMetadata> types = getMetadata().typesForRecordTypeCode(recordTypeCode);
+
+        if (types.isEmpty()) {
+            return null;
+        } else {
+            return getTypeWithHighestRate(rankTypes(str, types));
+        }
+    }
+
+    private String validateString(String line) {
+        if (line == null) {
+            throw error("ACH record cannot be null");
+        }
+
+        int lineLength = line.length();
+
+        if (lineLength != ACHRecord.ACH_RECORD_LENGTH) {
+            throwError(String.format("Wrong length (%s) (line: %s) of the record: %s", lineLength, 0, line));
+        }
+
+        String recordTypeCode = extractRecordTypeCode(line);
+
+        if (!RecordTypes.validRecordTypeCode(recordTypeCode)) {
+            throwError(String.format("Unknown record type code (%s) (line: %s) of the record: %s", recordTypeCode, 0, line));
+        }
+
+        return line;
+    }
+
+    private void validateInputFieldValue(ACHFieldMetadata fm, String valueString) {
         boolean emptyOptional = fm.isOptional() && "".equals(valueString.trim());
         boolean valueNotSatisfiesToConstantValues = fm.hasConstantValues() && !fm.valueSatisfiesToConstantValues(valueString);
         if (valueNotSatisfiesToConstantValues && !emptyOptional) {
@@ -130,7 +129,7 @@ public class ACHReader extends ACHProcessor {
         Integer highestRate = rateMap.keySet().stream()
                 .sorted(Comparator.reverseOrder())
                 .findFirst()
-                .orElseThrow(() -> error("Type not found"));
+                .orElseThrow(() -> error("Type of the string not found"));
 
         Set<ACHBeanMetadata> typesWithHighestRate = rateMap.get(highestRate);
         if (typesWithHighestRate.size() > 1) {
@@ -139,7 +138,7 @@ public class ACHReader extends ACHProcessor {
 
         return typesWithHighestRate.stream()
                 .findFirst()
-                .orElseThrow(() -> error("Type not found"));
+                .orElseThrow(() -> error("Type of the string not found"));
     }
 
     private Map<Integer, Set<ACHBeanMetadata>> rankTypes(String str, Set<ACHBeanMetadata> types) {

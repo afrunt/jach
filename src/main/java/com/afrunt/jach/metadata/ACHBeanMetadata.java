@@ -23,13 +23,20 @@ import com.afrunt.jach.annotation.ACHField;
 
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author Andrii Frunt
  */
 public class ACHBeanMetadata extends BeanMetadata<ACHFieldMetadata> {
+    private Set<ACHFieldMetadata> achFieldsMetadata;
+    private String recordTypeCode;
+
     public Set<ACHFieldMetadata> getACHFieldsMetadata() {
-        return getFieldsAnnotatedWith(ACHField.class);
+        if (achFieldsMetadata == null) {
+            achFieldsMetadata = new TreeSet<>(getFieldsAnnotatedWith(ACHField.class));
+        }
+        return achFieldsMetadata;
     }
 
     public boolean recordTypeCodeIs(String recordTypeCode) {
@@ -37,7 +44,10 @@ public class ACHBeanMetadata extends BeanMetadata<ACHFieldMetadata> {
     }
 
     public String getRecordTypeCode() {
-        List<String> constantValues = getFieldMetadata("recordTypeCode").getValues();
-        return constantValues.get(0);
+        if (recordTypeCode == null) {
+            List<String> constantValues = getFieldMetadata("recordTypeCode").getValues();
+            recordTypeCode = constantValues.get(0);
+        }
+        return recordTypeCode;
     }
 }

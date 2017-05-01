@@ -35,6 +35,10 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
 public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFieldMetadata> {
     private ACHField achFieldAnnotation;
     private InclusionRequirement inclusion;
+    private List<String> values;
+    private Integer start;
+    private Integer end;
+    private Integer length;
 
     public boolean isACHField() {
         return achAnnotation() != null;
@@ -84,11 +88,15 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
     }
 
     public List<String> getValues() {
-        if (isAnnotatedWith(Values.class)) {
-            return Arrays.asList(getAnnotation(Values.class).value());
-        } else {
-            return Arrays.asList(achAnnotation().values());
+        if (values == null) {
+            if (isAnnotatedWith(Values.class)) {
+                values = Arrays.asList(getAnnotation(Values.class).value());
+            } else {
+                values = Arrays.asList(achAnnotation().values());
+            }
         }
+
+        return values;
     }
 
     public String getDateFormat() {
@@ -102,15 +110,24 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
     }
 
     public int getStart() {
-        return achAnnotation().start();
+        if (start == null) {
+            start = achAnnotation().start();
+        }
+        return start;
     }
 
     public int getLength() {
-        return achAnnotation().length();
+        if (length == null) {
+            length = achAnnotation().length();
+        }
+        return length;
     }
 
     public int getEnd() {
-        return getStart() + getLength();
+        if (end == null) {
+            end = getStart() + getLength();
+        }
+        return end;
     }
 
 

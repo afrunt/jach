@@ -21,6 +21,8 @@ package com.afrunt.jach.metadata;
 import com.afrunt.beanmetadata.Metadata;
 import com.afrunt.jach.annotation.ACHRecordType;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,13 +30,27 @@ import java.util.stream.Collectors;
  * @author Andrii Frunt
  */
 public class ACHMetadata extends Metadata<ACHBeanMetadata, ACHFieldMetadata> {
+    private Set<ACHBeanMetadata> achBeansMetadata;
+    private Map<String, Set<ACHBeanMetadata>> typesForRecordTypeCodeCache = new HashMap<>();
+
     public Set<ACHBeanMetadata> getACHBeansMetadata() {
-        return getAnnotatedWith(ACHRecordType.class);
+        if (achBeansMetadata == null) {
+            achBeansMetadata = getAnnotatedWith(ACHRecordType.class);
+        }
+        return achBeansMetadata;
     }
 
     public Set<ACHBeanMetadata> typesForRecordTypeCode(String recordTypeCode) {
-        return getACHBeansMetadata().stream()
-                .filter(b -> b.recordTypeCodeIs(recordTypeCode))
-                .collect(Collectors.toSet());
+        Set<ACHBeanMetadata> types;
+        if (!typesForRecordTypeCodeCache.containsKey(recordTypeCode)) {
+            types = getACHBeansMetadata().stream()
+                    .filter(b -> b.recordTypeCodeIs(recordTypeCode))
+                    .collect(Collectors.toSet());
+            typesForRecordTypeCodeCache.put(recordTypeCode, types);
+        } else {
+            types = typesForRecordTypeCodeCache.get(recordTypeCode);
+        }
+
+        return types;
     }
 }

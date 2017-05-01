@@ -33,8 +33,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.afrunt.jach.logic.StringUtil.filledWithSpaces;
 
@@ -53,7 +51,7 @@ public class ACHWriter extends ACHProcessor {
             write(document, baos);
             return baos.toString(charset.name());
         } catch (IOException e) {
-            throw error("Error marshalling ACH document", e);
+            throw error("Error writing ACH document", e);
         }
     }
 
@@ -70,7 +68,7 @@ public class ACHWriter extends ACHProcessor {
 
             writer.flush();
         } catch (IOException e) {
-            throw error("Error marshalling ACH document", e);
+            throw error("Error writing ACH document", e);
         }
     }
 
@@ -84,7 +82,7 @@ public class ACHWriter extends ACHProcessor {
 
             writeLine(writer, writeRecord(batch.getBatchControl()));
         } catch (IOException e) {
-            throw error("Error marshalling batch", e);
+            throw error("Error writing ACH batch", e);
         }
     }
 
@@ -97,7 +95,7 @@ public class ACHWriter extends ACHProcessor {
             }
 
         } catch (IOException e) {
-            throw error("Error marshalling details", e);
+            throw error("Error writing ACH details", e);
         }
     }
 
@@ -105,11 +103,7 @@ public class ACHWriter extends ACHProcessor {
         String recordString = filledWithSpaces(ACHRecord.ACH_RECORD_LENGTH);
         ACHBeanMetadata typeMetadata = getMetadata().getBeanMetadata(record.getClass());
 
-        List<ACHFieldMetadata> fieldsMetadata = typeMetadata.getACHFieldsMetadata().stream()
-                .sorted()
-                .collect(Collectors.toList());
-
-        for (ACHFieldMetadata fm : fieldsMetadata) {
+        for (ACHFieldMetadata fm : typeMetadata.getACHFieldsMetadata()) {
             Object value = retrieveFieldValue(record, fm);
             String formattedValue = value == null ? filledWithSpaces(fm.getLength()) : (String) fieldToValue(value, String.class, typeMetadata, fm);
 
