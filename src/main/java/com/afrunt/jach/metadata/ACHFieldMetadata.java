@@ -34,6 +34,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
  */
 public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFieldMetadata> {
     private ACHField achFieldAnnotation;
+    private InclusionRequirement inclusion;
 
     public boolean isACHField() {
         return achAnnotation() != null;
@@ -67,11 +68,19 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
     }
 
     public boolean inclusionIs(InclusionRequirement requirement) {
-        if (isAnnotatedWith(Inclusion.class)) {
-            return getAnnotation(Inclusion.class).value().equals(requirement);
-        } else {
-            return achAnnotation().inclusion().equals(requirement);
+        return requirement.equals(getInclusionRequirement());
+    }
+
+    public InclusionRequirement getInclusionRequirement() {
+        if (inclusion == null) {
+            if (isAnnotatedWith(Inclusion.class)) {
+                inclusion = getAnnotation(Inclusion.class).value();
+            } else {
+                inclusion = achAnnotation().inclusion();
+            }
         }
+
+        return inclusion;
     }
 
     public List<String> getValues() {
