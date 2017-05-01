@@ -28,8 +28,6 @@ import com.afrunt.jach.metadata.ACHMetadata;
 
 import java.io.InputStream;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.afrunt.jach.domain.RecordTypes.*;
 
@@ -75,9 +73,13 @@ public class ACHReader extends ACHProcessor {
     }
 
     private List<String> splitString(String str, ACHBeanMetadata metadata) {
-        return metadata.getACHFieldsMetadata().stream()
-                .map(fm -> str.substring(fm.getStart(), fm.getEnd()))
-                .collect(Collectors.toList());
+        Set<ACHFieldMetadata> achFieldsMetadata = metadata.getACHFieldsMetadata();
+        List<String> result = new ArrayList<>(achFieldsMetadata.size());
+        for (ACHFieldMetadata fm : achFieldsMetadata) {
+            result.add(str.substring(fm.getStart(), fm.getEnd()));
+        }
+
+        return result;
     }
 
     private ACHBeanMetadata typeOfString(String str) {
@@ -156,10 +158,20 @@ public class ACHReader extends ACHProcessor {
 
     private int rankType(String str, ACHBeanMetadata beanMetadata) {
         List<String> strings = splitString(str, beanMetadata);
-        List<ACHFieldMetadata> fms = new ArrayList<>(beanMetadata.getACHFieldsMetadata());
+        int rank = 0;
+        int i = 0;
+        for (ACHFieldMetadata fm : beanMetadata.getACHFieldsMetadata()) {
+            rank += rankField(strings.get(i), fm);
+            ++i;
+        }
+
+        return rank;
+
+        /*List<ACHFieldMetadata> fms = new ArrayList<>(beanMetadata.getACHFieldsMetadata());
+
         return IntStream.range(0, strings.size())
                 .map(i -> rankField(strings.get(i), fms.get(i)))
-                .reduce(0, (left, right) -> left + right);
+                .reduce(0, (left, right) -> left + right);*/
     }
 
     private int rankField(String value, ACHFieldMetadata fieldMetadata) {
