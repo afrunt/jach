@@ -39,6 +39,7 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
     private Integer start;
     private Integer end;
     private Integer length;
+    private Boolean typeTag;
 
     public boolean isACHField() {
         return achAnnotation() != null;
@@ -106,7 +107,10 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
     }
 
     public boolean isTypeTag() {
-        return achAnnotation().typeTag();
+        if (typeTag == null) {
+            typeTag = achAnnotation().typeTag();
+        }
+        return typeTag;
     }
 
     public int getStart() {
@@ -183,7 +187,7 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
 
     public boolean valueSatisfiesToConstantValues(String value) {
         if (hasConstantValues()) {
-            return getConstantValues().contains(value) || (isOptional() && "".equals(value.trim()));
+            return getValues().contains(value) || (isOptional() && "".equals(value.trim()));
         } else {
             return true;
         }
@@ -194,7 +198,7 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
     }
 
     public Set<String> getConstantValues() {
-        return Collections.unmodifiableSet(new HashSet<>(getValues()));
+        return new HashSet<>(getValues());
     }
 
     public int getDigitsAfterComma() {
@@ -204,7 +208,7 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
     public List<String> getPossibleValues() {
         List<String> result = new ArrayList<>();
 
-        result.addAll(getConstantValues());
+        result.addAll(getValues());
 
         if (result.isEmpty()) {
             if (isString()) {

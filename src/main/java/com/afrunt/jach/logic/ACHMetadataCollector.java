@@ -56,7 +56,7 @@ public class ACHMetadataCollector extends MetadataCollector<ACHMetadata, ACHBean
                 throwError("ACHField cannot be BLANK and contain constant values");
             }
 
-            if (fm.isTypeTag() && (!fm.isMandatory() || fm.getConstantValues().isEmpty())) {
+            if (fm.isTypeTag() && (!fm.isMandatory() || fm.getValues().isEmpty())) {
                 throwError("TypeTag field should have some constant values and be mandatory " + fm);
             }
 

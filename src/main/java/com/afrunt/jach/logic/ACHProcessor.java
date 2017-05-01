@@ -32,8 +32,8 @@ class ACHProcessor implements ACHErrorMixIn, ACHFieldConversionSupport {
     static final String LINE_SEPARATOR = Optional.ofNullable(System.getProperty("line.separator")).orElse("\n");
 
     private ACHMetadata metadata;
-
     private Map<Integer, Method> methodsCache = new HashMap<>();
+    private Map<Integer, String> methodNamesCache = new HashMap<>();
 
     public ACHProcessor(ACHMetadata metadata) {
         this.metadata = metadata;
@@ -44,7 +44,14 @@ class ACHProcessor implements ACHErrorMixIn, ACHFieldConversionSupport {
     }
 
     @Override
+    public Map<Integer, String> getMethodNamesCache() {
+        return methodNamesCache;
+    }
+
+    @Override
     public Map<Integer, Method> getMethodsCache() {
         return methodsCache;
     }
+
+
 }
