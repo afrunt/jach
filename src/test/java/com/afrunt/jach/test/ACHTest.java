@@ -33,10 +33,12 @@ import java.util.Scanner;
 public class ACHTest {
     private static final String[] ACH_FILES = {"ach.txt", "ach-iat.txt", "ach-return.txt", "ach-tr.txt", "ach-payrol.txt",
             "ach-web-ppd.txt", "ach-pos.txt"};
-    private ACH ach = new ACH();
 
     @Test
     public void testReadWrite() {
+        long start = System.currentTimeMillis();
+        ACH ach = new ACH();
+        System.out.println(String.format("\nACH instantiated in %sms", (System.currentTimeMillis() - start)));
         for (String achFileName : ACH_FILES) {
             ACHDocument document = ach.read(getClass().getClassLoader().getResourceAsStream(achFileName));
 
