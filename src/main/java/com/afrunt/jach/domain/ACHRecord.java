@@ -27,7 +27,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
  * @author Andrii Frunt
  */
 public abstract class ACHRecord {
-    public static final String RECORD_TYPE_CODE = "ACH Record Type Code";
+    public static final String RECORD_TYPE_CODE = "Record Type Code";
     public static final String RESERVED = "RESERVED";
     public static final int ACH_RECORD_LENGTH = 94;
     private String record;
