@@ -23,6 +23,7 @@ import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Values;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.*;
 import static com.afrunt.jach.domain.RecordTypes.Constants.BATCH_CONTROL_RECORD_TYPE_CODE;
@@ -42,7 +43,7 @@ public class BatchControl extends ACHRecord {
     public static final String MESSAGE_AUTHENTICATION_CODE = "Message Authentication Code";
     private Integer serviceClassCode;
     private Integer entryAddendaCount;
-    private BigDecimal entryHash;
+    private BigInteger entryHash;
     private BigDecimal totalDebits;
     private BigDecimal totalCredits;
     private String companyIdentification;
@@ -77,11 +78,11 @@ public class BatchControl extends ACHRecord {
     }
 
     @ACHField(start = 10, length = 10, name = ENTRY_HASH, inclusion = MANDATORY)
-    public BigDecimal getEntryHash() {
+    public BigInteger getEntryHash() {
         return this.entryHash;
     }
 
-    public BatchControl setEntryHash(BigDecimal entryHash) {
+    public BatchControl setEntryHash(BigInteger entryHash) {
         this.entryHash = entryHash;
         return this;
     }

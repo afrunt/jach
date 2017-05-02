@@ -29,7 +29,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.OPTIONAL;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType(name = "POP Entry Detail")
+@ACHRecordType(name = "POP Entry Detail Record")
 public class POPEntryDetail extends NonIATEntryDetail {
 
     private String checkSerialNumber;

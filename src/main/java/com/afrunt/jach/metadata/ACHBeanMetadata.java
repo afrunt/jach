@@ -22,35 +22,37 @@ import com.afrunt.beanmetadata.BeanMetadata;
 import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.annotation.ACHRecordType;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
  * @author Andrii Frunt
  */
 public class ACHBeanMetadata extends BeanMetadata<ACHFieldMetadata> {
-    private Set<ACHFieldMetadata> achFieldsMetadata;
+    private List<ACHFieldMetadata> achFieldsMetadata;
     private String recordTypeCode;
-    private Set<ACHFieldMetadata> typeTagsMetadata;
+    private List<ACHFieldMetadata> typeTagsMetadata;
 
     public String getACHRecordName() {
         return getAnnotation(ACHRecordType.class).name();
     }
 
-    public Set<ACHFieldMetadata> getACHFieldsMetadata() {
+    public List<ACHFieldMetadata> getACHFieldsMetadata() {
         if (achFieldsMetadata == null) {
-            achFieldsMetadata = new TreeSet<>(getFieldsAnnotatedWith(ACHField.class));
+            achFieldsMetadata = getFieldsAnnotatedWith(ACHField.class).stream()
+                    .sorted()
+                    .collect(Collectors.toList());
         }
         return achFieldsMetadata;
     }
 
-    public Set<ACHFieldMetadata> getACHTypeTagsMetadata() {
+    public List<ACHFieldMetadata> getACHTypeTagsMetadata() {
         if (typeTagsMetadata == null) {
-            typeTagsMetadata = new TreeSet<>(getACHFieldsMetadata().stream()
+            typeTagsMetadata = new ArrayList<>(getACHFieldsMetadata().stream()
                     .filter(ACHFieldMetadata::isTypeTag)
-                    .collect(Collectors.toSet()));
+                    .sorted()
+                    .collect(Collectors.toList()));
         }
         return typeTagsMetadata;
     }

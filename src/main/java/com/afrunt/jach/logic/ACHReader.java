@@ -177,7 +177,7 @@ public class ACHReader extends ACHProcessor {
     }
 
     private int rankType(String str, ACHBeanMetadata beanMetadata) {
-        Set<ACHFieldMetadata> achTypeTagsMetadata = beanMetadata.getACHTypeTagsMetadata();
+        List<ACHFieldMetadata> achTypeTagsMetadata = beanMetadata.getACHTypeTagsMetadata();
         List<String> strings = splitString(str, achTypeTagsMetadata);
         int rank = 0;
         int i = 0;

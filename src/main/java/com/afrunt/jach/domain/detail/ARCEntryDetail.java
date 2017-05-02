@@ -27,7 +27,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType(name = "ARC Entry Detail")
+@ACHRecordType(name = "ARC Entry Detail Record")
 public class ARCEntryDetail extends NonIATEntryDetail {
     private String checkSerialNumber;
     private String individualName;

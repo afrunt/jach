@@ -28,7 +28,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.REQUIRED;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType(name = "TEL Entry Detail")
+@ACHRecordType(name = "TEL Entry Detail Record")
 public class TELEntryDetail extends NonIATEntryDetail {
     private String identificationNumber;
     private String individualName;

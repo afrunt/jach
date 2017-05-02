@@ -29,7 +29,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType(name = "BOC Entry Detail")
+@ACHRecordType(name = "BOC Entry Detail Record")
 public class BOCEntryDetail extends NonIATEntryDetail {
 
     private String checkSerialNumber;

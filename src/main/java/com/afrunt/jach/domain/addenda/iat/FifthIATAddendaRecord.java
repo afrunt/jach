@@ -30,10 +30,10 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 @ACHRecordType(name = "Fifth IAT Addenda Record")
 public class FifthIATAddendaRecord extends IATAddendaRecord {
     public static final String FIFTH_ADDENDA_TYPE_CODE = "14";
-    public static final String RDFI_S_NAME = "RDFI's name";
-    public static final String RECEIVING_DFI_IDENTIFICATION_NUMBER_QUALIFIER = "Receiving DFI Identification Number Qualifier";
-    public static final String RECEIVING_DFI_IDENTIFICATION_NUMBER = "Receiving DFI Identification Number";
-    public static final String RECEIVING_DFI_BRANCH_COUNTRY_CODE = "Receiving DFI Branch Country Code";
+    public static final String RDFI_NAME = "RDFI Name";
+    public static final String RECEIVING_DFI_IDENTIFICATION_NUMBER_QUALIFIER = "RDFI ID Number Qualifier";
+    public static final String RECEIVING_DFI_IDENTIFICATION_NUMBER = "RDFI ID Number";
+    public static final String RECEIVING_DFI_BRANCH_COUNTRY_CODE = "RDFI Branch Country Code";
 
     private String receivingDFIName;
     private String receivingDFIIDNumberQualifier;
@@ -47,7 +47,7 @@ public class FifthIATAddendaRecord extends IATAddendaRecord {
         return FIFTH_ADDENDA_TYPE_CODE;
     }
 
-    @ACHField(start = 3, length = 35, name = RDFI_S_NAME, inclusion = MANDATORY)
+    @ACHField(start = 3, length = 35, name = RDFI_NAME, inclusion = MANDATORY)
     public String getReceivingDFIName() {
         return receivingDFIName;
     }

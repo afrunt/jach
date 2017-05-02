@@ -22,6 +22,8 @@ import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.annotation.ACHRecordType;
 import com.afrunt.jach.annotation.Values;
 
+import java.math.BigDecimal;
+
 import static com.afrunt.jach.annotation.InclusionRequirement.*;
 
 /**
@@ -39,7 +41,7 @@ public class FirstIATAddendaRecord extends IATAddendaRecord {
     public static final String RECEIVING_COMPANY_NAME_OR_INDIVIDUAL_NAME = "Receiving Company Name Or Individual Name";
 
     private String transactionTypeCode;
-    private String foreignPaymentAmount;
+    private BigDecimal foreignPaymentAmount;
     private String foreignTraceNumber;
     private String receivingCompanyNameOrIndividualName;
 
@@ -94,11 +96,11 @@ public class FirstIATAddendaRecord extends IATAddendaRecord {
      * @return
      */
     @ACHField(start = 6, length = 18, name = FOREIGN_PAYMENT_AMOUNT, inclusion = REQUIRED)
-    public String getForeignPaymentAmount() {
+    public BigDecimal getForeignPaymentAmount() {
         return foreignPaymentAmount;
     }
 
-    public FirstIATAddendaRecord setForeignPaymentAmount(String foreignPaymentAmount) {
+    public FirstIATAddendaRecord setForeignPaymentAmount(BigDecimal foreignPaymentAmount) {
         this.foreignPaymentAmount = foreignPaymentAmount;
         return this;
     }

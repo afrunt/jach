@@ -35,9 +35,9 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 @ACHRecordType(name = "Fourth IAT Addenda Record")
 public class FourthIATAddendaRecord extends IATAddendaRecord {
     public static final String FOURTH_IAT_ADDENDA_TYPE_CODE = "13";
-    public static final String ORIGINATING_DFI_IDENTIFICATION = "Originating DFI Identification";
-    public static final String ORIGINATING_DFI_BRANCH_COUNTRY_CODE = "Originating DFI Branch Country Code";
-    public static final String ORIGINATING_DFI_IDENTIFICATION_NUMBER_QUALIFIER = "Originating DFI Identification Number Qualifier";
+    public static final String ORIGINATING_DFI_IDENTIFICATION = "ODFI Identification";
+    public static final String ORIGINATING_DFI_BRANCH_COUNTRY_CODE = "ODFI Branch Country Code";
+    public static final String ORIGINATING_DFI_IDENTIFICATION_NUMBER_QUALIFIER = "ODFI ID Number Qualifier";
     public static final String ORIGINATING_DFI_NAME = "Originating DFI Name";
     private String originatingDFIName;
     private String originatingDFIIdentificationNumberQualifier;

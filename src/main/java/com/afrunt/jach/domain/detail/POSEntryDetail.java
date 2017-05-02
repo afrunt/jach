@@ -9,7 +9,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType(name = "POS Entry Detail")
+@ACHRecordType(name = "POS Entry Detail Record")
 public class POSEntryDetail extends NonIATEntryDetail {
     private String identificationNumber;
     private String individualName;
