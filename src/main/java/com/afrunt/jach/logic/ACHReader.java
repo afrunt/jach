@@ -73,7 +73,10 @@ public class ACHReader extends ACHProcessor {
     }
 
     private List<String> splitString(String str, ACHBeanMetadata metadata) {
-        Set<ACHFieldMetadata> achFieldsMetadata = metadata.getACHFieldsMetadata();
+        return splitString(str, metadata.getACHFieldsMetadata());
+    }
+
+    private List<String> splitString(String str, Collection<ACHFieldMetadata> achFieldsMetadata) {
         List<String> result = new ArrayList<>(achFieldsMetadata.size());
         for (ACHFieldMetadata fm : achFieldsMetadata) {
             result.add(str.substring(fm.getStart(), fm.getEnd()));
@@ -128,19 +131,34 @@ public class ACHReader extends ACHProcessor {
     }
 
     private ACHBeanMetadata getTypeWithHighestRate(Map<Integer, Set<ACHBeanMetadata>> rateMap) {
-        Integer highestRate = rateMap.keySet().stream()
-                .sorted(Comparator.reverseOrder())
-                .findFirst()
-                .orElseThrow(() -> error("Type of the string not found"));
+        int rateMapSize = rateMap.size();
+        Set<ACHBeanMetadata> typesWithHighestRate;
+        if (rateMapSize == 1) {
+            typesWithHighestRate = rateMap.values().iterator().next();
+        } else if (rateMapSize > 1) {
+            Integer highestRate = rateMap.keySet().stream()
+                    .sorted(Comparator.reverseOrder())
+                    .findFirst()
+                    .orElseThrow(() -> error("Type of the string not found"));
 
-        Set<ACHBeanMetadata> typesWithHighestRate = rateMap.get(highestRate);
-        if (typesWithHighestRate.size() > 1) {
-            throwError("More than one type found for string");
+            typesWithHighestRate = rateMap.get(highestRate);
+        } else {
+            throw error("Type of the string not found");
         }
 
-        return typesWithHighestRate.stream()
+        int numberOfTypes = typesWithHighestRate.size();
+
+        if (numberOfTypes > 1) {
+            throw error("More than one type found for string");
+        } else if (numberOfTypes == 1) {
+            return typesWithHighestRate.iterator().next();
+        } else {
+            throw error("Type of the string not found");
+        }
+
+        /*return typesWithHighestRate.stream()
                 .findFirst()
-                .orElseThrow(() -> error("Type of the string not found"));
+                .orElseThrow(() -> error("Type of the string not found"));*/
     }
 
     private Map<Integer, Set<ACHBeanMetadata>> rankTypes(String str, Set<ACHBeanMetadata> types) {
@@ -157,10 +175,11 @@ public class ACHReader extends ACHProcessor {
     }
 
     private int rankType(String str, ACHBeanMetadata beanMetadata) {
-        List<String> strings = splitString(str, beanMetadata);
+        Set<ACHFieldMetadata> achTypeTagsMetadata = beanMetadata.getACHTypeTagsMetadata();
+        List<String> strings = splitString(str, achTypeTagsMetadata);
         int rank = 0;
         int i = 0;
-        for (ACHFieldMetadata fm : beanMetadata.getACHFieldsMetadata()) {
+        for (ACHFieldMetadata fm : achTypeTagsMetadata) {
             rank += rankField(strings.get(i), fm);
             ++i;
         }
@@ -175,11 +194,7 @@ public class ACHReader extends ACHProcessor {
     }
 
     private int rankField(String value, ACHFieldMetadata fieldMetadata) {
-        if (fieldMetadata.isTypeTag()) {
-            return fieldMetadata.valueSatisfiesToConstantValues(value) ? 1 : 0;
-        } else {
-            return 0;
-        }
+        return fieldMetadata.valueSatisfiesToConstantValues(value) ? 1 : 0;
     }
 
     private class StatefulACHReader {

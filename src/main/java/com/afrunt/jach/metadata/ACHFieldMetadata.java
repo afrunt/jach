@@ -25,7 +25,9 @@ import com.afrunt.jach.logic.StringUtil;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.*;
 
@@ -40,6 +42,7 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
     private Integer end;
     private Integer length;
     private Boolean typeTag;
+    private Boolean hasConstantValues;
 
     public boolean isACHField() {
         return achAnnotation() != null;
@@ -194,11 +197,10 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
     }
 
     public boolean hasConstantValues() {
-        return getValues().size() > 0;
-    }
-
-    public Set<String> getConstantValues() {
-        return new HashSet<>(getValues());
+        if (hasConstantValues == null) {
+            hasConstantValues = getValues().size() > 0;
+        }
+        return hasConstantValues;
     }
 
     public int getDigitsAfterComma() {
