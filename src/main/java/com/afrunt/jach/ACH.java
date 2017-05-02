@@ -44,9 +44,7 @@ import java.util.HashSet;
  */
 public class ACH implements ACHErrorMixIn {
     public static final HashSet<Class<?>> ACH_CLASSES = new HashSet<>(Arrays.asList(
-            EntryDetail.class,
             RemittanceIATAddendaRecord.class,
-            AddendaRecord.class,
             SixthIATAddendaRecord.class,
             IATAddendaRecord.class,
             CORAddendaRecord.class,
@@ -57,12 +55,10 @@ public class ACH implements ACHErrorMixIn {
             GeneralBatchHeader.class,
             BatchControl.class,
             TELEntryDetail.class,
-            NonIATEntryDetail.class,
             FirstIATAddendaRecord.class,
             FileControl.class,
             BOCEntryDetail.class,
             ReturnAddendaRecord.class,
-            BatchHeader.class,
             SecondIATAddendaRecord.class,
             SeventhIATAddendaRecord.class,
             CTXEntryDetail.class,
