@@ -42,7 +42,7 @@ public class FileHeader extends ACHRecord {
     public static final String FILE_CREATION_DATE = "File Creation Date";
     public static final String FILE_CREATION_TIME = "File Creation Time";
     public static final String FILE_ID_MODIFIER = "File ID Modifier";
-    public static final String RECORD_SIZE = "ACHRecord Size";
+    public static final String RECORD_SIZE = "Record Size";
     public static final String BLOCKING_FACTOR = "Blocking Factor";
     public static final String FORMAT_CODE = "Format Code";
     public static final String IMMEDIATE_DESTINATION_NAME = "Immediate Destination Name";
