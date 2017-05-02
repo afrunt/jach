@@ -18,6 +18,7 @@
  */
 package com.afrunt.jach.logic;
 
+import com.afrunt.jach.ACH;
 import com.afrunt.jach.document.ACHBatch;
 import com.afrunt.jach.document.ACHBatchDetail;
 import com.afrunt.jach.document.ACHDocument;
@@ -27,6 +28,7 @@ import com.afrunt.jach.metadata.ACHFieldMetadata;
 import com.afrunt.jach.metadata.ACHMetadata;
 
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.*;
 
 import static com.afrunt.jach.domain.RecordTypes.*;
@@ -40,7 +42,11 @@ public class ACHReader extends ACHProcessor {
     }
 
     public ACHDocument read(InputStream is) {
-        return new StatefulACHReader().readDocument(is);
+        return read(is, ACH.DEFAULT_CHARSET);
+    }
+
+    public ACHDocument read(InputStream is, Charset charset) {
+        return new StatefulACHReader().readDocument(is, charset);
     }
 
     @SuppressWarnings("unchecked")
@@ -204,8 +210,8 @@ public class ACHReader extends ACHProcessor {
         private ACHBatch currentBatch;
         private ACHBatchDetail currentDetail;
 
-        ACHDocument readDocument(InputStream is) {
-            Scanner sc = new Scanner(is);
+        ACHDocument readDocument(InputStream is, Charset charset) {
+            Scanner sc = new Scanner(is, charset.name());
 
             while (sc.hasNextLine()) {
                 ++lineNumber;
@@ -236,6 +242,10 @@ public class ACHReader extends ACHProcessor {
                 }
             }
             return returnDocument();
+        }
+
+        ACHDocument readDocument(InputStream is) {
+            return readDocument(is, ACH.DEFAULT_CHARSET);
         }
 
         private ACHDocument returnDocument() {

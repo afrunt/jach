@@ -36,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -43,7 +44,73 @@ import java.util.HashSet;
  * @author Andrii Frunt
  */
 public class ACH implements ACHErrorMixIn {
-    public static final HashSet<Class<?>> ACH_CLASSES = new HashSet<>(Arrays.asList(
+    public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
+
+    private ACHMetadataCollector metadataCollector;
+    private ACHReader reader;
+    private ACHWriter writer;
+    private ACHMetadata metadata;
+
+    public ACH() {
+        metadataCollector = new ACHMetadataCollector();
+        metadata = metadataCollector.collectMetadata(ACH_CLASSES);
+        reader = new ACHReader(metadata);
+        writer = new ACHWriter(metadata);
+    }
+
+    public <T extends ACHRecord> T readRecord(String line, Class<T> recordClass) {
+        return reader.readRecord(line, recordClass);
+    }
+
+    public ACHDocument read(InputStream is) {
+        return read(is, DEFAULT_CHARSET);
+    }
+
+    public ACHDocument read(InputStream is, Charset charset) {
+        return reader.read(is, charset);
+    }
+
+    public ACHDocument read(String string) {
+        return read(string, DEFAULT_CHARSET);
+    }
+
+    public ACHDocument read(String string, Charset charset) {
+        try (ByteArrayInputStream is = new ByteArrayInputStream(string.getBytes(charset))) {
+            return reader.read(is);
+        } catch (IOException e) {
+            throw error("Error reading ACH document from string", e);
+        }
+    }
+
+    public String write(ACHDocument document) {
+        return write(document, DEFAULT_CHARSET);
+    }
+
+    public String write(ACHDocument document, Charset charset) {
+        return writer.write(document, charset);
+    }
+
+    public void write(ACHDocument document, OutputStream outputStream) {
+        write(document, outputStream, DEFAULT_CHARSET);
+    }
+
+    public void write(ACHDocument document, OutputStream outputStream, Charset charset) {
+        try {
+            String str = writer.write(document, charset);
+            outputStream.write(str.getBytes());
+        } catch (IOException e) {
+            throw error("Error writing ACH document to output stream", e);
+        }
+    }
+
+    public ACHMetadata getMetadata() {
+        if (metadata == null) {
+            metadata = metadataCollector.collectMetadata(ACH_CLASSES);
+        }
+        return metadata;
+    }
+
+    private static final HashSet<Class<?>> ACH_CLASSES = new HashSet<>(Arrays.asList(
             RemittanceIATAddendaRecord.class,
             SixthIATAddendaRecord.class,
             IATAddendaRecord.class,
@@ -75,52 +142,4 @@ public class ACH implements ACHErrorMixIn {
             FileHeader.class,
             ARCEntryDetail.class)
     );
-    private ACHMetadataCollector metadataCollector;
-    private ACHReader reader;
-    private ACHWriter writer;
-    private ACHMetadata metadata;
-
-    public ACH() {
-        metadataCollector = new ACHMetadataCollector();
-        metadata = metadataCollector.collectMetadata(ACH_CLASSES);
-        reader = new ACHReader(metadata);
-        writer = new ACHWriter(metadata);
-    }
-
-    public <T extends ACHRecord> T readRecord(String line, Class<T> recordClass) {
-        return reader.readRecord(line, recordClass);
-    }
-
-    public ACHDocument read(InputStream is) {
-        return reader.read(is);
-    }
-
-    public ACHDocument read(String string) {
-        try (ByteArrayInputStream is = new ByteArrayInputStream(string.getBytes())) {
-            return reader.read(is);
-        } catch (IOException e) {
-            throw error("Error reading ACH document from string", e);
-        }
-    }
-
-    public String write(ACHDocument document) {
-        return writer.write(document);
-    }
-
-    public void write(ACHDocument document, OutputStream outputStream) {
-        try {
-            String str = writer.write(document);
-            outputStream.write(str.getBytes());
-        } catch (IOException e) {
-            throw error("Error writing ACH document to output stream", e);
-        }
-
-    }
-
-    public ACHMetadata getMetadata() {
-        if (metadata == null) {
-            metadata = metadataCollector.collectMetadata(ACH_CLASSES);
-        }
-        return metadata;
-    }
 }

@@ -18,6 +18,7 @@
  */
 package com.afrunt.jach.logic;
 
+import com.afrunt.jach.ACH;
 import com.afrunt.jach.document.ACHBatch;
 import com.afrunt.jach.document.ACHBatchDetail;
 import com.afrunt.jach.document.ACHDocument;
@@ -40,13 +41,15 @@ import static com.afrunt.jach.logic.StringUtil.filledWithSpaces;
  * @author Andrii Frunt
  */
 public class ACHWriter extends ACHProcessor {
-    private Charset charset = Charset.forName("UTF-8");
-
     public ACHWriter(ACHMetadata metadata) {
         super(metadata);
     }
 
     public String write(ACHDocument document) {
+        return write(document, ACH.DEFAULT_CHARSET);
+    }
+
+    public String write(ACHDocument document, Charset charset) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             write(document, baos);
             return baos.toString(charset.name());
@@ -55,10 +58,15 @@ public class ACHWriter extends ACHProcessor {
         }
     }
 
+
     public void write(ACHDocument document, OutputStream outputStream) {
+        write(document, outputStream, ACH.DEFAULT_CHARSET);
+    }
+
+    public void write(ACHDocument document, OutputStream outputStream, Charset charset) {
         try {
             validateDocument(document);
-            OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+            OutputStreamWriter writer = new OutputStreamWriter(outputStream, charset);
 
             writeLine(writer, writeRecord(document.getFileHeader()));
 
