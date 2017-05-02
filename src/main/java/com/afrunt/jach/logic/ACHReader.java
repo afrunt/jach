@@ -148,10 +148,10 @@ public class ACHReader extends ACHProcessor {
 
         int numberOfTypes = typesWithHighestRate.size();
 
-        if (numberOfTypes > 1) {
-            throw error("More than one type found for string");
-        } else if (numberOfTypes == 1) {
+        if (numberOfTypes == 1) {
             return typesWithHighestRate.iterator().next();
+        } else if (numberOfTypes > 1) {
+            throw error("More than one type found for string");
         } else {
             throw error("Type of the string not found");
         }
