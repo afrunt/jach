@@ -126,25 +126,8 @@ public class ACHReader extends ACHProcessor {
         }
     }
 
-    private String extractRecordTypeCode(String line) {
-        return line.substring(0, 1);
-    }
-
     private ACHBeanMetadata getTypeWithHighestRate(Map<Integer, Set<ACHBeanMetadata>> rateMap) {
-        int rateMapSize = rateMap.size();
-        Set<ACHBeanMetadata> typesWithHighestRate;
-        if (rateMapSize == 1) {
-            typesWithHighestRate = rateMap.values().iterator().next();
-        } else if (rateMapSize > 1) {
-            Integer highestRate = rateMap.keySet().stream()
-                    .sorted(Comparator.reverseOrder())
-                    .findFirst()
-                    .orElseThrow(() -> error("Type of the string not found"));
-
-            typesWithHighestRate = rateMap.get(highestRate);
-        } else {
-            throw error("Type of the string not found");
-        }
+        Set<ACHBeanMetadata> typesWithHighestRate = getTypesWithHighestRate(rateMap);
 
         int numberOfTypes = typesWithHighestRate.size();
 
@@ -161,14 +144,27 @@ public class ACHReader extends ACHProcessor {
                 .orElseThrow(() -> error("Type of the string not found"));*/
     }
 
+    private Set<ACHBeanMetadata> getTypesWithHighestRate(Map<Integer, Set<ACHBeanMetadata>> rateMap) {
+        int rateMapSize = rateMap.size();
+        if (rateMapSize == 1) {
+            return rateMap.values().iterator().next();
+        } else if (rateMapSize > 1) {
+            return rateMap.get(Collections.max(rateMap.keySet()));
+        } else {
+            throw error("Type of the string not found");
+        }
+    }
+
     private Map<Integer, Set<ACHBeanMetadata>> rankTypes(String str, Set<ACHBeanMetadata> types) {
-        Map<Integer, Set<ACHBeanMetadata>> result = new HashMap<>();
+        Map<Integer, Set<ACHBeanMetadata>> result = new HashMap<>(types.size());
 
         for (ACHBeanMetadata type : types) {
             int rank = rankType(str, type);
-            Set<ACHBeanMetadata> rankSet = result.getOrDefault(rank, new HashSet<>());
-            rankSet.add(type);
-            result.put(rank, rankSet);
+            if (rank > 0) {
+                Set<ACHBeanMetadata> rankSet = result.getOrDefault(rank, new HashSet<>());
+                rankSet.add(type);
+                result.put(rank, rankSet);
+            }
         }
 
         return result;
@@ -195,6 +191,10 @@ public class ACHReader extends ACHProcessor {
 
     private int rankField(String value, ACHFieldMetadata fieldMetadata) {
         return fieldMetadata.valueSatisfiesToConstantValues(value) ? 1 : 0;
+    }
+
+    private String extractRecordTypeCode(String line) {
+        return line.substring(0, 1);
     }
 
     private class StatefulACHReader {
