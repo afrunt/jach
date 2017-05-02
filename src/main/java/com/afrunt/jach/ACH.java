@@ -39,6 +39,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Andrii Frunt
@@ -110,7 +111,7 @@ public class ACH implements ACHErrorMixIn {
         return metadata;
     }
 
-    private static final HashSet<Class<?>> ACH_CLASSES = new HashSet<>(Arrays.asList(
+    private static final Set<Class<?>> ACH_CLASSES = new HashSet<>(Arrays.asList(
             RemittanceIATAddendaRecord.class,
             SixthIATAddendaRecord.class,
             IATAddendaRecord.class,
