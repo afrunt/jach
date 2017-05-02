@@ -28,7 +28,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "CTX Entry Detail")
 public class CTXEntryDetail extends NonIATEntryDetail {
     private String identificationNumber;
     private Short numberOfAddendaRecords;

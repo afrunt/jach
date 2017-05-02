@@ -27,7 +27,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "Remittance IAT Addenda Record")
 public class RemittanceIATAddendaRecord extends IATAddendaRecord {
     public static final String REMITTANCE_IAT_ADDENDA_TYPE_CODE = "17";
     public static final String PAYMENT_RELATED_INFORMATION = "Payment Related Information";

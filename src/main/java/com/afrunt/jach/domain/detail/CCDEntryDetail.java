@@ -27,7 +27,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.REQUIRED;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "CCD Entry Detail")
 public class CCDEntryDetail extends NonIATEntryDetail {
     private String identificationNumber;
     private String receivingCompanyName;

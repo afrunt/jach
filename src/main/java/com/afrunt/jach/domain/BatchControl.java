@@ -30,7 +30,7 @@ import static com.afrunt.jach.domain.RecordTypes.Constants.BATCH_CONTROL_RECORD_
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "Batch Control Record")
 public class BatchControl extends ACHRecord {
     public static final String RECORD_TYPE_CODE = "Record Type Code";
     public static final String SERVICE_CLASS_CODE = "Service Class Code";

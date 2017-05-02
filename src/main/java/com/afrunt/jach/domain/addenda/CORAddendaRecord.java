@@ -30,7 +30,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "COR Addenda Record")
 public class CORAddendaRecord extends AddendaRecord {
     public static final String COR_ADDENDA_TYPE_CODE = "98";
     public static final String CORRECTED_DATA = "Corrected Data";

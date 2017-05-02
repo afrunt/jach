@@ -25,7 +25,7 @@ import com.afrunt.jach.domain.NonIATEntryDetail;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "PPD Entry Detail")
 public class PPDEntryDetail extends NonIATEntryDetail {
     private String identificationNumber;
     private String individualName;

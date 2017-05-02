@@ -34,7 +34,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.REQUIRED;
  *
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "POS Addenda Record")
 public class POSAddendaRecord extends AddendaRecord {
     public static final String POS_ADDENDA_TYPE_CODE = "02";
     public static final String REFERENCE_INFORMATION_1 = "Reference Information #1";

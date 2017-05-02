@@ -27,7 +27,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "RCK Entry Detail")
 public class RCKEntryDetail extends NonIATEntryDetail {
     private String checkSerialNumber;
     private String individualName;

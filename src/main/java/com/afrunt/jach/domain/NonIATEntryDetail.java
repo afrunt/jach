@@ -33,7 +33,7 @@ public abstract class NonIATEntryDetail extends EntryDetail {
 
     private String dfiAccountNumber;
 
-    @ACHField(start = 12, length = 29, inclusion = REQUIRED, name = DFI_ACCOUNT_NUMBER)
+    @ACHField(start = 12, length = 17, inclusion = REQUIRED, name = DFI_ACCOUNT_NUMBER)
     public String getDfiAccountNumber() {
         return this.dfiAccountNumber;
     }

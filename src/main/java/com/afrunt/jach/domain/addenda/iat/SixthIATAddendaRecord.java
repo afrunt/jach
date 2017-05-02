@@ -28,7 +28,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "Sixth IAT Addenda Record")
 public class SixthIATAddendaRecord extends IATAddendaRecord {
 
     public static final String SIXTH_IAT_ADDENDA_TYPE_CODE = "15";

@@ -34,7 +34,7 @@ import static com.afrunt.jach.domain.RecordTypes.Constants.FILE_HEADER_RECORD_TY
  *
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "File Header Record")
 public class FileHeader extends ACHRecord {
     public static final String PRIORITY_CODE = "Priority Code";
     public static final String IMMEDIATE_DESTINATION = "Immediate Destination";

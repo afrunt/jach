@@ -111,6 +111,14 @@ public class ACH implements ACHErrorMixIn {
         return metadata;
     }
 
+    public ACHReader getReader() {
+        return reader;
+    }
+
+    public ACHWriter getWriter() {
+        return writer;
+    }
+
     private static final Set<Class<?>> ACH_CLASSES = new HashSet<>(Arrays.asList(
             RemittanceIATAddendaRecord.class,
             SixthIATAddendaRecord.class,

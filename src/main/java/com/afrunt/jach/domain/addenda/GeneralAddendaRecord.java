@@ -29,7 +29,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.OPTIONAL;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "General CCD Addenda Record")
 public class GeneralAddendaRecord extends AddendaRecord {
     private static final String CCD_ADDENDA_TYPE_CODE = "05";
     private static final String PAYMENT_RELATED_INFORMATION = "Payment Related Information";

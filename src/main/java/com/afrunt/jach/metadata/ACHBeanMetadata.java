@@ -20,6 +20,7 @@ package com.afrunt.jach.metadata;
 
 import com.afrunt.beanmetadata.BeanMetadata;
 import com.afrunt.jach.annotation.ACHField;
+import com.afrunt.jach.annotation.ACHRecordType;
 
 import java.util.List;
 import java.util.Set;
@@ -33,6 +34,10 @@ public class ACHBeanMetadata extends BeanMetadata<ACHFieldMetadata> {
     private Set<ACHFieldMetadata> achFieldsMetadata;
     private String recordTypeCode;
     private Set<ACHFieldMetadata> typeTagsMetadata;
+
+    public String getACHRecordName() {
+        return getAnnotation(ACHRecordType.class).name();
+    }
 
     public Set<ACHFieldMetadata> getACHFieldsMetadata() {
         if (achFieldsMetadata == null) {

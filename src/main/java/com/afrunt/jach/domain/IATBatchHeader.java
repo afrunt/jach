@@ -27,7 +27,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "IAT Batch Header Record")
 public class IATBatchHeader extends BatchHeader {
     public static final String IAT_INDICATOR = "SEC_IAT Indicator";
     public static final String FOREIGN_EXCHANGE_INDICATOR = "Foreign Exchange Indicator";

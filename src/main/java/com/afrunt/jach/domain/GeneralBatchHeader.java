@@ -28,7 +28,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.OPTIONAL;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "Batch Header Record")
 public class GeneralBatchHeader extends BatchHeader {
     public static final String COMPANY_NAME = "Company Name";
     public static final String COMPANY_DISCRETIONARY_DATA = "Company Discretionary Data";

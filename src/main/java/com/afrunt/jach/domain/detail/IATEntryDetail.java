@@ -29,7 +29,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "IAT Entry Detail")
 public class IATEntryDetail extends EntryDetail {
     private Short numberOfAddendaRecords;
     private String accountNumber;

@@ -28,9 +28,8 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "Seventh IAT Addenda Record")
 public class SeventhIATAddendaRecord extends IATAddendaRecord {
-
     public static final String SEVENTH_IAT_ADDENDA_TYPE_CODE = "16";
     public static final String RECEIVER_CITY_STATE_PROVINCE = "Receiver City & State/Province";
     public static final String RECEIVER_COUNTRY_POSTAL_CODE = "Receiver Country & Postal Code";

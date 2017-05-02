@@ -30,7 +30,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
  *
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "First IAT Addenda Record")
 public class FirstIATAddendaRecord extends IATAddendaRecord {
     public static final String FIRST_IAT_ADDENDA_TYPE_CODE = "10";
     public static final String TRANSACTION_TYPE_CODE = "Transaction Type Code";

@@ -80,6 +80,10 @@ public class ACHWriter extends ACHProcessor {
         }
     }
 
+    public String formatFieldValueAsString(Object value, ACHBeanMetadata bm, ACHFieldMetadata fm) {
+        return value == null ? filledWithSpaces(fm.getLength()) : (String) fieldToValue(value, String.class, bm, fm);
+    }
+
     private void writeBatch(ACHBatch batch, OutputStreamWriter writer) {
         try {
             validateBatch(batch);
@@ -113,7 +117,7 @@ public class ACHWriter extends ACHProcessor {
 
         for (ACHFieldMetadata fm : typeMetadata.getACHFieldsMetadata()) {
             Object value = retrieveFieldValue(record, fm);
-            String formattedValue = value == null ? filledWithSpaces(fm.getLength()) : (String) fieldToValue(value, String.class, typeMetadata, fm);
+            String formattedValue = formatFieldValueAsString(value, typeMetadata, fm);
 
             formattedValue = validateFormattedValue(fm, formattedValue);
             recordString = changeRecordStringWithFieldValue(recordString, fm, formattedValue);

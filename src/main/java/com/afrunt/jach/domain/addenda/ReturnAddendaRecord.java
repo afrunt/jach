@@ -31,7 +31,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.REQUIRED;
 /**
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "Return Addenda Record")
 public class ReturnAddendaRecord extends AddendaRecord {
     public static final String RETURN_ADDENDA_TYPE_CODE = "99";
     public static final String ADDENDA_INFORMATION = "Addenda Information";

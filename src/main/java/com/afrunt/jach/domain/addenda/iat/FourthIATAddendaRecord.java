@@ -32,7 +32,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
  *
  * @author Andrii Frunt
  */
-@ACHRecordType
+@ACHRecordType(name = "Fourth IAT Addenda Record")
 public class FourthIATAddendaRecord extends IATAddendaRecord {
     public static final String FOURTH_IAT_ADDENDA_TYPE_CODE = "13";
     public static final String ORIGINATING_DFI_IDENTIFICATION = "Originating DFI Identification";
