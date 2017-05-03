@@ -53,8 +53,8 @@ public class ACHTest {
     }
 
     private void testFilesAreEquals(InputStream is1, InputStream is2) {
-        Scanner sc1 = new Scanner(is1);
-        Scanner sc2 = new Scanner(is2);
+        Scanner sc1 = new Scanner(is1, ACH.DEFAULT_CHARSET.name());
+        Scanner sc2 = new Scanner(is2, ACH.DEFAULT_CHARSET.name());
 
         while (sc1.hasNextLine()) {
             String line1 = sc1.nextLine();
