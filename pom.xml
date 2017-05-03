@@ -51,6 +51,7 @@
     <properties>
         <junit.version>4.12</junit.version>
         <bean-metadata.version>0.1-dev</bean-metadata.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
