@@ -22,7 +22,7 @@
 
     <groupId>com.afrunt</groupId>
     <artifactId>jach</artifactId>
-    <version>0.1-dev</version>
+    <version>0.1.2-dev</version>
 
     <name>jACH</name>
     <description>Open source library for working with ACH files</description>
@@ -50,7 +50,7 @@
 
     <properties>
         <junit.version>4.12</junit.version>
-        <bean-metadata.version>0.1-dev</bean-metadata.version>
+        <bean-metadata.version>0.1.2-dev</bean-metadata.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
