@@ -4,7 +4,7 @@ Add jACH to your project. for maven projects just add this dependency:
 <dependency>
   <groupId>com.afrunt</groupId>
   <artifactId>jach</artifactId>
-  <version>0.1-dev</version>
+  <version>0.2</version>
 </dependency>
 ```
 Using jACH you can work with ACH documents such as:
