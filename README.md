@@ -37,7 +37,7 @@ or
 OutputStream os = ...;
 ach.write(document, os);
 ```
-If you need to use specific character set, then you need to provide it as last parameter:
+If you need to use specific character set, then you need to pass it as last parameter:
 ```java
 Charset charset = Charset.forName("UTF-8");
 ACHDocument document = ach.read(is, charset);
