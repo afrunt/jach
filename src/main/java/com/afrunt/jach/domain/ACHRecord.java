@@ -31,6 +31,7 @@ public abstract class ACHRecord {
     public static final String RESERVED = "RESERVED";
     public static final int ACH_RECORD_LENGTH = 94;
     private String record;
+    private int lineNumber;
 
     @ACHField(length = 1, inclusion = MANDATORY, name = RECORD_TYPE_CODE, typeTag = true)
     public abstract String getRecordTypeCode();
@@ -50,5 +51,14 @@ public abstract class ACHRecord {
 
     public boolean is(RecordTypes type) {
         return getRecordTypeCode().equals(type.getRecordTypeCode());
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public ACHRecord setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+        return this;
     }
 }

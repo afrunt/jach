@@ -218,7 +218,8 @@ public class ACHReader extends ACHProcessor {
                 currentLine = sc.nextLine();
                 validateString();
 
-                ACHRecord record = readRecord(currentLine, findRecordType());
+                ACHRecord record = readRecord(currentLine, findRecordType())
+                        .setLineNumber(lineNumber);
 
                 if (record.is(FILE_HEADER)) {
                     document.setFileHeader((FileHeader) record);
@@ -255,6 +256,7 @@ public class ACHReader extends ACHProcessor {
             currentBatch = null;
             currentDetail = null;
             currentLine = null;
+            currentDocument.setNumberOfLines(lineNumber);
             return currentDocument;
         }
 

@@ -33,6 +33,8 @@ public class ACHDocument {
     private List<ACHBatch> batches = new ArrayList<>();
     private FileControl fileControl;
 
+    private int numberOfLines;
+
     public ACHDocument addBatch(ACHBatch batch) {
         batches = batches == null ? new ArrayList<>() : batches;
         batches.add(batch);
@@ -70,5 +72,14 @@ public class ACHDocument {
         return Optional.ofNullable(batches)
                 .map(List::size)
                 .orElse(0);
+    }
+
+    public int getNumberOfLines() {
+        return numberOfLines;
+    }
+
+    public ACHDocument setNumberOfLines(int numberOfLines) {
+        this.numberOfLines = numberOfLines;
+        return this;
     }
 }
