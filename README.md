@@ -1,10 +1,11 @@
-## Java library for reading and writing ACH documents [![Build Status](https://travis-ci.org/afrunt/jach.svg?branch=master)](https://travis-ci.org/afrunt/jach)
+[![Build Status](https://travis-ci.org/afrunt/jach.svg?branch=master)](https://travis-ci.org/afrunt/jach)
+## Java library for reading and writing ACH documents 
 Add jACH to your project. for maven projects just add this dependency:
 ```xml
 <dependency>
   <groupId>com.afrunt</groupId>
   <artifactId>jach</artifactId>
-  <version>0.2</version>
+  <version>0.2.1</version>
 </dependency>
 ```
 Using jACH you can work with ACH documents such as:
