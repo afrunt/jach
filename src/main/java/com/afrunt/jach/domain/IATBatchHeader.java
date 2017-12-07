@@ -58,7 +58,7 @@ public class IATBatchHeader extends BatchHeader {
     }
 
     @ACHField(start = 20, length = 2, name = FOREIGN_EXCHANGE_INDICATOR, inclusion = MANDATORY,
-            values = {"FV", "FF"})
+            values = {"FV", "FF"}, typeTag = true)
     public String getForeignExchangeIndicator() {
         return foreignExchangeIndicator;
     }

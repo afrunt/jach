@@ -31,7 +31,7 @@ import java.util.Scanner;
  * @author Andrii Frunt
  */
 public class ACHTest {
-    private static final String[] ACH_FILES = {"ach-return.txt", "ach-tr.txt", "ach-payrol.txt",
+    private static final String[] ACH_FILES = {"cie-returns.txt", "ach-return.txt", "ach-tr.txt", "ach-payrol.txt",
             "ach-web-ppd.txt", "ach-pos.txt"};
 
     @Test

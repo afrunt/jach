@@ -126,6 +126,7 @@ public class ACH implements ACHErrorMixIn {
             CORAddendaRecord.class,
             ThirdIATAddendaRecord.class,
             ForeignCorrespondentBankIATAddendaRecord.class,
+            CIEEntryDetail.class,
             IATEntryDetail.class,
             RCKEntryDetail.class,
             GeneralBatchHeader.class,

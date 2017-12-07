@@ -73,7 +73,7 @@ public class GeneralBatchHeader extends BatchHeader {
     @Override
     @Values({
             "CCD", //Corporate Credit or Debit
-            //"CBR", //Corporate cross-border payment entries
+            "CIE",
             "CTX", //Corporate Trade Exchange
             "PPD", //Prearranged Payment and Deposit Entry
             "ARC", //Accounts Receivable Check

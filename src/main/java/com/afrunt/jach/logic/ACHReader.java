@@ -182,7 +182,8 @@ public class ACHReader extends ACHProcessor {
         int rank = 0;
         int i = 0;
         for (ACHFieldMetadata fm : achTypeTagsMetadata) {
-            rank += rankField(strings.get(i), fm);
+            String value = strings.get(i);
+            rank += rankField(value, fm);
             ++i;
         }
 

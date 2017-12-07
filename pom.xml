@@ -22,7 +22,7 @@
 
     <groupId>com.afrunt</groupId>
     <artifactId>jach</artifactId>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
 
     <name>jACH</name>
     <description>Open source library for working with ACH files</description>
