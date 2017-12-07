@@ -54,7 +54,7 @@ public class ACHReader extends ACHProcessor {
         return (T) readRecord(line, getMetadata().getBeanMetadata(recordClass));
     }
 
-    private ACHRecord readRecord(String line, ACHBeanMetadata beanMetadata) {
+    public ACHRecord readRecord(String line, ACHBeanMetadata beanMetadata) {
         List<String> strings = splitString(line, beanMetadata);
 
         ACHRecord record = (ACHRecord) beanMetadata.createInstance();
@@ -78,11 +78,11 @@ public class ACHReader extends ACHProcessor {
         return record;
     }
 
-    private List<String> splitString(String str, ACHBeanMetadata metadata) {
+    public List<String> splitString(String str, ACHBeanMetadata metadata) {
         return splitString(str, metadata.getACHFieldsMetadata());
     }
 
-    private List<String> splitString(String str, Collection<ACHFieldMetadata> achFieldsMetadata) {
+    public List<String> splitString(String str, Collection<ACHFieldMetadata> achFieldsMetadata) {
         List<String> result = new ArrayList<>(achFieldsMetadata.size());
         for (ACHFieldMetadata fm : achFieldsMetadata) {
             result.add(str.substring(fm.getStart(), fm.getEnd()));
@@ -91,7 +91,7 @@ public class ACHReader extends ACHProcessor {
         return result;
     }
 
-    private ACHBeanMetadata typeOfString(String str) {
+    public ACHBeanMetadata typeOfString(String str) {
         str = validateString(str);
         String recordTypeCode = extractRecordTypeCode(str);
         Set<ACHBeanMetadata> types = getMetadata().typesForRecordTypeCode(recordTypeCode);
@@ -144,10 +144,6 @@ public class ACHReader extends ACHProcessor {
         } else {
             throw error("Type of the string not found");
         }
-
-        /*return typesWithHighestRate.stream()
-                .findFirst()
-                .orElseThrow(() -> error("Type of the string not found"));*/
     }
 
     private Set<ACHBeanMetadata> getTypesWithHighestRate(Map<Integer, Set<ACHBeanMetadata>> rateMap) {
