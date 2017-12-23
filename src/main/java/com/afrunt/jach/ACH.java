@@ -32,10 +32,7 @@ import com.afrunt.jach.logic.ACHReader;
 import com.afrunt.jach.logic.ACHWriter;
 import com.afrunt.jach.metadata.ACHMetadata;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -44,7 +41,7 @@ import java.util.Set;
 /**
  * @author Andrii Frunt
  */
-public class ACH implements ACHErrorMixIn {
+public class ACH implements ACHErrorMixIn, Serializable {
     public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
     private ACHMetadataCollector metadataCollector;
