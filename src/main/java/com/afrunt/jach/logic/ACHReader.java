@@ -260,6 +260,10 @@ public class ACHReader extends ACHProcessor {
         private void validateString() {
             String recordTypeCode = extractRecordTypeCode(currentLine);
 
+            if (currentLine.length() != ACHRecord.ACH_RECORD_LENGTH) {
+                throwValidationError("Line length should be 94. Actual length is " + currentLine.length());
+            }
+
             if (!RecordTypes.validRecordTypeCode(recordTypeCode)) {
                 throwValidationError("Unknown record type code " + recordTypeCode);
             }

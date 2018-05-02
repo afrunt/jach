@@ -35,6 +35,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 
+import static com.afrunt.jach.domain.ACHRecord.ACH_RECORD_LENGTH;
 import static com.afrunt.jach.logic.StringUtil.filledWithSpaces;
 
 /**
@@ -112,7 +113,7 @@ public class ACHWriter extends ACHProcessor {
     }
 
     private String writeRecord(ACHRecord record) {
-        String recordString = filledWithSpaces(ACHRecord.ACH_RECORD_LENGTH);
+        String recordString = filledWithSpaces(ACH_RECORD_LENGTH);
         ACHBeanMetadata typeMetadata = getMetadata().getBeanMetadata(record.getClass());
 
         for (ACHFieldMetadata fm : typeMetadata.getACHFieldsMetadata()) {
@@ -123,11 +124,18 @@ public class ACHWriter extends ACHProcessor {
             recordString = changeRecordStringWithFieldValue(recordString, fm, formattedValue);
         }
 
+        if (recordString.length() != ACH_RECORD_LENGTH) {
+            throwError("Error formatting ACH record. Line length should be 94. Actual size is " + recordString.length());
+        }
+
         record.setRecord(recordString);
         return recordString;
     }
 
     private String validateFormattedValue(ACHFieldMetadata fm, String formattedValue) {
+        if (fm.getLength() < formattedValue.length()) {
+            throwError("Field " + fm + " value could not be longer, than " + fm.getLength() + " symbols. Value " + formattedValue + " is not appropriate");
+        }
         return formattedValue;
     }
 
