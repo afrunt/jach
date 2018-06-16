@@ -32,22 +32,28 @@ import com.afrunt.jach.logic.ACHReader;
 import com.afrunt.jach.logic.ACHWriter;
 import com.afrunt.jach.metadata.ACHMetadata;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
  * @author Andrii Frunt
  */
-public class ACH implements ACHErrorMixIn, Serializable {
+public class ACH implements ACHErrorMixIn {
+    public static final String LINE_SEPARATOR = Optional.ofNullable(System.getProperty("line.separator")).orElse("\n");
     public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
     private ACHMetadataCollector metadataCollector;
     private ACHReader reader;
     private ACHWriter writer;
     private ACHMetadata metadata;
+    private boolean blockAligning;
 
     public ACH() {
         metadataCollector = new ACHMetadataCollector();
@@ -114,6 +120,16 @@ public class ACH implements ACHErrorMixIn, Serializable {
 
     public ACHWriter getWriter() {
         return writer;
+    }
+
+    public boolean withBlockAligning() {
+        return blockAligning;
+    }
+
+    public ACH withBlockAligning(boolean value) {
+        blockAligning = value;
+        writer.setBlockAligning(blockAligning);
+        return this;
     }
 
     private static final Set<Class<?>> ACH_CLASSES = new HashSet<>(Arrays.asList(

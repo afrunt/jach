@@ -42,6 +42,9 @@ import static com.afrunt.jach.logic.StringUtil.filledWithSpaces;
  * @author Andrii Frunt
  */
 public class ACHWriter extends ACHProcessor {
+    private int lines = 0;
+    private boolean blockAligning;
+
     public ACHWriter(ACHMetadata metadata) {
         super(metadata);
     }
@@ -68,12 +71,21 @@ public class ACHWriter extends ACHProcessor {
         try {
             validateDocument(document);
             OutputStreamWriter writer = new OutputStreamWriter(outputStream, charset);
-
+            lines = 0;
             writeLine(writer, writeRecord(document.getFileHeader()));
 
             document.getBatches().forEach(b -> writeBatch(b, writer));
 
-            writer.write(writeRecord(document.getFileControl()));
+            writeLine(writer, writeRecord(document.getFileControl()), false);
+
+            if (lines % 10 != 0 && blockAligning) {
+                String emptyLine = new String(new char[ACHRecord.ACH_RECORD_LENGTH]).replace("\0", " ");
+                for (int i = 0; i < lines % 10 - 1; i++) {
+                    writeLine(writer, emptyLine);
+                }
+
+                writeLine(writer, emptyLine, false);
+            }
 
             writer.flush();
         } catch (IOException e) {
@@ -188,8 +200,24 @@ public class ACHWriter extends ACHProcessor {
         }
     }
 
-    private void writeLine(OutputStreamWriter writer, String line) throws IOException {
+    private void writeLine(OutputStreamWriter writer, String line, boolean withLineSeparator) throws IOException {
+        ++lines;
         writer.write(line);
-        writer.write(LINE_SEPARATOR);
+        if (withLineSeparator) {
+            writer.write(LINE_SEPARATOR);
+        }
+    }
+
+    private void writeLine(OutputStreamWriter writer, String line) throws IOException {
+        writeLine(writer, line, true);
+    }
+
+    public boolean isBlockAligning() {
+        return blockAligning;
+    }
+
+    public ACHWriter setBlockAligning(boolean blockAligning) {
+        this.blockAligning = blockAligning;
+        return this;
     }
 }

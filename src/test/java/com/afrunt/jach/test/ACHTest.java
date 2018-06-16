@@ -24,6 +24,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -52,6 +54,17 @@ public class ACHTest {
         }
     }
 
+    @Test
+    public void testBlockAligning() {
+        ACH ach = new ACH()
+                .withBlockAligning(true);
+
+        ACHDocument document = ach.read(getClass().getClassLoader().getResourceAsStream("ach-payrol.txt"));
+        String out = ach.write(document);
+        String[] strings = out.split(ACH.LINE_SEPARATOR);
+        Assert.assertEquals(10, strings.length);
+    }
+
     private void testFilesAreEquals(InputStream is1, InputStream is2) {
         Scanner sc1 = new Scanner(is1, ACH.DEFAULT_CHARSET.name());
         Scanner sc2 = new Scanner(is2, ACH.DEFAULT_CHARSET.name());
@@ -62,4 +75,6 @@ public class ACHTest {
             Assert.assertEquals(line1, line2);
         }
     }
+
+
 }
