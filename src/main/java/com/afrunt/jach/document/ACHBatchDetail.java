@@ -27,6 +27,7 @@ import java.util.List;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("UnusedReturnValue")
 public class ACHBatchDetail {
     private EntryDetail detailRecord;
     private List<AddendaRecord> addendaRecords = new ArrayList<>();

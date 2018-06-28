@@ -32,6 +32,7 @@ import java.util.Date;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("WeakerAccess")
 public interface ACHFieldConversionSupport extends FieldConversionSupport<ACHBeanMetadata, ACHFieldMetadata>, ACHErrorMixIn {
     default Integer valueStringToInteger(String value, ACHBeanMetadata bm, ACHFieldMetadata fm) {
         return stringToBigDecimal(value, bm, fm).intValue();

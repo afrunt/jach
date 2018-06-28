@@ -27,6 +27,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings({"WeakerAccess", "EmptyMethod"})
 @ACHRecordType(name = "IAT Batch Header Record")
 public class IATBatchHeader extends BatchHeader {
     public static final String IAT_INDICATOR = "SEC_IAT Indicator";

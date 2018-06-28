@@ -26,6 +26,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class ACHRecord {
     public static final String RECORD_TYPE_CODE = "Record Type Code";
     public static final String RESERVED = "RESERVED";

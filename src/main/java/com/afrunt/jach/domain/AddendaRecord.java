@@ -25,6 +25,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class AddendaRecord extends ACHRecord {
     public static final String ADDENDA_RECORD_TYPE_CODE = "7";
     public static final String ENTRY_DETAIL_SEQUENCE_NUMBER = "Entry Detail Sequence Number";

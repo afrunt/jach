@@ -28,6 +28,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.OPTIONAL;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings({"WeakerAccess", "EmptyMethod"})
 @ACHRecordType(name = "Batch Header Record")
 public class GeneralBatchHeader extends BatchHeader {
     public static final String COMPANY_NAME = "Company Name";

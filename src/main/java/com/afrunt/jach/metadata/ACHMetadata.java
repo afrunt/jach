@@ -30,9 +30,10 @@ import java.util.stream.Collectors;
  * @author Andrii Frunt
  */
 public class ACHMetadata extends Metadata<ACHBeanMetadata, ACHFieldMetadata> {
+    private final Map<String, Set<ACHBeanMetadata>> typesForRecordTypeCodeCache = new HashMap<>();
     private Set<ACHBeanMetadata> achBeansMetadata;
-    private Map<String, Set<ACHBeanMetadata>> typesForRecordTypeCodeCache = new HashMap<>();
 
+    @SuppressWarnings("WeakerAccess")
     public Set<ACHBeanMetadata> getACHBeansMetadata() {
         if (achBeansMetadata == null) {
             achBeansMetadata = getAnnotatedWith(ACHRecordType.class);

@@ -35,6 +35,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("SameReturnValue")
 public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFieldMetadata> {
     private ACHField achFieldAnnotation;
     private InclusionRequirement inclusion;
@@ -76,10 +77,12 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
         return inclusionIs(REQUIRED);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public boolean inclusionIs(InclusionRequirement requirement) {
         return requirement.equals(getInclusionRequirement());
     }
 
+    @SuppressWarnings("WeakerAccess")
     public InclusionRequirement getInclusionRequirement() {
         if (inclusion == null) {
             if (isAnnotatedWith(Inclusion.class)) {
@@ -149,6 +152,7 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
         }
     }
 
+    @SuppressWarnings({"WeakerAccess", "ComparatorResultComparison"})
     public boolean valueSatisfiesToFormat(String value) {
         if (value.length() != getLength()) {
             return false;
@@ -167,12 +171,7 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
             }
 
             try {
-                if (BigDecimal.ZERO.compareTo(new BigDecimal(value.trim())) == 1) {
-                    // Numbers should be positive or zero
-                    return false;
-                } else {
-                    return true;
-                }
+                return BigDecimal.ZERO.compareTo(new BigDecimal(value.trim())) != 1;
             } catch (Exception e) {
                 return false;
             }
@@ -209,9 +208,8 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
     }
 
     public List<String> getPossibleValues() {
-        List<String> result = new ArrayList<>();
 
-        result.addAll(getValues());
+        List<String> result = new ArrayList<>(getValues());
 
         if (result.isEmpty()) {
             if (isString()) {

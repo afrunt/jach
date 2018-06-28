@@ -28,6 +28,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings({"WeakerAccess", "JavaDoc"})
 @ACHRecordType(name = "Second IAT Addenda Record")
 public class SecondIATAddendaRecord extends IATAddendaRecord {
     public static final String SECOND_IAT_ADDENDA_TYPE_CODE = "11";

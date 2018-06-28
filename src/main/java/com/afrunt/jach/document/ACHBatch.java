@@ -28,6 +28,7 @@ import java.util.Optional;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("UnusedReturnValue")
 public class ACHBatch {
     private BatchHeader batchHeader;
     private List<ACHBatchDetail> details = new ArrayList<>();

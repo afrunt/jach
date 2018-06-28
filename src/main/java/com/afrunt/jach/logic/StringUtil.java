@@ -24,6 +24,7 @@ import java.util.Iterator;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("WeakerAccess")
 public class StringUtil {
     public static boolean isBlank(CharSequence cs) {
         int strLen;
@@ -196,8 +197,7 @@ public class StringUtil {
         } else {
             Object first = iterator.next();
             if (!iterator.hasNext()) {
-                String buf1 = first == null ? "" : first.toString();
-                return buf1;
+                return first == null ? "" : first.toString();
             } else {
                 StringBuilder buf = new StringBuilder(256);
                 if (first != null) {

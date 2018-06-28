@@ -25,6 +25,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.REQUIRED;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class NonIATEntryDetail extends EntryDetail {
     public static final String DFI_ACCOUNT_NUMBER = "DFI Account Number";
     public static final String CHECK_SERIAL_NUMBER = "Check Serial Number";

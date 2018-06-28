@@ -22,7 +22,6 @@ import com.afrunt.beanmetadata.BeanMetadata;
 import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.annotation.ACHRecordType;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,10 +48,9 @@ public class ACHBeanMetadata extends BeanMetadata<ACHFieldMetadata> {
 
     public List<ACHFieldMetadata> getACHTypeTagsMetadata() {
         if (typeTagsMetadata == null) {
-            typeTagsMetadata = new ArrayList<>(getACHFieldsMetadata().stream()
+            typeTagsMetadata = getACHFieldsMetadata().stream()
                     .filter(ACHFieldMetadata::isTypeTag)
-                    .sorted()
-                    .collect(Collectors.toList()));
+                    .sorted().collect(Collectors.toList());
         }
         return typeTagsMetadata;
     }
@@ -62,6 +60,7 @@ public class ACHBeanMetadata extends BeanMetadata<ACHFieldMetadata> {
         return recordTypeCode.equals(getRecordTypeCode());
     }
 
+    @SuppressWarnings("WeakerAccess")
     public String getRecordTypeCode() {
         if (recordTypeCode == null) {
             List<String> constantValues = getFieldMetadata("recordTypeCode").getValues();

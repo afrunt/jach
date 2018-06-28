@@ -29,6 +29,7 @@ import static com.afrunt.jach.domain.RecordTypes.Constants.ENTRY_DETAIL_RECORD_T
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class EntryDetail extends ACHRecord {
     public static final String TRANSACTION_CODE = "Transaction Code";
     public static final String RECEIVING_DFI_IDENTIFICATION = "RDFI ID";

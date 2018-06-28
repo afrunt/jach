@@ -33,6 +33,7 @@ import static com.afrunt.jach.domain.RecordTypes.Constants.BATCH_HEADER_RECORD_T
  *
  * @author Andrii Frunt
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class BatchHeader extends ACHRecord {
     public static final String SERVICE_CLASS_CODE = "Service Class Code";
     public static final String STANDARD_ENTRY_CLASS_CODE = "Standard Entry Class Code";

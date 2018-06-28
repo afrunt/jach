@@ -36,6 +36,7 @@ import static com.afrunt.jach.domain.RecordTypes.*;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("WeakerAccess")
 public class ACHReader extends ACHProcessor {
     public ACHReader(ACHMetadata metadata) {
         super(metadata);
@@ -116,7 +117,7 @@ public class ACHReader extends ACHProcessor {
 
         String recordTypeCode = extractRecordTypeCode(line);
 
-        if (!RecordTypes.validRecordTypeCode(recordTypeCode)) {
+        if (RecordTypes.invalidRecordTypeCode(recordTypeCode)) {
             throwError(String.format("Unknown record type code (%s) (line: %s) of the record: %s", recordTypeCode, 0, line));
         }
 
@@ -264,7 +265,7 @@ public class ACHReader extends ACHProcessor {
                 throwValidationError("Line length should be 94. Actual length is " + currentLine.length());
             }
 
-            if (!RecordTypes.validRecordTypeCode(recordTypeCode)) {
+            if (RecordTypes.invalidRecordTypeCode(recordTypeCode)) {
                 throwValidationError("Unknown record type code " + recordTypeCode);
             }
 

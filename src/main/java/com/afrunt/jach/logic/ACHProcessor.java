@@ -31,10 +31,11 @@ import java.util.Optional;
 class ACHProcessor implements ACHErrorMixIn, ACHFieldConversionSupport {
     static final String LINE_SEPARATOR = Optional.ofNullable(System.getProperty("line.separator")).orElse("\n");
 
-    private ACHMetadata metadata;
+    private final ACHMetadata metadata;
+    private final Map<Integer, String> methodNamesCache = new HashMap<>();
     private Map<Integer, Method> methodsCache = new HashMap<>();
-    private Map<Integer, String> methodNamesCache = new HashMap<>();
 
+    @SuppressWarnings("WeakerAccess")
     public ACHProcessor(ACHMetadata metadata) {
         this.metadata = metadata;
     }

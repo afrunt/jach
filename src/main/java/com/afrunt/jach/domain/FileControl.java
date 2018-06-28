@@ -31,6 +31,7 @@ import static com.afrunt.jach.domain.RecordTypes.Constants.FILE_CONTROL_RECORD_T
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("WeakerAccess")
 @ACHRecordType(name = "File Control Record")
 public class FileControl extends ACHRecord {
     public static final String BATCH_COUNT = "Batch Count";

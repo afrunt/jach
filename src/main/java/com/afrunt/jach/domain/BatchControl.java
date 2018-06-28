@@ -31,6 +31,7 @@ import static com.afrunt.jach.domain.RecordTypes.Constants.BATCH_CONTROL_RECORD_
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("WeakerAccess")
 @ACHRecordType(name = "Batch Control Record")
 public class BatchControl extends ACHRecord {
     public static final String RECORD_TYPE_CODE = "Record Type Code";

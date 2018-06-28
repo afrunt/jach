@@ -25,6 +25,7 @@ import com.afrunt.jach.metadata.ACHMetadata;
 
 import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 
 /**
  * @author Andrii Frunt
@@ -77,7 +78,7 @@ public class ACHMetadataCollector extends MetadataCollector<ACHMetadata, ACHBean
             }
 
             try {
-                new SimpleDateFormat(dateFormat);
+                new SimpleDateFormat(Objects.requireNonNull(dateFormat));
             } catch (Exception e) {
                 throwError(dateFormat + " is wrong date format for field " + fm);
             }

@@ -28,6 +28,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("WeakerAccess")
 @ACHRecordType(name = "Foreign Correspondent Bank IAT Addenda Record")
 public class ForeignCorrespondentBankIATAddendaRecord extends IATAddendaRecord {
     public static final String FOREIGN_CORRESPONDENT_BANK_ADDENDA_TYPE_CODE = "18";

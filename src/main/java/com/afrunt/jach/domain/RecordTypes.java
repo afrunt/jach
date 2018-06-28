@@ -30,15 +30,15 @@ public enum RecordTypes {
     ENTRY_DETAIL(ENTRY_DETAIL_RECORD_TYPE_CODE), ADDENDA(ADDENDA_RECORD_TYPE_CODE),
     BATCH_CONTROL(BATCH_CONTROL_RECORD_TYPE_CODE), FILE_CONTROL(FILE_CONTROL_RECORD_TYPE_CODE);
 
-    private String recordTypeCode;
+    private final String recordTypeCode;
 
     RecordTypes(String recordTypeCode) {
         this.recordTypeCode = recordTypeCode;
     }
 
-    public static boolean validRecordTypeCode(String recordTypeCode) {
+    public static boolean invalidRecordTypeCode(String recordTypeCode) {
         return Arrays.stream(RecordTypes.values())
-                .anyMatch(rt -> rt.getRecordTypeCode().equals(recordTypeCode));
+                .noneMatch(rt -> rt.getRecordTypeCode().equals(recordTypeCode));
     }
 
     public String getRecordTypeCode() {
@@ -49,6 +49,7 @@ public enum RecordTypes {
         return string.startsWith(recordTypeCode);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static class Constants {
         public static final String FILE_HEADER_RECORD_TYPE_CODE = "1";
         public static final String BATCH_HEADER_RECORD_TYPE_CODE = "5";

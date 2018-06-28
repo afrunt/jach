@@ -28,6 +28,7 @@ import java.util.Optional;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("UnusedReturnValue")
 public class ACHDocument {
     private FileHeader fileHeader;
     private List<ACHBatch> batches = new ArrayList<>();

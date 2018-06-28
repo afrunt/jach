@@ -41,6 +41,7 @@ import static com.afrunt.jach.logic.StringUtil.filledWithSpaces;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("WeakerAccess")
 public class ACHWriter extends ACHProcessor {
     private int lines = 0;
     private boolean blockAligning;
@@ -216,6 +217,7 @@ public class ACHWriter extends ACHProcessor {
         return blockAligning;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public ACHWriter setBlockAligning(boolean blockAligning) {
         this.blockAligning = blockAligning;
         return this;

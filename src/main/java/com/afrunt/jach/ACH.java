@@ -81,8 +81,8 @@ public class ACH implements ACHErrorMixIn {
             FileHeader.class,
             ARCEntryDetail.class)
     );
-    private ACHMetadataCollector metadataCollector;
-    private ACHReader reader;
+    private final ACHMetadataCollector metadataCollector;
+    private final ACHReader reader;
     private ACHWriter writer;
     private ACHMetadata metadata;
     private boolean blockAligning;
@@ -102,6 +102,7 @@ public class ACH implements ACHErrorMixIn {
         return read(is, DEFAULT_CHARSET);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public ACHDocument read(InputStream is, Charset charset) {
         return reader.read(is, charset);
     }
@@ -110,6 +111,7 @@ public class ACH implements ACHErrorMixIn {
         return read(string, DEFAULT_CHARSET);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public ACHDocument read(String string, Charset charset) {
         try (ByteArrayInputStream is = new ByteArrayInputStream(string.getBytes(charset))) {
             return reader.read(is);
@@ -122,6 +124,7 @@ public class ACH implements ACHErrorMixIn {
         return write(document, DEFAULT_CHARSET);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public String write(ACHDocument document, Charset charset) {
         return writer.write(document, charset);
     }
@@ -130,6 +133,7 @@ public class ACH implements ACHErrorMixIn {
         write(document, outputStream, DEFAULT_CHARSET);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public void write(ACHDocument document, OutputStream outputStream, Charset charset) {
         try {
             String str = writer.write(document, charset);

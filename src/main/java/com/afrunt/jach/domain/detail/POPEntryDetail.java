@@ -29,6 +29,7 @@ import static com.afrunt.jach.annotation.InclusionRequirement.OPTIONAL;
 /**
  * @author Andrii Frunt
  */
+@SuppressWarnings("EmptyMethod")
 @ACHRecordType(name = "POP Entry Detail Record")
 public class POPEntryDetail extends NonIATEntryDetail {
 
