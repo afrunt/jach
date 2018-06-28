@@ -48,7 +48,39 @@ import java.util.Set;
 public class ACH implements ACHErrorMixIn {
     public static final String LINE_SEPARATOR = Optional.ofNullable(System.getProperty("line.separator")).orElse("\n");
     public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
-
+    private static final Set<Class<?>> ACH_CLASSES = new HashSet<>(Arrays.asList(
+            RemittanceIATAddendaRecord.class,
+            SixthIATAddendaRecord.class,
+            IATAddendaRecord.class,
+            CORAddendaRecord.class,
+            ThirdIATAddendaRecord.class,
+            ForeignCorrespondentBankIATAddendaRecord.class,
+            CIEEntryDetail.class,
+            IATEntryDetail.class,
+            RCKEntryDetail.class,
+            GeneralBatchHeader.class,
+            BatchControl.class,
+            TELEntryDetail.class,
+            FirstIATAddendaRecord.class,
+            FileControl.class,
+            BOCEntryDetail.class,
+            ReturnAddendaRecord.class,
+            SecondIATAddendaRecord.class,
+            SeventhIATAddendaRecord.class,
+            CTXEntryDetail.class,
+            GeneralAddendaRecord.class,
+            POPEntryDetail.class,
+            FifthIATAddendaRecord.class,
+            CCDEntryDetail.class,
+            POSEntryDetail.class,
+            POSAddendaRecord.class,
+            FourthIATAddendaRecord.class,
+            WEBEntryDetail.class,
+            PPDEntryDetail.class,
+            IATBatchHeader.class,
+            FileHeader.class,
+            ARCEntryDetail.class)
+    );
     private ACHMetadataCollector metadataCollector;
     private ACHReader reader;
     private ACHWriter writer;
@@ -131,38 +163,4 @@ public class ACH implements ACHErrorMixIn {
         writer.setBlockAligning(blockAligning);
         return this;
     }
-
-    private static final Set<Class<?>> ACH_CLASSES = new HashSet<>(Arrays.asList(
-            RemittanceIATAddendaRecord.class,
-            SixthIATAddendaRecord.class,
-            IATAddendaRecord.class,
-            CORAddendaRecord.class,
-            ThirdIATAddendaRecord.class,
-            ForeignCorrespondentBankIATAddendaRecord.class,
-            CIEEntryDetail.class,
-            IATEntryDetail.class,
-            RCKEntryDetail.class,
-            GeneralBatchHeader.class,
-            BatchControl.class,
-            TELEntryDetail.class,
-            FirstIATAddendaRecord.class,
-            FileControl.class,
-            BOCEntryDetail.class,
-            ReturnAddendaRecord.class,
-            SecondIATAddendaRecord.class,
-            SeventhIATAddendaRecord.class,
-            CTXEntryDetail.class,
-            GeneralAddendaRecord.class,
-            POPEntryDetail.class,
-            FifthIATAddendaRecord.class,
-            CCDEntryDetail.class,
-            POSEntryDetail.class,
-            POSAddendaRecord.class,
-            FourthIATAddendaRecord.class,
-            WEBEntryDetail.class,
-            PPDEntryDetail.class,
-            IATBatchHeader.class,
-            FileHeader.class,
-            ARCEntryDetail.class)
-    );
 }

@@ -36,17 +36,17 @@ public enum RecordTypes {
         this.recordTypeCode = recordTypeCode;
     }
 
+    public static boolean validRecordTypeCode(String recordTypeCode) {
+        return Arrays.stream(RecordTypes.values())
+                .anyMatch(rt -> rt.getRecordTypeCode().equals(recordTypeCode));
+    }
+
     public String getRecordTypeCode() {
         return recordTypeCode;
     }
 
     public boolean is(String string) {
         return string.startsWith(recordTypeCode);
-    }
-
-    public static boolean validRecordTypeCode(String recordTypeCode) {
-        return Arrays.stream(RecordTypes.values())
-                .anyMatch(rt -> rt.getRecordTypeCode().equals(recordTypeCode));
     }
 
     public static class Constants {

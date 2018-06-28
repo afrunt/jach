@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static com.afrunt.jach.annotation.InclusionRequirement.*;
 
@@ -229,7 +230,27 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
 
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ACHFieldMetadata that = (ACHFieldMetadata) o;
+        return Objects.equals(achFieldAnnotation, that.achFieldAnnotation) &&
+                inclusion == that.inclusion &&
+                Objects.equals(values, that.values) &&
+                Objects.equals(start, that.start) &&
+                Objects.equals(end, that.end) &&
+                Objects.equals(length, that.length) &&
+                Objects.equals(typeTag, that.typeTag) &&
+                Objects.equals(hasConstantValues, that.hasConstantValues);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(achFieldAnnotation, inclusion, values, start, end, length, typeTag, hasConstantValues);
+    }
+
+    @Override
     public int compareTo(ACHFieldMetadata o) {
-        return Integer.valueOf(getStart()).compareTo(o.getStart());
+        return Integer.compare(getStart(), o.getStart());
     }
 }
