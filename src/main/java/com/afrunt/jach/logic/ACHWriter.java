@@ -80,8 +80,9 @@ public class ACHWriter extends ACHProcessor {
             writeLine(writer, writeRecord(document.getFileControl()), false);
 
             if (lines % 10 != 0 && blockAligning) {
-                String emptyLine = new String(new char[ACHRecord.ACH_RECORD_LENGTH]).replace("\0", " ");
-                for (int i = 0; i < lines % 10 - 1; i++) {
+                String emptyLine = new String(new char[ACHRecord.ACH_RECORD_LENGTH]).replace("\0", "9");
+                writer.write(LINE_SEPARATOR);
+                for (int i = 0; i < 10 - (lines % 10) - 1; i++) {
                     writeLine(writer, emptyLine);
                 }
 
