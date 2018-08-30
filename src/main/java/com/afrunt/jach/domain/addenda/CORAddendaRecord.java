@@ -51,7 +51,7 @@ public class CORAddendaRecord extends AddendaRecord {
         return COR_ADDENDA_TYPE_CODE;
     }
 
-    @ACHField(start = 3, length = 2, inclusion = MANDATORY, name = CHANGE_CODE)
+    @ACHField(start = 3, length = 3, inclusion = MANDATORY, name = CHANGE_CODE)
     public String getChangeCode() {
         return changeCode;
     }
@@ -76,7 +76,7 @@ public class CORAddendaRecord extends AddendaRecord {
         return reserved(5);
     }
 
-    @ACHField(start = 27, length = 7, inclusion = REQUIRED, name = ORIGINAL_RDFI_IDENTIFICATION)
+    @ACHField(start = 27, length = 8, inclusion = REQUIRED, name = ORIGINAL_RDFI_IDENTIFICATION)
     public Long getOriginalRDFIID() {
         return originalRDFIID;
     }

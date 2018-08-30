@@ -79,7 +79,8 @@ public class ACH implements ACHErrorMixIn {
             PPDEntryDetail.class,
             IATBatchHeader.class,
             FileHeader.class,
-            ARCEntryDetail.class)
+            ARCEntryDetail.class,
+            COREntryDetail.class)
     );
     private final ACHMetadataCollector metadataCollector;
     private final ACHReader reader;

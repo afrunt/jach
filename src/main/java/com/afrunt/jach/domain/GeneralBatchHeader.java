@@ -83,7 +83,8 @@ public class GeneralBatchHeader extends BatchHeader {
             "TEL", //Telephone Authorized Entry
             "WEB", //Internet Authorized Entry
             "RCK", //Represented Check Entry
-            "POS"  //Point of Sale
+            "POS", //Point of Sale
+            "COR" //Automated 'Notification of Change of Refused Notification of Change
     })
     public String getStandardEntryClassCode() {
         return super.getStandardEntryClassCode();
