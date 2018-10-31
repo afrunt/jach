@@ -35,12 +35,6 @@ public class CTXEntryDetail extends NonIATEntryDetail {
     private String discretionaryData;
     private String receivingCompanyName;
 
-    @Override
-    @Values("1")
-    public Short getAddendaRecordIndicator() {
-        return 1;
-    }
-
     @ACHField(start = 39, length = 15, name = NonIATEntryDetail.IDENTIFICATION_NUMBER)
     public String getIdentificationNumber() {
         return identificationNumber;
