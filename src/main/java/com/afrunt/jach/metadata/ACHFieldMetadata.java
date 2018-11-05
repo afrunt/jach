@@ -192,7 +192,7 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
         if (hasConstantValues()) {
             return getValues().contains(value) || (isOptional() && "".equals(value.trim()));
         } else {
-            return true;
+            return false;
         }
     }
 

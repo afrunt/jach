@@ -20,12 +20,16 @@ package com.afrunt.jach.logic;
 
 
 import java.util.Iterator;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author Andrii Frunt
  */
 @SuppressWarnings("WeakerAccess")
 public class StringUtil {
+    public static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
     public static boolean isBlank(CharSequence cs) {
         int strLen;
         if (cs != null && (strLen = cs.length()) != 0) {
@@ -220,5 +224,16 @@ public class StringUtil {
         }
     }
 
+    public static String nTimes(int n, String str) {
+        return IntStream
+                .range(0, n)
+                .boxed()
+                .map(o -> str)
+                .collect(Collectors.joining());
+    }
+
+    public static String letter(Integer i) {
+        return String.valueOf(ALPHABET.charAt(i));
+    }
 
 }

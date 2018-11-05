@@ -100,7 +100,7 @@ public class ACHReader extends ACHProcessor {
         if (types.isEmpty()) {
             return null;
         } else {
-            return getTypeWithHighestRate(rankTypes(str, types));
+            return getTypeWithHighestRate(rankTypes(str, types), str);
         }
     }
 
@@ -133,7 +133,7 @@ public class ACHReader extends ACHProcessor {
         }
     }
 
-    private ACHBeanMetadata getTypeWithHighestRate(Map<Integer, Set<ACHBeanMetadata>> rateMap) {
+    private ACHBeanMetadata getTypeWithHighestRate(Map<Integer, Set<ACHBeanMetadata>> rateMap, String str) {
         Set<ACHBeanMetadata> typesWithHighestRate = getTypesWithHighestRate(rateMap);
 
         int numberOfTypes = typesWithHighestRate.size();
@@ -141,7 +141,7 @@ public class ACHReader extends ACHProcessor {
         if (numberOfTypes == 1) {
             return typesWithHighestRate.iterator().next();
         } else if (numberOfTypes > 1) {
-            throw error("More than one type found for string");
+            throw error("More than one type found for string " + str);
         } else {
             throw error("Type of the string not found");
         }
@@ -295,12 +295,15 @@ public class ACHReader extends ACHProcessor {
                 return typeOfString(currentLine);
             } else {
                 Set<ACHBeanMetadata> entryDetailTypes = getMetadata().typesForRecordTypeCode(ENTRY_DETAIL.getRecordTypeCode());
-                String batchType = currentBatch.getBatchType();
                 return entryDetailTypes.stream()
-                        .filter(t -> t.getSimpleTypeName().startsWith(batchType))
+                        .filter(t -> entryDetailRecordMatch(currentBatch, t))
                         .findFirst()
                         .orElseThrow(() -> error("Type of detail record not found for string: " + currentLine));
             }
+        }
+
+        private boolean entryDetailRecordMatch(ACHBatch batchType, ACHBeanMetadata t) {
+            return t.getSimpleTypeName().startsWith(batchType.getBatchType());
         }
 
         private void throwValidationError(String message) {

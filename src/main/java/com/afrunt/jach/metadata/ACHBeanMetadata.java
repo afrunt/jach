@@ -24,11 +24,15 @@ import com.afrunt.jach.annotation.ACHRecordType;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static com.afrunt.jach.logic.StringUtil.nTimes;
 
 /**
  * @author Andrii Frunt
  */
 public class ACHBeanMetadata extends BeanMetadata<ACHFieldMetadata> {
+    private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private List<ACHFieldMetadata> achFieldsMetadata;
     private String recordTypeCode;
     private List<ACHFieldMetadata> typeTagsMetadata;
@@ -68,4 +72,19 @@ public class ACHBeanMetadata extends BeanMetadata<ACHFieldMetadata> {
         }
         return recordTypeCode;
     }
+
+    public String getPattern() {
+        return IntStream
+                .range(0, getACHFieldsMetadata().size())
+                .boxed()
+                .map(i -> nTimes(getACHFieldsMetadata().get(i).getLength(), letter(i)))
+                .collect(Collectors.joining());
+    }
+
+
+    private String letter(Integer i) {
+        return String.valueOf(ALPHABET.charAt(i));
+    }
+
+
 }
