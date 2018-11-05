@@ -21,7 +21,6 @@ package com.afrunt.jach;
 import com.afrunt.jach.document.ACHDocument;
 import com.afrunt.jach.domain.*;
 import com.afrunt.jach.domain.addenda.GeneralAddendaRecord;
-import com.afrunt.jach.domain.addenda.NOCAddendaRecord;
 import com.afrunt.jach.domain.addenda.POSAddendaRecord;
 import com.afrunt.jach.domain.addenda.ReturnAddendaRecord;
 import com.afrunt.jach.domain.addenda.iat.*;
@@ -52,7 +51,6 @@ public class ACH implements ACHErrorMixIn {
             RemittanceIATAddendaRecord.class,
             SixthIATAddendaRecord.class,
             IATAddendaRecord.class,
-            NOCAddendaRecord.class,
             ThirdIATAddendaRecord.class,
             ForeignCorrespondentBankIATAddendaRecord.class,
             CIEEntryDetail.class,
