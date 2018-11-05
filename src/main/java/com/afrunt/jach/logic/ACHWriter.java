@@ -82,7 +82,8 @@ public class ACHWriter extends ACHProcessor {
             if (lines % 10 != 0 && blockAligning) {
                 String emptyLine = new String(new char[ACHRecord.ACH_RECORD_LENGTH]).replace("\0", "9");
                 writer.write(LINE_SEPARATOR);
-                for (int i = 0; i < 10 - (lines % 10) - 1; i++) {
+                int trailingLinesLeft = 10 - (lines % 10) - 1;
+                for (int i = 0; i < trailingLinesLeft; i++) {
                     writeLine(writer, emptyLine);
                 }
 

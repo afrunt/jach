@@ -61,6 +61,11 @@ public class ACHTest {
         String out = ach.write(document);
         String[] strings = out.split(ACH.LINE_SEPARATOR);
         Assert.assertEquals(10, strings.length);
+
+        document = ach.read(getClass().getClassLoader().getResourceAsStream("ach-pos.txt"));
+        out = ach.write(document);
+        strings = out.split(ACH.LINE_SEPARATOR);
+        Assert.assertEquals(10, strings.length);
     }
 
     private void testFilesAreEquals(InputStream is1, InputStream is2) {

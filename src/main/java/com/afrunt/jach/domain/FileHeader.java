@@ -83,7 +83,7 @@ public class FileHeader extends ACHRecord {
         return this;
     }
 
-    @ACHField(start = 3, length = 10, name = IMMEDIATE_DESTINATION, inclusion = MANDATORY)
+    @ACHField(start = 4, length = 10, name = IMMEDIATE_DESTINATION, inclusion = MANDATORY)
     public String getImmediateDestination() {
         return immediateDestination;
     }
@@ -93,7 +93,7 @@ public class FileHeader extends ACHRecord {
         return this;
     }
 
-    @ACHField(start = 13, length = 10, name = IMMEDIATE_ORIGIN, inclusion = MANDATORY)
+    @ACHField(start = 14, length = 10, name = IMMEDIATE_ORIGIN, inclusion = MANDATORY)
     public String getImmediateOrigin() {
         return immediateOrigin;
     }
