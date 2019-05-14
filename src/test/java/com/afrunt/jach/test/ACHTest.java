@@ -20,6 +20,9 @@ package com.afrunt.jach.test;
 
 import com.afrunt.jach.ACH;
 import com.afrunt.jach.document.ACHDocument;
+import com.afrunt.jach.domain.BatchHeader;
+import com.afrunt.jach.domain.FileHeader;
+import com.afrunt.jach.domain.GeneralBatchHeader;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -66,6 +69,17 @@ public class ACHTest {
         out = ach.write(document);
         strings = out.split(ACH.LINE_SEPARATOR);
         Assert.assertEquals(10, strings.length);
+    }
+
+    @Test
+    public void castTest(){
+        GeneralBatchHeader batchHeader = new GeneralBatchHeader()
+                .setCompanyID("")
+                .setServiceClassCode("XXX")
+                .cast(GeneralBatchHeader.class)
+                .setCompanyName("")
+                .setBatchNumber(1)
+                .cast();
     }
 
     private void testFilesAreEquals(InputStream is1, InputStream is2) {

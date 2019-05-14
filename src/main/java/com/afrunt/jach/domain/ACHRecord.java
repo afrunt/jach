@@ -62,4 +62,14 @@ public abstract class ACHRecord {
         this.lineNumber = lineNumber;
         return this;
     }
+
+    @SuppressWarnings("unchecked")
+    public <T extends ACHRecord> T cast() {
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends ACHRecord> T cast(Class<T> type) {
+        return type.cast(this);
+    }
 }
