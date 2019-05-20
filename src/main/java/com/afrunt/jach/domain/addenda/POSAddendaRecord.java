@@ -76,7 +76,7 @@ public class POSAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 10, length = 7, name = REFERENCE_INFORMATION_2)
+    @ACHField(start = 10, length = 3, name = REFERENCE_INFORMATION_2)
     public String getReferenceInformation2() {
         return referenceInformation2;
     }

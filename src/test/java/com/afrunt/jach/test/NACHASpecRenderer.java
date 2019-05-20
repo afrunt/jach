@@ -23,7 +23,7 @@ import static com.afrunt.jach.logic.StringUtil.letter;
 public class NACHASpecRenderer {
     private ACH ach = new ACH();
     private List<String> notes = new ArrayList<>();
-
+    
     public String renderFullSpec() {
         return ach.getMetadata().getACHBeansMetadata().stream()
                 .sorted(Comparator.comparing(ACHBeanMetadata::getRecordTypeCode))
@@ -41,7 +41,7 @@ public class NACHASpecRenderer {
                 .peek(bm -> notes = new ArrayList<>())
                 .collect(Collectors.toMap(bm -> bm.getRecordTypeCode() + "-" + bm.getSimpleTypeName() + ".htm", this::generateHtmlBeanSpec));
     }
-
+    
     private String generateHtmlBeanSpec(ACHBeanMetadata bm) {
         return generateHtmlBeanSpec(generateSpecBody(bm));
     }

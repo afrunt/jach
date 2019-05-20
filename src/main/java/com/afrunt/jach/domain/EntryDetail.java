@@ -32,9 +32,9 @@ import static com.afrunt.jach.domain.RecordTypes.Constants.ENTRY_DETAIL_RECORD_T
 @SuppressWarnings("WeakerAccess")
 public abstract class EntryDetail extends ACHRecord {
     public static final String TRANSACTION_CODE = "Transaction Code";
-    public static final String RECEIVING_DFI_IDENTIFICATION = "RDFI ID";
+    public static final String RECEIVING_DFI_IDENTIFICATION = "Receiving DFI Identification";
     public static final String CHECK_DIGIT = "Check Digit";
-    public static final String AMOUNT = "Amount";
+    public static final String AMOUNT = "Total Amount";
     public static final String TRACE_NUMBER = "Trace Number";
     public static final String ADDENDA_RECORD_INDICATOR = "Addenda Record Indicator";
 

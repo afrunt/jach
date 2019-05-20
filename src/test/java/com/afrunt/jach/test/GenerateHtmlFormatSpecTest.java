@@ -1,5 +1,9 @@
 package com.afrunt.jach.test;
 
+import com.afrunt.beanmetadata.Typed;
+import com.afrunt.jach.ACH;
+import com.afrunt.jach.metadata.ACHBeanMetadata;
+import com.afrunt.jach.metadata.ACHMetadata;
 import org.junit.Test;
 
 import java.io.FileOutputStream;
@@ -8,6 +12,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.Collectors;
 
 /**
  * @author Andrii Frunt
@@ -22,6 +27,19 @@ public class GenerateHtmlFormatSpecTest {
                 .forEach(this::storeToFile);
 
         storeToFile("nacha-spec.htm", renderer.renderFullSpec());
+    }
+
+    @Test
+    public void testIdenticalPatterns() {
+        ACHMetadata metadata = new ACH().getMetadata();
+        metadata
+                .getACHBeansMetadata()
+                .stream()
+                .collect(Collectors.groupingBy(ACHBeanMetadata::getPattern))
+                .entrySet()
+                .stream()
+                .filter(e -> e.getValue().size() > 1)
+                .forEach(e -> System.out.println(String.format("%s: %s", e.getKey(), e.getValue().stream().map(Typed::getSimpleTypeName).collect(Collectors.joining(", ")))));
     }
 
     private void storeToFile(String fileName, String contents) {

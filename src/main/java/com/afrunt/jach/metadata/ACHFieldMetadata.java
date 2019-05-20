@@ -115,7 +115,7 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
 
     public boolean isTypeTag() {
         if (typeTag == null) {
-            typeTag = achAnnotation().typeTag();
+            typeTag = achAnnotation().typeTag() || isAnnotatedWith(TypeTag.class);
         }
         return typeTag;
     }

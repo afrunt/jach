@@ -20,8 +20,6 @@ package com.afrunt.jach.test;
 
 import com.afrunt.jach.ACH;
 import com.afrunt.jach.document.ACHDocument;
-import com.afrunt.jach.domain.BatchHeader;
-import com.afrunt.jach.domain.FileHeader;
 import com.afrunt.jach.domain.GeneralBatchHeader;
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,8 +32,10 @@ import java.util.Scanner;
  * @author Andrii Frunt
  */
 public class ACHTest {
-    private static final String[] ACH_FILES = {"cie-returns.txt", "ach-return.txt", "ach-tr.txt", "ach-payrol.txt",
-            "ach-web-ppd.txt", "ach-pos.txt"};
+    private static final String[] ACH_FILES = {"ach-ppd-contested-dishonored-return.txt", "ach-ppd-dishonored-return.txt", 
+            "ach-ppd-return.txt","ach-cor2.txt", "ach-return-cor.txt","cie-returns.txt", "ach-return.txt", "ach-tr.txt", 
+            "ach-payrol.txt", "ach-web-ppd.txt", "ach-pos.txt"
+    };
 
     @Test
     public void testReadWrite() {
@@ -88,6 +88,9 @@ public class ACHTest {
 
         while (sc1.hasNextLine()) {
             String line1 = sc1.nextLine();
+            if (line1.trim().equals("")) {
+                continue;
+            }
             String line2 = sc2.nextLine();
             Assert.assertEquals(line1, line2);
         }

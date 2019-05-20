@@ -59,7 +59,7 @@ public abstract class BatchHeader extends ACHRecord {
         return BATCH_HEADER_RECORD_TYPE_CODE;
     }
 
-    @ACHField(start = 1, length = 3, name = SERVICE_CLASS_CODE, inclusion = MANDATORY, values = {"200", "220", "225", "280"})
+    @ACHField(start = 1, length = 3, name = SERVICE_CLASS_CODE, inclusion = MANDATORY, values = {"200", "220", "225", "280"}, typeTag = true)
     public String getServiceClassCode() {
         return serviceClassCode;
     }

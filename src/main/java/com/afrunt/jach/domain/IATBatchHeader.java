@@ -28,9 +28,9 @@ import static com.afrunt.jach.annotation.InclusionRequirement.*;
  * @author Andrii Frunt
  */
 @SuppressWarnings({"WeakerAccess", "EmptyMethod"})
-@ACHRecordType(name = "IAT Batch Header Record")
+@ACHRecordType(name = "IAT Company/Batch Header Record")
 public class IATBatchHeader extends BatchHeader {
-    public static final String IAT_INDICATOR = "SEC_IAT Indicator";
+    public static final String IAT_INDICATOR = "IAT Indicator";
     public static final String FOREIGN_EXCHANGE_INDICATOR = "Foreign Exchange Indicator";
     public static final String FOREIGN_EXCHANGE_REFERENCE_INDICATOR = "Foreign Exchange Reference Indicator";
     public static final String FOREIGN_EXCHANGE_REFERENCE = "Foreign Exchange Reference";
@@ -70,7 +70,7 @@ public class IATBatchHeader extends BatchHeader {
     }
 
     @ACHField(start = 22, length = 1, name = FOREIGN_EXCHANGE_REFERENCE_INDICATOR, inclusion = REQUIRED,
-            values = {"1", "2", "3"})
+            values = {"1", "2", "3"}, typeTag = true)
     public String getForeignExchangeReferenceIndicator() {
         return foreignExchangeReferenceIndicator;
     }

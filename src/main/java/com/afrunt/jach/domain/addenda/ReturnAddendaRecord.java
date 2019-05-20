@@ -24,9 +24,9 @@ import com.afrunt.jach.annotation.Values;
 import com.afrunt.jach.domain.AddendaRecord;
 
 import java.math.BigInteger;
+import java.util.Date;
 
-import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
-import static com.afrunt.jach.annotation.InclusionRequirement.REQUIRED;
+import static com.afrunt.jach.annotation.InclusionRequirement.*;
 
 /**
  * @author Andrii Frunt
@@ -74,7 +74,7 @@ public class ReturnAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 21, length = 6, name = DATE_OF_DEATH)
+    @ACHField(start = 21, length = 6, name = DATE_OF_DEATH, inclusion = OPTIONAL)
     public String getDateOfDeath() {
         return dateOfDeath;
     }
@@ -94,7 +94,7 @@ public class ReturnAddendaRecord extends AddendaRecord {
         return this;
     }
 
-    @ACHField(start = 35, length = 43, name = ADDENDA_INFORMATION)
+    @ACHField(start = 35, length = 44, name = ADDENDA_INFORMATION)
     public String getAddendaInformation() {
         return addendaInformation;
     }

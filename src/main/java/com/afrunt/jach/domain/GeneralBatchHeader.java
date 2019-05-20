@@ -75,6 +75,7 @@ public class GeneralBatchHeader extends BatchHeader {
     @Values({
             "CCD", //Corporate Credit or Debit
             "CIE",
+            "COR", //Notification of change
             "CTX", //Corporate Trade Exchange
             "PPD", //Prearranged Payment and Deposit Entry
             "ARC", //Accounts Receivable Check

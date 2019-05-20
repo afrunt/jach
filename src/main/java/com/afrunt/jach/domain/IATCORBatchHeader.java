@@ -16,36 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.afrunt.jach.domain.addenda;
+package com.afrunt.jach.domain;
 
 import com.afrunt.jach.annotation.ACHField;
 import com.afrunt.jach.annotation.ACHRecordType;
+import com.afrunt.jach.annotation.Values;
 
-import static com.afrunt.jach.annotation.InclusionRequirement.*;
+import static com.afrunt.jach.annotation.InclusionRequirement.MANDATORY;
 
 /**
  * @author Andrii Frunt
  */
-@SuppressWarnings("WeakerAccess")
-@ACHRecordType(name = "Notification Of Change (NOC) - Addenda Record")
-public class CORAddendaRecord extends BaseCORAddendaRecord {
-
-    public static final String CHANGE_CODE = "Change Code";
-
-    private String changeCode;
-
-    @ACHField(start = 3, length = 3, inclusion = MANDATORY, name = CHANGE_CODE)
-    public String getChangeCode() {
-        return changeCode;
+@SuppressWarnings({"WeakerAccess", "EmptyMethod"})
+@ACHRecordType(name = "IAT Company/Batch Header Record For Notification Of Change (NOC)")
+class IATCORBatchHeader extends IATBatchHeader {
+    @Override
+    @ACHField(start = 4, length = 16, name = IAT_INDICATOR, values = "IATCOR", inclusion = MANDATORY, typeTag = true)
+    public String getIATIndicator() {
+        return super.getIATIndicator();
     }
 
-    public CORAddendaRecord setChangeCode(String changeCode) {
-        this.changeCode = changeCode;
-        return this;
-    }
-
-    @ACHField(start = 64, length = 15, inclusion = BLANK, name = RESERVED)
-    public String getReserved2() {
-        return reserved(15);
+    @Override
+    @Values("COR")
+    public String getStandardEntryClassCode() {
+        return super.getStandardEntryClassCode();
     }
 }

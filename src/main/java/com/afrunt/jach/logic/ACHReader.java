@@ -18,6 +18,7 @@
  */
 package com.afrunt.jach.logic;
 
+import com.afrunt.beanmetadata.Typed;
 import com.afrunt.jach.ACH;
 import com.afrunt.jach.document.ACHBatch;
 import com.afrunt.jach.document.ACHBatchDetail;
@@ -30,6 +31,7 @@ import com.afrunt.jach.metadata.ACHMetadata;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.afrunt.jach.domain.RecordTypes.*;
 
@@ -141,7 +143,7 @@ public class ACHReader extends ACHProcessor {
         if (numberOfTypes == 1) {
             return typesWithHighestRate.iterator().next();
         } else if (numberOfTypes > 1) {
-            throw error("More than one type found for string " + str);
+            throw error("More than one type found for string " + str + ACHProcessor.LINE_SEPARATOR + " Types: " + typesWithHighestRate.stream().map(Typed::getSimpleTypeName).collect(Collectors.joining(", ")));
         } else {
             throw error("Type of the string not found");
         }
@@ -185,12 +187,6 @@ public class ACHReader extends ACHProcessor {
         }
 
         return rank;
-
-        /*List<ACHFieldMetadata> fms = new ArrayList<>(beanMetadata.getACHFieldsMetadata());
-
-        return IntStream.range(0, strings.size())
-                .map(i -> rankField(strings.get(i), fms.get(i)))
-                .reduce(0, (left, right) -> left + right);*/
     }
 
     private int rankField(String value, ACHFieldMetadata fieldMetadata) {
@@ -295,10 +291,16 @@ public class ACHReader extends ACHProcessor {
                 return typeOfString(currentLine);
             } else {
                 Set<ACHBeanMetadata> entryDetailTypes = getMetadata().typesForRecordTypeCode(ENTRY_DETAIL.getRecordTypeCode());
-                return entryDetailTypes.stream()
+
+                Set<ACHBeanMetadata> types = entryDetailTypes.stream()
                         .filter(t -> entryDetailRecordMatch(currentBatch, t))
-                        .findFirst()
-                        .orElseThrow(() -> error("Type of detail record not found for string: " + currentLine));
+                        .collect(Collectors.toSet());
+
+                if (types.isEmpty()) {
+                    throw error("Type of detail record not found for string: " + currentLine);
+                }
+
+                return getTypeWithHighestRate(rankTypes(currentLine, types), currentLine);
             }
         }
 
