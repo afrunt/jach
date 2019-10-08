@@ -24,6 +24,7 @@ import com.afrunt.jach.document.ACHBatchDetail;
 import com.afrunt.jach.document.ACHDocument;
 import com.afrunt.jach.domain.ACHRecord;
 import com.afrunt.jach.domain.AddendaRecord;
+import com.afrunt.jach.domain.FileControl;
 import com.afrunt.jach.metadata.ACHBeanMetadata;
 import com.afrunt.jach.metadata.ACHFieldMetadata;
 import com.afrunt.jach.metadata.ACHMetadata;
@@ -77,7 +78,15 @@ public class ACHWriter extends ACHProcessor {
 
             document.getBatches().forEach(b -> writeBatch(b, writer));
 
-            writeLine(writer, writeRecord(document.getFileControl()), false);
+            FileControl fileControl = document.getFileControl();
+
+            int blockCount = (lines + 1) / 10 + (lines % 10 > 0 ? 1 : 0);
+
+            if (fileControl.getBlockCount() == null) {
+                fileControl.setBlockCount(blockCount);
+            }
+
+            writeLine(writer, writeRecord(fileControl), false);
 
             if (lines % 10 != 0 && blockAligning) {
                 String emptyLine = new String(new char[ACHRecord.ACH_RECORD_LENGTH]).replace("\0", "9");
