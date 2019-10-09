@@ -45,3 +45,7 @@ ACHDocument document = ach.read(is, charset);
 //.....
 ach.write(document, os, charset);
 ```
+Enable aligning of blocks
+```java
+ACH ach = new ACH().withBlockAligning(true);
+```

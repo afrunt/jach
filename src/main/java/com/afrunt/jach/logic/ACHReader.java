@@ -186,7 +186,7 @@ public class ACHReader extends ACHProcessor {
             ++i;
         }
 
-        return rank;
+        return rank == achTypeTagsMetadata.size() ? rank : 0;
     }
 
     private int rankField(String value, ACHFieldMetadata fieldMetadata) {
