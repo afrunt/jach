@@ -184,7 +184,7 @@ public class ACHReader extends ACHProcessor {
             ++i;
         }
 
-        return rank;
+        return rank == achTypeTagsMetadata.size() ? rank : 0;
 
         /*List<ACHFieldMetadata> fms = new ArrayList<>(beanMetadata.getACHFieldsMetadata());
 
