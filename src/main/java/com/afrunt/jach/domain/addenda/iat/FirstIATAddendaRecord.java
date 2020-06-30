@@ -61,7 +61,8 @@ public class FirstIATAddendaRecord extends IATAddendaRecord {
      * Describes the type of payment:
      * <p>
      * ANN = Annuity
-     * BUS = Business/Commercial DEP = Deposit
+     * BUS = Business/Commercial
+     * DEP = Deposit
      * LOA = Loan
      * MIS = Miscellaneous
      * MOR = Mortgage
@@ -80,7 +81,7 @@ public class FirstIATAddendaRecord extends IATAddendaRecord {
      * @return type of payment
      */
     @ACHField(start = 3, length = 3, name = TRANSACTION_TYPE_CODE, inclusion = REQUIRED, values = {
-            "ANN", "BUS", "DEP", "LOA", "MIS", "MOR", "PEN", "RLS", "SAL", "TAX", "TEL", "WEB", "ARC", "BOC", "POP", "RCK"
+            "ANN", "BUS", "DEP", "LOA", "MIS", "MOR", "PEN", "RLS", "REM", "SAL", "TAX", "TEL", "WEB", "ARC", "BOC", "POP", "RCK"
     })
     public String getTransactionTypeCode() {
         return transactionTypeCode;
