@@ -80,7 +80,8 @@ public class ACHWriter extends ACHProcessor {
 
             FileControl fileControl = document.getFileControl();
 
-            int blockCount = (lines + 1) / 10 + (lines % 10 > 0 ? 1 : 0);
+            int blockSize = document.getFileHeader().getBlockingFactor() != null ? Integer.parseInt(document.getFileHeader().getBlockingFactor()) : 10;
+            int blockCount = (lines + 1) / blockSize + ((lines + 1) % blockSize > 0 ? 1 : 0);
 
             if (fileControl.getBlockCount() == null) {
                 fileControl.setBlockCount(blockCount);
@@ -88,10 +89,10 @@ public class ACHWriter extends ACHProcessor {
 
             writeLine(writer, writeRecord(fileControl), false);
 
-            if (lines % 10 != 0 && blockAligning) {
+            if (lines % blockSize != 0 && blockAligning) {
                 String emptyLine = new String(new char[ACHRecord.ACH_RECORD_LENGTH]).replace("\0", "9");
                 writer.write(LINE_SEPARATOR);
-                int trailingLinesLeft = 10 - (lines % 10) - 1;
+                int trailingLinesLeft = blockSize - (lines % blockSize) - 1;
                 for (int i = 0; i < trailingLinesLeft; i++) {
                     writeLine(writer, emptyLine);
                 }
