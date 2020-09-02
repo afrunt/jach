@@ -80,7 +80,8 @@ public class ACH implements ACHErrorMixIn {
             FileHeader.class,
             COREntryDetail.class,
             CORAddendaRecord.class,
-            ARCEntryDetail.class
+            ARCEntryDetail.class,
+            DNEEntryDetail.class
     )
     );
     private final ACHMetadataCollector metadataCollector;
