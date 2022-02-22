@@ -100,7 +100,12 @@ public class ACHFieldMetadata extends FieldMetadata implements Comparable<ACHFie
             if (isAnnotatedWith(Values.class)) {
                 values = Arrays.asList(getAnnotation(Values.class).value());
             } else {
-                values = Arrays.asList(achAnnotation().values());
+                values = new ArrayList<String>(Arrays.asList(achAnnotation().values())) {
+                	@Override
+                    public int indexOf(Object o) {
+                		return super.indexOf(((String)o).toUpperCase());
+                    }
+                };
             }
         }
 
